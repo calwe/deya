@@ -1,5 +1,11 @@
 add_executable(Sandbox src/SandboxApp.cpp)
 
+# EXTERNAL LIBRARIES
+
+include_directories(../Deya/vendor/spdlog/include)
+
+# INTERNAL LIBRARIES
+
 include_directories(../Deya)
 target_link_libraries(Sandbox Deya)
 

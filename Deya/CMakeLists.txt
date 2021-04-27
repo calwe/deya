@@ -1,5 +1,12 @@
+# EXTERNAL LIBRARIES
+
+include_directories(vendor/spdlog/include/)
+
+# INTERNAL LIBRARIES
+
 add_library(Deya
     src/Deya/Application.cpp
+    src/Deya/Log.cpp
 )
 
 include_directories(include)

@@ -11,5 +11,5 @@
 #ifdef DY_PLATFORM_LINUX
     #define DEYA_API
 #else
-        #error Deya only support Windows (experimental) and linux
+    #error Deya only support Windows (experimental) and linux
 #endif
