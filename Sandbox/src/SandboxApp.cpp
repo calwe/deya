@@ -1,4 +1,5 @@
 #include <Deya.h>
+#include <iostream>
 
 class Sandbox : public Deya::Application
 {
