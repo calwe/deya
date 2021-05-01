@@ -13,3 +13,5 @@
 #else
     #define DEYA_API
 #endif
+
+#define BIT(x) (1 << x)

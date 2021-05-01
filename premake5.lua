@@ -26,6 +26,7 @@ project "Deya"
 
     includedirs
     {
+        "%{prj.name}/src/**",
         "%{prj.name}/include/**",
         "%{prj.name}/vendor/spdlog/include"
     }
@@ -79,12 +80,13 @@ project "Sandbox"
     files
     {
         "Sandbox/include/**.h",
-        "Sandbox/src/**.cpp"
+        "Sandbox/src/**.cpp",
     }
 
     includedirs
     {
         "Deya/vendor/spdlog/include",
+        "Deya/include/**",
         "Deya/include"
     }
 
