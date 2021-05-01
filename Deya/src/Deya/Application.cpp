@@ -1,7 +1,7 @@
-#include "Application.h"
+#include "Deya/Application.h"
 
-#include "ApplicationEvent.h"
-#include "Log.h"
+#include "Deya/Events/ApplicationEvent.h"
+#include "Deya/Log.h"
 
 namespace Deya
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Events/Event.h"
+#include "Deya/Core.h"
+#include "Deya/Events/Event.h"
 
 namespace Deya 
 {

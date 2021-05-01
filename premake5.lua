@@ -26,9 +26,8 @@ project "Deya"
 
     includedirs
     {
-        "%{prj.name}/src/**",
-        "%{prj.name}/include/**",
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/vendor/spdlog/include",
+        "Deya/include"
     }
 
     filter "system:windows"
@@ -86,7 +85,6 @@ project "Sandbox"
     includedirs
     {
         "Deya/vendor/spdlog/include",
-        "Deya/include/**",
         "Deya/include"
     }
 
