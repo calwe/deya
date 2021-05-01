@@ -2,8 +2,6 @@
 
 #include "Deya/Events/Event.h"
 
-#include <sstream>
-
 namespace Deya
 {
     class DEYA_API WindowResizeEvent : public Event

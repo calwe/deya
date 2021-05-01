@@ -1,3 +1,5 @@
+#include "dypch.h"
+
 #include "Deya/Application.h"
 
 #include "Deya/Events/ApplicationEvent.h"

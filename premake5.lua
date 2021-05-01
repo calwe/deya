@@ -18,6 +18,9 @@ project "Deya"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "dypch.h"
+    pchsource "Deya/src/dypch.cpp" -- !WINDOWS ONLY (will be ignored on other platforms)
+
     files
     {
         "Deya/include/**.h",

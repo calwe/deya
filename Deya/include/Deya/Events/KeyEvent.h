@@ -2,8 +2,6 @@
 
 #include "Deya/Events/Event.h"
 
-#include <sstream>
-
 namespace Deya
 {
     class DEYA_API KeyEvent : public Event
