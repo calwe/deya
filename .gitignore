@@ -1,5 +1,15 @@
-.vscode/
 build/
+/bin/
+/bin-int/
+Makefile
+
+
+# !IDE SPECIFIC
+
+# visual studio code
+.vscode/
+
+# visual studio
 .vs/
 **.sln
 **.vcxproj
