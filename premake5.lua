@@ -1,5 +1,6 @@
 workspace "Deya"
     architecture "x64"
+    startproject "Deya"
 
     configurations
     {
@@ -46,6 +47,7 @@ project "Deya"
 
         postbuildcommands
         {
+            ("mkdir %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
             ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
         }
 
