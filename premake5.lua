@@ -1,6 +1,6 @@
 workspace "Deya"
     architecture "x64"
-    startproject "Deya"
+    startproject "Sandbox"
 
     configurations
     {

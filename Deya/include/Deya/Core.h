@@ -6,12 +6,11 @@
     #else
         #define DEYA_API __declspec(dllimport)
     #endif
-#endif
-
-#ifdef DY_PLATFORM_LINUX
-    #define DEYA_API
 #else
-    #define DEYA_API
+    #ifdef DY_PLATFORM_LINUX
+        #define DEYA_API
+    #else
+        #define DEYA_API
+    #endif
 #endif
-
 #define BIT(x) (1 << x)

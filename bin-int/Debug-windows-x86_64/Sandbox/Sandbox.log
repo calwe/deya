@@ -1,0 +1,6 @@
+﻿  SandboxApp.cpp
+C:\Users\olive\Desktop\tmp\deya\Deya\include\Deya\Log.h(17,60): warning C4251: 'Deya::Log::s_CoreLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Deya::Log'
+C:\Users\olive\Desktop\tmp\deya\Deya\vendor\spdlog\include\spdlog\details\registry.h(34): message : see declaration of 'std::shared_ptr<spdlog::logger>'
+C:\Users\olive\Desktop\tmp\deya\Deya\include\Deya\Log.h(18,62): warning C4251: 'Deya::Log::s_ClientLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Deya::Log'
+C:\Users\olive\Desktop\tmp\deya\Deya\vendor\spdlog\include\spdlog\details\registry.h(34): message : see declaration of 'std::shared_ptr<spdlog::logger>'
+  Sandbox.vcxproj -> C:\Users\olive\Desktop\tmp\deya\bin\Debug-windows-x86_64\Sandbox\Sandbox.exe
