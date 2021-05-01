@@ -1,3 +1,6 @@
 [submodule "Deya/vendor/spdlog"]
 	path = Deya/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Deya/vendor/GLFW"]
+	path = Deya/vendor/GLFW
+	url = https://github.com/FFuuZZuu/glfw

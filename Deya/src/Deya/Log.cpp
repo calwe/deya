@@ -1,7 +1,5 @@
 #include "dypch.h"
 
-#include "Deya/Log.h"
-
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace Deya
@@ -17,5 +15,7 @@ namespace Deya
 
         s_ClientLogger = spdlog::stdout_color_mt("APP");
         s_ClientLogger->set_level(spdlog::level::trace);
+
+        DY_CORE_INFO("Initialized Logger");
     }
 }

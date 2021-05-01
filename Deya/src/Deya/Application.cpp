@@ -3,12 +3,15 @@
 #include "Deya/Application.h"
 
 #include "Deya/Events/ApplicationEvent.h"
-#include "Deya/Log.h"
+#include "Deya/Window.h"
+
+#include <GLFW/glfw3.h>
 
 namespace Deya
 {
     Application::Application()
     {
+        m_Window = std::unique_ptr<Window>(Window::Create());
     }
 
     Application::~Application()
@@ -17,16 +20,12 @@ namespace Deya
 
     void Application::Run()
     {
-        WindowResizeEvent e(1280, 720);
-		if (e.IsInCategory(EventCategoryApplication))
-		{
-			DY_TRACE(e);
-		}
-		if (e.IsInCategory(EventCategoryInput))
-		{
-			DY_TRACE(e);
-		}
+        while (m_Running)
+        {
+            glClearColor(0.68, 0.55, 0.84, 1); // purple (#af8dd6)
+            glClear(GL_COLOR_BUFFER_BIT);
 
-        while (true);
+            m_Window->OnUpdate();
+        }
     }
 }

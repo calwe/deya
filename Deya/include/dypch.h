@@ -16,6 +16,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Deya/Log.h"
+
 /**
  * !WINDOWS SPECIFIC
  */

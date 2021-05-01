@@ -11,6 +11,11 @@ workspace "Deya"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Deya/vendor/GLFW/include"
+
+include "Deya/vendor/GLFW" -- Includes GLFWs premake project (in my fork)
+
 project "Deya"
     location "Deya"
     kind "SharedLib"
@@ -30,9 +35,16 @@ project "Deya"
 
     includedirs
     {
+        "Deya/include",
         "%{prj.name}/vendor/spdlog/include",
-        "Deya/include"
+        "%{IncludeDir.GLFW}"
     }
+
+    links -- !GLOBAL
+    {
+        "GLFW"
+    }
+
 
     filter "system:windows"
         cppdialect "c++17"
@@ -51,6 +63,12 @@ project "Deya"
             ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
         }
 
+        links -- !WINDOWS ONLY
+        {
+            "opengl32.lib"
+        }
+
+
     filter "system:linux"
         cppdialect "c++17"
         staticruntime "On"
@@ -60,6 +78,13 @@ project "Deya"
         {
             "DY_PLATFORM_LINUX"
         }
+
+        links -- !LINUX ONLY
+        {
+            "GL",
+            "pthread"
+        }
+      
         
     filter "configurations:Debug"
         defines "DY_DEBUG"
