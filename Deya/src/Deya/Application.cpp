@@ -1,21 +1,30 @@
 #include "dypch.h"
 
 #include "Deya/Application.h"
-
-#include "Deya/Events/ApplicationEvent.h"
 #include "Deya/Window.h"
 
 #include <GLFW/glfw3.h>
 
 namespace Deya
 {
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
     Application::Application()
     {
         m_Window = std::unique_ptr<Window>(Window::Create());
+        m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
     }
 
     Application::~Application()
     {
+    }
+
+    void Application::OnEvent(Event& e)
+    {
+        EventDispatcher dispatcher(e);
+        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+
+        DY_CORE_TRACE("{0}", e);
     }
 
     void Application::Run()
@@ -27,5 +36,12 @@ namespace Deya
 
             m_Window->OnUpdate();
         }
+    }
+
+    bool Application::OnWindowClose(WindowCloseEvent& e)
+    {
+        DY_CORE_INFO("Closing...");
+        m_Running = false;
+        return true;
     }
 }

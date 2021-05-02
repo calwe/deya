@@ -5,6 +5,7 @@
 #include "Deya/Core.h"
 #include "Deya/Events/Event.h"
 #include "Deya/Window.h"
+#include "Deya/Events/ApplicationEvent.h"
 
 namespace Deya 
 {
@@ -15,7 +16,11 @@ namespace Deya
         virtual ~Application();
 
         void Run();
+
+        void OnEvent(Event& e);
     private:
+        bool OnWindowClose(WindowCloseEvent& e);
+
         std::unique_ptr<Window> m_Window;
         bool m_Running = true;
     };
