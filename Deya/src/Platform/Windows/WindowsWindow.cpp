@@ -1,6 +1,5 @@
-#ifdef DY_PLATFORM_WINDOWS
-
 #include "dypch.h"
+#ifdef DY_PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsWindow.h"
 
 #include "Deya/Events/KeyEvent.h"

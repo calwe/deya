@@ -1,6 +1,5 @@
-#ifdef DY_PLATFORM_LINUX
-
 #include "dypch.h"
+#ifdef DY_PLATFORM_LINUX
 #include "Platform/Linux/LinuxWindow.h"
 
 #include "Deya/Events/KeyEvent.h"

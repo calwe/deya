@@ -89,6 +89,7 @@ project "Deya"
     filter "configurations:Debug"
         defines "DY_DEBUG"
         symbols "On"
+		staticruntime "off"
 
     filter "configurations:Release"
         defines "DY_RELEASE"
