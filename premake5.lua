@@ -20,6 +20,7 @@ project "Deya"
     location "Deya"
     kind "SharedLib"
     language "C++"
+    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -48,7 +49,6 @@ project "Deya"
 
     filter "system:windows"
         cppdialect "c++17"
-        staticruntime "On"
         systemversion "latest"
 
         defines
@@ -71,7 +71,6 @@ project "Deya"
 
     filter "system:linux"
         cppdialect "c++17"
-        staticruntime "On"
         systemversion "latest"
 
         defines
@@ -89,8 +88,7 @@ project "Deya"
     filter "configurations:Debug"
         defines "DY_DEBUG"
         symbols "On"
-		staticruntime "off"
-
+        
     filter "configurations:Release"
         defines "DY_RELEASE"
         optimize "On"
@@ -103,6 +101,7 @@ project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
+    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -126,7 +125,6 @@ project "Sandbox"
 
     filter "system:windows"
         cppdialect "c++17"
-        staticruntime "On"
         systemversion "latest"
 
         defines
@@ -136,7 +134,6 @@ project "Sandbox"
 
     filter "system:linux"
         cppdialect "c++17"
-        staticruntime "On"
         systemversion "latest"
 
         defines
