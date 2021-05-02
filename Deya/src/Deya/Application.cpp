@@ -1,9 +1,10 @@
 #include "dypch.h"
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Deya/Application.h"
 #include "Deya/Window.h"
-
-#include <GLFW/glfw3.h>
 
 namespace Deya
 {

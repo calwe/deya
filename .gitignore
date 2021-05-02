@@ -1,8 +1,10 @@
 build/
-/bin/
-/bin-int/
+bin/
+bin-int/
 Makefile
 null.d
+
+!vendor/bin
 
 # !IDE SPECIFIC
 
