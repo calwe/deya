@@ -1,5 +1,6 @@
-#include "dypch.h"
+#include "dypch.h" // The Microsoft Visual Compiler requires precompiled headers to be the first line in a source file
 #ifdef DY_PLATFORM_WINDOWS
+
 #include "Platform/Windows/WindowsWindow.h"
 
 #include "Deya/Events/KeyEvent.h"
