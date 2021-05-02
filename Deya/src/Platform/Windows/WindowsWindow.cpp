@@ -1,7 +1,7 @@
-#ifdef DY_PLATFORM_LINUX
+#ifdef DY_PLATFORM_WINDOWS
 
 #include "dypch.h"
-#include "Platform/Linux/LinuxWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "Deya/Events/KeyEvent.h"
 #include "Deya/Events/MouseEvent.h"
@@ -18,20 +18,20 @@ namespace Deya
 
     Window* Window::Create(const WindowProps& props)
     {
-        return new LinuxWindow(props);
+        return new WindowsWindow(props);
     }
 
-    LinuxWindow::LinuxWindow(const WindowProps& props)
+    WindowsWindow::WindowsWindow(const WindowProps& props)
     {
         Init(props);
     }
 
-    LinuxWindow::~LinuxWindow() 
+    WindowsWindow::~WindowsWindow() 
     {
 
     }
 
-    void LinuxWindow::Init(const WindowProps& props)
+    void WindowsWindow::Init(const WindowProps& props)
     {
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
@@ -139,18 +139,18 @@ namespace Deya
         });
     }
 
-    void LinuxWindow::Shutdown()
+    void WindowsWindow::Shutdown()
     {
         glfwDestroyWindow(m_Window);
     }
 
-    void LinuxWindow::OnUpdate()
+    void WindowsWindow::OnUpdate()
     {
         glfwPollEvents();
         glfwSwapBuffers(m_Window);
     }
 
-    void LinuxWindow::SetVSync(bool enabled)
+    void WindowsWindow::SetVSync(bool enabled)
     {
         if (enabled)
             glfwSwapInterval(1);
@@ -160,7 +160,7 @@ namespace Deya
         m_Data.VSync = enabled;
     }
 
-    bool LinuxWindow::IsVSync() const
+    bool WindowsWindow::IsVSync() const
     {
         return m_Data.VSync;
     }

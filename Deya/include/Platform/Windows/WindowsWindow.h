@@ -1,4 +1,4 @@
-#ifdef DY_PLATFORM_LINUX
+#ifdef DY_PLATFORM_WINDOWS
 
 #pragma once
 
@@ -9,11 +9,11 @@
 
 namespace Deya
 {
-    class LinuxWindow : public Window
+    class WindowsWindow : public Window
     {
     public:
-        LinuxWindow(const WindowProps& props);
-        virtual ~LinuxWindow();
+        WindowsWindow(const WindowProps& props);
+        virtual ~WindowsWindow();
 
         void OnUpdate() override;
 
