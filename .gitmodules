@@ -4,3 +4,6 @@
 [submodule "Deya/vendor/GLFW"]
 	path = Deya/vendor/GLFW
 	url = https://github.com/FFuuZZuu/glfw
+[submodule "Deya/vendor/imgui"]
+	path = Deya/vendor/imgui
+	url = https://github.com/FFuuZZuu/imgui.git

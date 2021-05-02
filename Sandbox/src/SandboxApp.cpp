@@ -23,6 +23,7 @@ public:
     Sandbox()
     {
         PushLayer(new ExampleLayer);
+        PushOverlay(new Deya::ImGuiLayer());
     }
 
     ~Sandbox()

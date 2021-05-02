@@ -14,9 +14,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Deya/vendor/GLFW/include"
 IncludeDir["glad"] = "Deya/vendor/glad/include"
+IncludeDir["ImGui"] = "Deya/vendor/imgui"
 
 include "Deya/vendor/GLFW" -- Includes GLFWs premake project (in my fork)
-include "Deya/vendor/glad" -- Includes glads premake project (in my fork)
+include "Deya/vendor/glad" -- Includes glads premake project (custom)
+include "Deya/vendor/imgui" -- Includes ImGuis premake project (in my fork)
 
 project "Deya"
     location "Deya"
@@ -41,13 +43,15 @@ project "Deya"
         "Deya/include",
         "%{prj.name}/vendor/spdlog/include",
         "%{IncludeDir.GLFW}",
-        "%{IncludeDir.glad}"
+        "%{IncludeDir.glad}",
+        "%{IncludeDir.ImGui}"
     }
 
     links -- !GLOBAL
     {
         "GLFW",
-        "glad"
+        "glad",
+        "ImGui"
     }
 
 
