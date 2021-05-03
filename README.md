@@ -12,7 +12,7 @@ Deya is a game engine being programmed in C++. It currently uses GLFW and OpenGL
 
 ## Build from source
 
-**Clone with:** `git clone --recursive https://github.com/TheCherno/Hazel`\
+**Clone with:** `git clone --recursive https://github.com/FFuuZZuu/Deya`
 
 If you previously have not cloned with `--recursive`, use `git submodule update --init` to clone the needed submodules.\
 \
