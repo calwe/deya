@@ -7,6 +7,8 @@
 #include "Deya/Window.h"
 #include "Deya/Events/ApplicationEvent.h"
 
+#include "Deya/ImGui/ImGuiLayer.h"
+
 namespace Deya 
 {
     class DEYA_API Application
@@ -28,6 +30,7 @@ namespace Deya
         bool OnWindowClose(WindowCloseEvent& e);
 
         std::unique_ptr<Window> m_Window;
+        ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
 

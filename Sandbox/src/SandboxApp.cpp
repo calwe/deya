@@ -1,6 +1,6 @@
 #include <Deya.h>
 
-#include "glm/glm.hpp"
+#include "imgui/imgui.h"
 
 class ExampleLayer : public Deya::Layer
 {
@@ -12,8 +12,13 @@ public:
     {
         if (Deya::Input::IsKeyPressed(DY_KEY_TAB))
             DY_INFO("Tab key pressed");
-
-        glm::vec3 test = glm::vec3(0, 1, 2);
+    }
+    
+    virtual void OnImGuiRender() override
+    {
+        ImGui::Begin("Test");
+        ImGui::Text("Hello World");
+        ImGui::End();
     }
 
     void OnEvent(Deya::Event& event) override
@@ -28,7 +33,6 @@ public:
     Sandbox()
     {
         PushLayer(new ExampleLayer);
-        PushOverlay(new Deya::ImGuiLayer());
     }
 
     ~Sandbox()

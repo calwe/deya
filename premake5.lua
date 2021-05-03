@@ -132,6 +132,7 @@ project "Sandbox"
     {
         "Deya/vendor/spdlog/include",
         "Deya/include",
+        "Deya/vendor",
         "%{IncludeDir.glm}"
     }
 
