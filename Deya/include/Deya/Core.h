@@ -19,8 +19,8 @@
 #endif
 
 #ifdef DY_ENABLE_ASSERTS
-    #define DY_ASSERT(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-    #define DY_CORE_ASSERT(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+    #define DY_ASSERT(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
+    #define DY_CORE_ASSERT(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
 #else
     #define DY_ASSERT(x, ...)
     #define DY_CORE_ASSERT(x, ...)
