@@ -1,4 +1,5 @@
 #include "dypch.h"
+#ifdef DY_PLATFORM_LINUX
 #include "Platform/Linux/LinuxInput.h"
 
 #include "Deya/Application.h"
@@ -48,3 +49,4 @@ namespace Deya
         return y;
     }
 }
+#endif

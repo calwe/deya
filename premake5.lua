@@ -23,10 +23,11 @@ include "Deya/vendor/glad" -- Includes glads premake project (custom)
 include "Deya/vendor/imgui" -- Includes ImGuis premake project (in my fork)
 
 project "Deya"
-    location "Deya"
-    kind "SharedLib"
+    location "Deya"  
+    kind "StaticLib"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -40,6 +41,11 @@ project "Deya"
         "Deya/src/**.cpp",
         "Deya/vendor/glm/glm/**.hpp",
         "Deya/vendor/glm/glm/**.inl"
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS" -- * suppress depricated function warnings (MSVC)
     }
 
     includedirs
@@ -61,19 +67,12 @@ project "Deya"
 
 
     filter "system:windows"
-        cppdialect "c++17"
         systemversion "latest"
 
         defines
         {
             "DY_PLATFORM_WINDOWS",
             "DY_BUILD_DLL"
-        }    
-
-        postbuildcommands
-        {
-            ("mkdir %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
         }
 
         links -- !WINDOWS ONLY
@@ -101,23 +100,24 @@ project "Deya"
     filter "configurations:Debug"
         defines "DY_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
         
     filter "configurations:Release"
         defines "DY_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "DY_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
 project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
-    staticruntime "off"
+    cppdialect "c++17"
+    staticruntime "om"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -142,7 +142,6 @@ project "Sandbox"
     }
 
     filter "system:windows"
-        cppdialect "c++17"
         systemversion "latest"
 
         defines
@@ -151,7 +150,6 @@ project "Sandbox"
         }
 
     filter "system:linux"
-        cppdialect "c++17"
         systemversion "latest"
 
         defines
@@ -162,14 +160,14 @@ project "Sandbox"
     filter "configurations:Debug"
         defines "DY_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
         
     filter "configurations:Release"
         defines "DY_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "DY_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"

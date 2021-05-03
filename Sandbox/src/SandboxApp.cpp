@@ -11,7 +11,7 @@ public:
     void OnUpdate() override
     {
         if (Deya::Input::IsKeyPressed(DY_KEY_TAB))
-            DY_INFO("Tab key pressed");
+            DY_TRACE("Tab key pressed");
     }
     
     virtual void OnImGuiRender() override

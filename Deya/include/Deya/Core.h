@@ -1,16 +1,14 @@
 #pragma once
 
 #ifdef DY_PLATFORM_WINDOWS
-    #ifdef DY_BUILD_DLL
-        #define DEYA_API __declspec(dllexport)
+    #ifdef DY_DYNAMIC_LINK
+        #ifdef DY_BUILD_DLL
+            #define DEYA_API __declspec(dllexport)
+        #else
+            #define DEYA_API __declspec(dllimport)
+        #endif
     #else
-        #define DEYA_API __declspec(dllimport)
-    #endif
-#else
-    #ifdef DY_PLATFORM_LINUX
         #define DEYA_API
-    #else
-        #error "Deya only support windows and linux"
     #endif
 #endif
 
