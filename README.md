@@ -21,9 +21,11 @@ If you previously have not cloned with `--recursive`, use `git submodule update 
 ## How to use
 **TODO: Wiki**
 
-## Acknowledgment
+## Acknowledgments
 
 Huge thanks to [The Cherno](https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw) for his game engine series, seeing as that is what this is based off of.
+
+Thanks you to [Doomboom589](https://github.com/Doomboom589) for the logo he made for the game engine. You can find more of his work [here](https://www.artstation.com/doomboom589).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
