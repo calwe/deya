@@ -1,5 +1,7 @@
 #include <Deya.h>
 
+#include "glm/glm.hpp"
+
 class ExampleLayer : public Deya::Layer
 {
 public:
@@ -10,6 +12,8 @@ public:
     {
         if (Deya::Input::IsKeyPressed(DY_KEY_TAB))
             DY_INFO("Tab key pressed");
+
+        glm::vec3 test = glm::vec3(0, 1, 2);
     }
 
     void OnEvent(Deya::Event& event) override

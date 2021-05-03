@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Deya/vendor/GLFW/include"
 IncludeDir["glad"] = "Deya/vendor/glad/include"
 IncludeDir["ImGui"] = "Deya/vendor/imgui"
+IncludeDir["glm"] = "Deya/vendor/glm"
 
 include "Deya/vendor/GLFW" -- Includes GLFWs premake project (in my fork)
 include "Deya/vendor/glad" -- Includes glads premake project (custom)
@@ -36,7 +37,9 @@ project "Deya"
     files
     {
         "Deya/include/**.h",
-        "Deya/src/**.cpp"
+        "Deya/src/**.cpp",
+        "Deya/vendor/glm/glm/**.hpp",
+        "Deya/vendor/glm/glm/**.inl"
     }
 
     includedirs
@@ -45,7 +48,8 @@ project "Deya"
         "%{prj.name}/vendor/spdlog/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.glad}",
-        "%{IncludeDir.ImGui}"
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}"
     }
 
     links -- !GLOBAL
@@ -127,7 +131,8 @@ project "Sandbox"
     includedirs
     {
         "Deya/vendor/spdlog/include",
-        "Deya/include"
+        "Deya/include",
+        "%{IncludeDir.glm}"
     }
 
     links
