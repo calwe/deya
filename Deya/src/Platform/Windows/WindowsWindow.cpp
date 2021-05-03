@@ -1,6 +1,8 @@
 #include "dypch.h" // The Microsoft Visual Compiler requires precompiled headers to be the first line in a source file
 #ifdef DY_PLATFORM_WINDOWS
 
+#include <glad/glad.h>
+
 #include "Platform/Windows/WindowsWindow.h"
 
 #include "Deya/Events/KeyEvent.h"
@@ -103,6 +105,14 @@ namespace Deya
                     break;
                 }
             }
+        });
+
+        glfwSetCharCallback(m_Window, [](GLFWwindow* window, uint32_t key)
+        {
+            WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
+
+            KeyTypedEvent event(key);
+            data.EventCallback(event);
         });
 
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
