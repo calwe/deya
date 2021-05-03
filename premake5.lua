@@ -1,154 +1,153 @@
 workspace "Deya"
-    architecture "x64"
-    startproject "Sandbox"
-    cppdialect "C++17"
-
-    configurations
-    {
-        "Debug",
-        "Release",
-        "Dist"
-    }
-
+	architecture "x64"
+	startproject "Sandbox"
+	configurations
+	{
+		"Debug",
+		"Release",
+		"Dist"
+	}
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
+-- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Deya/vendor/GLFW/include"
-IncludeDir["glad"] = "Deya/vendor/glad/include"
+IncludeDir["Glad"] = "Deya/vendor/glad/include"
 IncludeDir["ImGui"] = "Deya/vendor/imgui"
 IncludeDir["glm"] = "Deya/vendor/glm"
-
-include "Deya/vendor/GLFW" -- Includes GLFWs premake project (in my fork)
-include "Deya/vendor/glad" -- Includes glads premake project (custom)
-include "Deya/vendor/imgui" -- Includes ImGuis premake project (in my fork)
+include "Deya/vendor/GLFW"
+include "Deya/vendor/glad"
+include "Deya/vendor/imgui"
 
 project "Deya"
-    location "Deya"  
-    kind "StaticLib"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "on"
+	location "Deya"
+	kind "StaticLib"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-    pchheader "dypch.h"
-    pchsource "Deya/src/dypch.cpp" -- !WINDOWS ONLY (will be ignored on other platforms)
+	pchheader "dypch.h"
+	pchsource "Deya/src/dypch.cpp"
 
-    files
-    {
-        "Deya/include/**.h",
-        "Deya/src/**.cpp",
-        "Deya/vendor/glm/glm/**.hpp",
-        "Deya/vendor/glm/glm/**.inl"
-    }
+	files
+	{
+		"%{prj.name}/include/**.h",
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
+	}
 
-    defines
-    {
-        "_CRT_SECURE_NO_WARNINGS" -- * suppress depricated function warnings (MSVC)
-    }
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
 
-    includedirs
-    {
-        "Deya/include",
-        "%{prj.name}/vendor/spdlog/include",
-        "%{IncludeDir.GLFW}",
-        "%{IncludeDir.glad}",
-        "%{IncludeDir.ImGui}",
-        "%{IncludeDir.glm}"
-    }
+	includedirs
+	{
+		"%{prj.name}/include",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
+	}
+	links 
+	{ 
+		"GLFW",
+		"Glad",
+		"ImGui"
+	}
 
-    links -- !GLOBAL
-    {
-        "GLFW",
-        "glad",
-        "ImGui"
-    }
+	filter "system:windows"
+		systemversion "latest"
 
+		defines
+		{
+			"DY_PLATFORM_WINDOWS",
+			"DY_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
+		}
 
-    filter "system:windows"
-        systemversion "latest"
-
-        defines
+        links
         {
-            "DY_PLATFORM_WINDOWS",
-            "DY_BUILD_DLL"
+		    "opengl32.lib"  
         }
-
-        links -- !WINDOWS ONLY
-        {
-            "opengl32.lib"
-        }
-
 
     filter "system:linux"
-        cppdialect "c++17"
         systemversion "latest"
 
         defines
         {
-            "DY_PLATFORM_LINUX"
+            "DY_PLATFORM_LINUX",
+            "GLFW_INCLUDE_NONE"
         }
 
-        links -- !LINUX ONLY
+        links
         {
             "GL",
-            "pthread"
+            "pthread",
+            "dl"
         }
-      
-        
-    filter "configurations:Debug"
-        defines "DY_DEBUG"
-        runtime "Debug"
-        symbols "on"
-        
-    filter "configurations:Release"
-        defines "DY_RELEASE"
-        runtime "Release"
-        optimize "on"
 
-    filter "configurations:Dist"
-        defines "DY_DIST"
-        runtime "Release"
-        optimize "on"
+	filter "configurations:Debug"
+		defines "DY_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "DY_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "DY_DIST"
+		runtime "Release"
+		optimize "on"
 
 project "Sandbox"
-    location "Sandbox"
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "c++17"
-    staticruntime "om"
+	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	files
+	{
+		"%{prj.name}/include/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+	includedirs
+	{
+		"Deya/vendor/spdlog/include",
+		"Deya/include",
+		"Deya/vendor",
+		"%{IncludeDir.glm}"
+	}
+	links
+	{
+		"Deya",
+        "GLFW",
+		"Glad",
+		"ImGui"
+	}
 
-    files
-    {
-        "Sandbox/include/**.h",
-        "Sandbox/src/**.cpp",
-    }
+	filter "system:windows"
+		systemversion "latest"
 
-    includedirs
-    {
-        "Deya/vendor/spdlog/include",
-        "Deya/include",
-        "Deya/vendor",
-        "%{IncludeDir.glm}"
-    }
+		defines
+		{
+			"DY_PLATFORM_WINDOWS"
+		}
 
-    links
-    {
-        "Deya"
-    }
-
-    filter "system:windows"
-        systemversion "latest"
-
-        defines
+        links
         {
-            "DY_PLATFORM_WINDOWS",
+		    "opengl32.lib"  
         }
-
+    
     filter "system:linux"
         systemversion "latest"
 
@@ -156,18 +155,25 @@ project "Sandbox"
         {
             "DY_PLATFORM_LINUX"
         }
-        
-    filter "configurations:Debug"
-        defines "DY_DEBUG"
-        runtime "Debug"
-        symbols "on"
-        
-    filter "configurations:Release"
-        defines "DY_RELEASE"
-        runtime "Release"
-        optimize "on"
 
-    filter "configurations:Dist"
-        defines "DY_DIST"
-        runtime "Release"
-        optimize "on"
+        links
+        {
+            "GL",
+            "pthread",
+            "dl"
+        }
+
+	filter "configurations:Debug"
+		defines "DY_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "DY_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "DY_DIST"
+		runtime "Release"
+		optimize "on"
