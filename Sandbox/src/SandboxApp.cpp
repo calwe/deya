@@ -8,12 +8,12 @@ public:
 
     void OnUpdate() override
     {
-        DY_INFO("ExampleLayer::Update");
+        //DY_INFO("ExampleLayer::Update");
     }
 
     void OnEvent(Deya::Event& event) override
     {
-        DY_TRACE("{0}", event);
+        //DY_TRACE("{0}", event);
     }
 };
 
