@@ -14,6 +14,10 @@
     #endif
 #endif
 
+#ifdef DY_DEBUG
+    #define DY_ENABLE_ASSERTS
+#endif
+
 #ifdef DY_ENABLE_ASSERTS
     #define DY_ASSERT(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
     #define DY_CORE_ASSERT(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }

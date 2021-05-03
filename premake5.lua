@@ -95,14 +95,17 @@ project "Deya"
         
     filter "configurations:Debug"
         defines "DY_DEBUG"
+        runtime "Debug"
         symbols "On"
         
     filter "configurations:Release"
         defines "DY_RELEASE"
+        runtime "Release"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DY_DIST"
+        runtime "Release"
         optimize "On"
 
 project "Sandbox"
@@ -151,12 +154,15 @@ project "Sandbox"
         
     filter "configurations:Debug"
         defines "DY_DEBUG"
+        runtime "Debug"
         symbols "On"
-
+        
     filter "configurations:Release"
         defines "DY_RELEASE"
+        runtime "Release"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DY_DIST"
+        runtime "Release"
         optimize "On"
