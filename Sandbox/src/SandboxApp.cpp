@@ -8,7 +8,8 @@ public:
 
     void OnUpdate() override
     {
-        //DY_INFO("ExampleLayer::Update");
+        if (Deya::Input::IsKeyPressed(DY_KEY_TAB))
+            DY_INFO("Tab key pressed");
     }
 
     void OnEvent(Deya::Event& event) override
