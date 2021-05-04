@@ -23,6 +23,44 @@ namespace Deya
 
         m_ImGuiLayer = new ImGuiLayer();
         PushOverlay(m_ImGuiLayer);
+
+        glGenVertexArrays(1, &m_VertexArray);
+        glBindVertexArray(m_VertexArray);
+
+        glGenBuffers(1, &m_VertexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+    
+        float vertices[6 * 3] = // 4 verts * 3 dimensions
+        {
+            // middle of legume
+            -0.125f,  0.3f, 0.0f, // top left
+            -0.125f, -0.3f, 0.0f, // bottom left
+             0.125f,  0.3f, 0.0f, // top right
+             0.125f, -0.3f, 0.0f, // bottom right
+
+            // top and bottom verts
+             0.0f,  0.45f, 0.0f, // top
+             0.0f, -0.45f, 0.0f  // bottom
+        };
+
+        uint32_t indices[12] = // the order to render our verts
+        {
+            0, 1, 2,  // square tri left
+            1, 3, 2,  // square tri right
+            0, 2, 4,  // top tri
+            1, 5, 3   // bottom tri
+        };
+
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr); // tell opengl what our data means
+
+        glGenBuffers(1, &m_IndexBuffer);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+
+
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     }
 
     Application::~Application()
@@ -60,6 +98,9 @@ namespace Deya
         {
             glClearColor(0.1f, 0.1f, 0.1f, 1); // grey (#191919)
             glClear(GL_COLOR_BUFFER_BIT);
+
+            glBindVertexArray(m_VertexArray);
+            glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate();
