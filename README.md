@@ -21,6 +21,25 @@ If you previously have not cloned with `--recursive`, use `git submodule update 
 ## How to use
 **TODO: Wiki**
 
+## The future of Deya
+
+A lot is planned for the future of Deya, likely too large for one person. Ignoring this fact for now, here is the rough plan for Deya's future project structure:
+
+<pre>
+Deya
+  ├── DeyaEngine
+  │     ├── Specto (the standard renderer)
+  │     ├── Praxis (the voxel renderer, using raycasting)
+  │     └── Renderer "agnostic" files
+  │           ├── Events
+  │           ├── Input
+  │           ├── Window Creation
+  │           └── etc...
+  └── Liquid "Hub" (similar to unity hub)
+        ├── Standard Level Editor (name? maybe just liquid?)
+        └── Voxel Level Editor (name?)
+</pre>
+
 ## Acknowledgments
 
 Huge thanks to [The Cherno](https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw) for his game engine series, seeing as that is what this is based off of.
