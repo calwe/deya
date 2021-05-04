@@ -3,9 +3,10 @@
 #pragma once
 
 #include "Deya/Window.h"
-#include "Deya/Log.h"
+#include "Deya/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
+
 
 namespace Deya
 {
@@ -29,8 +30,9 @@ namespace Deya
     private:
         virtual void Init(const WindowProps& props);
         virtual void Shutdown();
-
+    private:
         GLFWwindow* m_Window;
+        GraphicsContext* m_Context;
 
         struct WindowData
         {

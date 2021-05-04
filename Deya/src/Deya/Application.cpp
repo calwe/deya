@@ -58,7 +58,7 @@ namespace Deya
     {
         while (m_Running)
         {
-            glClearColor(0.68, 0.55, 0.84, 1); // purple (#af8dd6)
+            glClearColor(0.1f, 0.1f, 0.1f, 1); // grey (#191919)
             glClear(GL_COLOR_BUFFER_BIT);
 
             for (Layer* layer : m_LayerStack)

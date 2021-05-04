@@ -1,13 +1,13 @@
 #include "dypch.h" // The Microsoft Visual Compiler requires precompiled headers to be the first line in a source file
 #ifdef DY_PLATFORM_LINUX
 
-#include <glad/glad.h>
-
 #include "Platform/Linux/LinuxWindow.h"
 
 #include "Deya/Events/KeyEvent.h"
 #include "Deya/Events/MouseEvent.h"
 #include "Deya/Events/ApplicationEvent.h"
+
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Deya
 {
@@ -53,10 +53,9 @@ namespace Deya
         }
 
         m_Window = glfwCreateWindow((int) props.Width, (int) props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_Window);
 
-        int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-        DY_CORE_ASSERT(status, "Failed to initialize glad");
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->Init();
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
@@ -161,7 +160,7 @@ namespace Deya
     void LinuxWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_Context->SwapBuffers();
     }
 
     void LinuxWindow::SetVSync(bool enabled)
