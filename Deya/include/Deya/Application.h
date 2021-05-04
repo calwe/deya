@@ -6,6 +6,7 @@
 #include "Deya/Events/Event.h"
 #include "Deya/Window.h"
 #include "Deya/Events/ApplicationEvent.h"
+#include "Deya/Renderer/Shader.h"
 
 #include "Deya/ImGui/ImGuiLayer.h"
 
@@ -35,6 +36,7 @@ namespace Deya
         LayerStack m_LayerStack;
 
         uint32_t m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+        std::unique_ptr<Shader> m_Shader;
     private:
         static Application* s_Instance;
     };
