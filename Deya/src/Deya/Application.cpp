@@ -27,9 +27,6 @@ namespace Deya
 
         glGenVertexArrays(1, &m_VertexArray);
         glBindVertexArray(m_VertexArray);
-
-        glGenBuffers(1, &m_VertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
     
         float vertices[6 * 3] = // 4 verts * 3 dimensions
         {
@@ -52,15 +49,12 @@ namespace Deya
             1, 5, 3   // bottom tri
         };
 
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr); // tell opengl what our data means
 
-        glGenBuffers(1, &m_IndexBuffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
         std::string vertexSrc = R"(
             #version 330 core
@@ -131,7 +125,7 @@ namespace Deya
 
             m_Shader->Bind();
             glBindVertexArray(m_VertexArray);
-            glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer : m_LayerStack)
                 layer->OnUpdate();

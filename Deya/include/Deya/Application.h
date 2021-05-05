@@ -7,7 +7,7 @@
 #include "Deya/Window.h"
 #include "Deya/Events/ApplicationEvent.h"
 #include "Deya/Renderer/Shader.h"
-
+#include "Deya/Renderer/Buffer.h"
 #include "Deya/ImGui/ImGuiLayer.h"
 
 namespace Deya 
@@ -35,8 +35,10 @@ namespace Deya
         bool m_Running = true;
         LayerStack m_LayerStack;
 
-        uint32_t m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+        uint32_t m_VertexArray;
         std::unique_ptr<Shader> m_Shader;
+        std::unique_ptr<VertexBuffer> m_VertexBuffer;
+        std::unique_ptr<IndexBuffer> m_IndexBuffer;
     private:
         static Application* s_Instance;
     };
