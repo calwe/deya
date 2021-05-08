@@ -30,7 +30,7 @@ Deya
   ├── DeyaEngine
   │     ├── Specto (the standard renderer)
   │     ├── Praxis (the voxel renderer, using raycasting)
-  │     └── Renderer "agnostic" files
+  │     └── Engine "agnostic" files
   │           ├── Events
   │           ├── Input
   │           ├── Window Creation
