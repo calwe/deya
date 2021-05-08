@@ -11,10 +11,10 @@ namespace Deya
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:
+            case RendererAPI::API::None:
                 DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
                 return nullptr;
-            case RendererAPI::OpenGL:
+            case RendererAPI::API::OpenGL:
                 return new OpenGLVertexBuffer(vertices, size);
         }
 
@@ -26,10 +26,10 @@ namespace Deya
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:
+            case RendererAPI::API::None:
                 DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
                 return nullptr;
-            case RendererAPI::OpenGL:
+            case RendererAPI::API::OpenGL:
                 return new OpenGLIndexBuffer(indices, count);
         }
 

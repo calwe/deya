@@ -1,12 +1,12 @@
 #include "dypch.h"
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "Deya/Application.h"
 #include "Deya/Window.h"
 #include "Deya/Input.h"
 #include "Deya/Renderer/Shader.h"
+#include "Deya/Renderer/Renderer.h"
 
 namespace Deya
 {
@@ -72,7 +72,7 @@ namespace Deya
 		 * !MANS!
 		 */
 
-		float mansVerts[17 * 7] =	// 5 verts * (3 dimensions + 4 colour channels)
+		float mansVerts[17 * 7] =	// 17 verts * (3 dimensions + 4 colour channels)
 		{
 			// POS						COLOUR
 			// mans head
@@ -168,6 +168,24 @@ namespace Deya
 			}
 		)";
 
+		std::string vertexSrcMoved = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec4 a_Color;
+
+			out vec3 v_Position;
+			out vec4 v_Color;
+
+			void main()
+			{
+				v_Position = a_Position;
+				v_Color = a_Color;
+				gl_Position = vec4(a_Position + 0.5, 1.0);
+			}
+		)";
+
+		m_ShaderMoved.reset(new Shader(vertexSrcMoved, fragmentSrc));
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
 	}
 
@@ -204,15 +222,18 @@ namespace Deya
 	{
 		while (m_Running)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1); // grey (#191919)
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			m_Shader->Bind();
-			m_MansVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_MansVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_MansVA);
 
-			// m_VertexArray->Bind();
-			// glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_ShaderMoved->Bind();
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
