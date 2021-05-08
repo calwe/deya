@@ -2,11 +2,15 @@
 
 #include <GLFW/glfw3.h>
 
+#include "imgui.h"
+
 #include "Deya/Application.h"
 #include "Deya/Window.h"
 #include "Deya/Input.h"
 #include "Deya/Renderer/Shader.h"
 #include "Deya/Renderer/Renderer.h"
+
+#include "Deya/ImGui/ImGuiLayer.h"
 
 namespace Deya
 {
@@ -15,6 +19,7 @@ namespace Deya
 	Application* Application::s_Instance = nullptr;    
 
 	Application::Application()
+		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		DY_CORE_ASSERT(!s_Instance, "Application already exists");
 		s_Instance = this;
@@ -36,14 +41,14 @@ namespace Deya
 		{
 			// middle of legume
 			// POS						COLOUR
-			-0.125f,  0.3f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // top left
-			-0.125f, -0.3f, 0.0f, 		0.25f, 0.13f, 0.03f, 0.0f, // bottom left
-			 0.125f,  0.3f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // top right
-			 0.125f, -0.3f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // bottom right
+			-0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // top left
+			-0.125f, -0.2f, 0.0f, 		0.25f, 0.13f, 0.03f, 0.0f, // bottom left
+			 0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // top right
+			 0.125f, -0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // bottom right
 
 			// top and bottom verts
-			 0.0f,  0.45f, 0.0f,		0.35f, 0.23f, 0.05f, 0.0f, // top
-			 0.0f, -0.45f, 0.0f,		0.15f, 0.03f, 0.01f, 0.0f  // bottom
+			 0.0f,  0.35f, 0.0f,		0.35f, 0.23f, 0.05f, 0.0f, // top
+			 0.0f, -0.35f, 0.0f,		0.15f, 0.03f, 0.01f, 0.0f  // bottom
 		};
 
 		uint32_t indices[12] = // the order to render our verts
@@ -141,6 +146,8 @@ namespace Deya
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
 
+			uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 			out vec4 v_Color;
 
@@ -148,7 +155,7 @@ namespace Deya
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -177,11 +184,13 @@ namespace Deya
 			out vec3 v_Position;
 			out vec4 v_Color;
 
+			uniform mat4 u_ViewProjection;
+
 			void main()
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position + 0.5, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position + 0.5, 1.0);
 			}
 		)";
 
@@ -222,16 +231,26 @@ namespace Deya
 	{
 		while (m_Running)
 		{
+			/**
+			 * ! imGui
+			 */
+
+			
+
+			/**
+			 * ! Deya
+			 */
+
 			RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
+			m_Camera.SetRotation(m_ImGuiLayer->GetCameraRotation());
+			m_Camera.SetPosition(m_ImGuiLayer->GetCameraPosition());
 
-			m_Shader->Bind();
-			Renderer::Submit(m_MansVA);
+			Renderer::BeginScene(m_Camera);
 
-			m_ShaderMoved->Bind();
-			Renderer::Submit(m_VertexArray);
+			Renderer::Submit(m_Shader, m_MansVA);
+			Renderer::Submit(m_ShaderMoved, m_VertexArray);
 
 			Renderer::EndScene();
 

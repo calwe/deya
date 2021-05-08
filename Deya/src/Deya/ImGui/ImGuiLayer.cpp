@@ -7,11 +7,16 @@
 
 #include "Deya/Application.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Deya
 {
+    float tmp = 0;
+    float* pos = &tmp;
+
     ImGuiLayer::ImGuiLayer()
         : Layer("ImGuiLayer") {}
 
@@ -87,5 +92,12 @@ namespace Deya
     {
         static bool show = true;
         ImGui::ShowDemoWindow(&show);
+
+        ImGui::Begin("Camera");
+        ImGui::SliderFloat("Rotation", &m_CameraRotation, 0.0f, 360.0f);
+        ImGui::InputFloat3("Position", pos);
+        m_CameraPosition = glm::make_vec3(pos);
+        
+        ImGui::End();
     }
 }

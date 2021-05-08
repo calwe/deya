@@ -11,6 +11,8 @@
 #include "Deya/Renderer/Buffer.h"
 #include "Deya/ImGui/ImGuiLayer.h"
 
+#include "Deya/Renderer/OrthographicCamera.h"
+
 namespace Deya 
 {
     class DEYA_API Application
@@ -43,6 +45,8 @@ namespace Deya
         std::shared_ptr<IndexBuffer> m_IndexBuffer;
 
         std::shared_ptr<VertexArray> m_MansVA;
+
+        OrthographicCamera m_Camera;
     private:
         static Application* s_Instance;
     };
