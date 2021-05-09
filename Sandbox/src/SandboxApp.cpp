@@ -2,6 +2,8 @@
 
 #include "imgui/imgui.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public Deya::Layer
 {
 public:
@@ -127,6 +129,7 @@ public:
 			layout(location = 1) in vec4 a_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 			out vec4 v_Color;
@@ -135,7 +138,7 @@ public:
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -155,26 +158,6 @@ public:
 			}
 		)";
 
-		std::string vertexSrcMoved = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-
-			uniform mat4 u_ViewProjection;
-
-			void main()
-			{
-				v_Position = a_Position;
-				v_Color = a_Color;
-				gl_Position = u_ViewProjection * vec4(a_Position + 0.5, 1.0);
-			}
-		)";
-
-		m_ShaderMoved.reset(new Deya::Shader(vertexSrcMoved, fragmentSrc));
 		m_Shader.reset(new Deya::Shader(vertexSrc, fragmentSrc));
     }
 
@@ -182,6 +165,7 @@ public:
     {
         // DY_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
 
+        //* mans
         if (Deya::Input::IsKeyPressed(DY_KEY_A))
             m_CameraPosition.x -= m_CameraMoveSpeed * ts;
         else if (Deya::Input::IsKeyPressed(DY_KEY_D))
@@ -205,8 +189,22 @@ public:
 
 		Deya::Renderer::BeginScene(m_Camera);
 
-		Deya::Renderer::Submit(m_Shader, m_MansVA);
-		Deya::Renderer::Submit(m_ShaderMoved, m_VertexArray);
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+        for (int i = 0; i < 40; i++)
+        {
+            for (int j = 0; j < 20; j++)
+            {
+                glm::vec3 pos(i * 0.15f - 1.5f, j * 0.15f - 1.5f, 0.0f);
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+                
+                Deya::Renderer::Submit(m_Shader, m_MansVA, transform);
+            }
+        }
+        if (m_RenderLegume)
+        {
+		    Deya::Renderer::Submit(m_Shader, m_VertexArray);
+        }
 
 		Deya::Renderer::EndScene();
     }
@@ -214,7 +212,17 @@ public:
     virtual void OnImGuiRender() override
     {
         ImGui::Begin("Settings");
-        ImGui::ColorPicker4("BG Colour", (float*) &m_BackgroundColour);
+
+        if (ImGui::CollapsingHeader("Colours"))
+        {
+            ImGui::ColorPicker4("BG Colour", (float*) &m_BackgroundColour);
+        }
+
+        if (ImGui::CollapsingHeader("Object Settings"))
+        {
+            ImGui::Checkbox("Render Legume?", &m_RenderLegume);
+        }   
+
         ImGui::End();
     }
 
@@ -223,7 +231,6 @@ public:
     }
 private:
     std::shared_ptr<Deya::Shader> m_Shader;
-    std::shared_ptr<Deya::Shader> m_ShaderMoved;
 
     std::shared_ptr<Deya::VertexArray> m_VertexArray;
     std::shared_ptr<Deya::VertexArray> m_MansVA;
@@ -240,6 +247,8 @@ private:
     float m_CameraRotationSpeed = 100.0f;
 
     glm::vec4 m_BackgroundColour;
+
+    bool m_RenderLegume = false;
 };
 
 class Sandbox : public Deya::Application
