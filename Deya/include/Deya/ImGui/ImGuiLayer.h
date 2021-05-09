@@ -20,15 +20,9 @@ namespace Deya
         virtual void OnDetach() override;
         virtual void OnImGuiRender() override;
 
-        inline const float GetCameraRotation() const { return m_CameraRotation; }
-        inline const glm::vec3& GetCameraPosition() const { return m_CameraPosition; }
-
         void Begin();
         void End();
     private:
         float m_Time = 0.0f;
-
-        float m_CameraRotation = 0.0f;
-        glm::vec3 m_CameraPosition;
     };
 }
