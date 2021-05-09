@@ -10,9 +10,11 @@ public:
     ExampleLayer()
         : Layer("Example"), 
             m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), 
-            m_BackgroundColour({0.1f, 0.1f, 0.1f, 1.0f})
+            m_BackgroundColour({0.1f, 0.1f, 0.1f, 1.0f}),
+            m_LegumeColour1({0.8f, 0.2f, 0.3f, 1.0f}),
+            m_LegumeColour2({0.3f, 0.2f, 0.8f, 1.0f})
     {
-        m_VertexArray.reset(Deya::VertexArray::Create());
+        m_LegumeVA.reset(Deya::VertexArray::Create());
 	
 		/**
 		 * !Legume!
@@ -50,10 +52,10 @@ public:
 		};
 	
 		m_VertexBuffer->SetLayout(layout);
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		m_LegumeVA->AddVertexBuffer(m_VertexBuffer);
 
 		m_IndexBuffer.reset(Deya::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+		m_LegumeVA->SetIndexBuffer(m_IndexBuffer);
 
 		/**
 		 * !MANS!
@@ -122,7 +124,7 @@ public:
 		 * !Shaders!
 		 */
 
-		std::string vertexSrc = R"(
+		std::string vertexSrc = R"glsl(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
@@ -140,9 +142,9 @@ public:
 				v_Color = a_Color;
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
-		)";
+		)glsl";
 
-		std::string fragmentSrc = R"(
+		std::string fragmentSrc = R"glsl(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
@@ -152,12 +154,26 @@ public:
 
 			void main()
 			{
-				//color = vec4(0.31, 0.16, 0.15, 1.0); // BROWN (#4f2a26)
-				//color = vec4(v_Position * 0.5 + 0.5, 1.0);
 				color = v_Color;
 			}
-		)";
+		)glsl";
 
+        std::string flatColourFragmentSrc = R"glsl(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_Position;
+			
+            uniform vec4 u_Colour;
+
+			void main()
+			{
+				color = u_Colour;
+			}
+		)glsl";
+
+        m_FlatColourShader.reset(new Deya::Shader(vertexSrc, flatColourFragmentSrc));
 		m_Shader.reset(new Deya::Shader(vertexSrc, fragmentSrc));
     }
 
@@ -165,7 +181,7 @@ public:
     {
         // DY_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
 
-        //* mans
+        //* camera
         if (Deya::Input::IsKeyPressed(DY_KEY_A))
             m_CameraPosition.x -= m_CameraMoveSpeed * ts;
         else if (Deya::Input::IsKeyPressed(DY_KEY_D))
@@ -187,23 +203,36 @@ public:
 		m_Camera.SetRotation(m_CameraRotation);
 		m_Camera.SetPosition(m_CameraPosition);
 
+        /**
+         * ! Render Flow
+         */
+
 		Deya::Renderer::BeginScene(m_Camera);
 
-        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-
-        for (int i = 0; i < 40; i++)
-        {
-            for (int j = 0; j < 20; j++)
-            {
-                glm::vec3 pos(i * 0.15f - 1.5f, j * 0.15f - 1.5f, 0.0f);
-                glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-                
-                Deya::Renderer::Submit(m_Shader, m_MansVA, transform);
-            }
-        }
         if (m_RenderLegume)
         {
-		    Deya::Renderer::Submit(m_Shader, m_VertexArray);
+            glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f));
+
+            glm::vec4 redColour(0.8f, 0.2f, 0.3f, 1.0f);    // #cc334c
+            glm::vec4 blueColour(0.3f, 0.2f, 0.8f, 1.0f);   // #4c33cc
+            for (int i = 0; i < 40; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    glm::vec3 pos(i * 0.15f - 1.5f, j * 0.15f - 1.5f, 0.0f);
+                    glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+                    if (i % 2 == 0)
+                        m_FlatColourShader->UploadUniformVec4("u_Colour", m_LegumeColour1);
+                    else
+                        m_FlatColourShader->UploadUniformVec4("u_Colour", m_LegumeColour2);
+                
+                    Deya::Renderer::Submit(m_FlatColourShader, m_LegumeVA, transform);
+                }
+            }   
+        }
+        if (m_RenderMans)
+        {
+            Deya::Renderer::Submit(m_Shader, m_MansVA);
         }
 
 		Deya::Renderer::EndScene();
@@ -216,11 +245,15 @@ public:
         if (ImGui::CollapsingHeader("Colours"))
         {
             ImGui::ColorPicker4("BG Colour", (float*) &m_BackgroundColour);
+
+            ImGui::ColorPicker4("Legume Colour 1", (float*) &m_LegumeColour1);
+            ImGui::ColorPicker4("Legume Colour 2", (float*) &m_LegumeColour2);
         }
 
         if (ImGui::CollapsingHeader("Object Settings"))
         {
             ImGui::Checkbox("Render Legume?", &m_RenderLegume);
+            ImGui::Checkbox("Render Mans?", &m_RenderMans);
         }   
 
         ImGui::End();
@@ -231,8 +264,9 @@ public:
     }
 private:
     std::shared_ptr<Deya::Shader> m_Shader;
+    std::shared_ptr<Deya::Shader> m_FlatColourShader;
 
-    std::shared_ptr<Deya::VertexArray> m_VertexArray;
+    std::shared_ptr<Deya::VertexArray> m_LegumeVA;
     std::shared_ptr<Deya::VertexArray> m_MansVA;
 
     std::shared_ptr<Deya::VertexBuffer> m_VertexBuffer;
@@ -247,8 +281,11 @@ private:
     float m_CameraRotationSpeed = 100.0f;
 
     glm::vec4 m_BackgroundColour;
+    glm::vec4 m_LegumeColour1;
+    glm::vec4 m_LegumeColour2;
 
-    bool m_RenderLegume = false;
+    bool m_RenderLegume = true;
+    bool m_RenderMans = true;
 };
 
 class Sandbox : public Deya::Application
