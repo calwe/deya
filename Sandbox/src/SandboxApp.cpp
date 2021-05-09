@@ -1,8 +1,11 @@
 #include <Deya.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Deya::Layer
 {
@@ -10,9 +13,9 @@ public:
     ExampleLayer()
         : Layer("Example"), 
             m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), 
-            m_BackgroundColour({0.1f, 0.1f, 0.1f, 1.0f}),
-            m_LegumeColour1({0.8f, 0.2f, 0.3f, 1.0f}),
-            m_LegumeColour2({0.3f, 0.2f, 0.8f, 1.0f})
+            m_BackgroundColour({0.1f, 0.1f, 0.1f, 0.0f}),
+            m_LegumeColour1({0.8f, 0.2f, 0.3f, 0.0f}),
+            m_LegumeColour2({0.3f, 0.2f, 0.8f, 0.0f})
     {
         m_LegumeVA.reset(Deya::VertexArray::Create());
 	
@@ -173,8 +176,8 @@ public:
 			}
 		)glsl";
 
-        m_FlatColourShader.reset(new Deya::Shader(vertexSrc, flatColourFragmentSrc));
-		m_Shader.reset(new Deya::Shader(vertexSrc, fragmentSrc));
+        m_FlatColourShader.reset(Deya::Shader::Create(vertexSrc, flatColourFragmentSrc));
+		m_Shader.reset(Deya::Shader::Create(vertexSrc, fragmentSrc));
     }
 
     void OnUpdate(Deya::Timestep ts) override
@@ -209,6 +212,8 @@ public:
 
 		Deya::Renderer::BeginScene(m_Camera);
 
+		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->Bind();
+
         if (m_RenderLegume)
         {
             glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f));
@@ -222,9 +227,9 @@ public:
                     glm::vec3 pos(i * 0.15f - 1.5f, j * 0.15f - 1.5f, 0.0f);
                     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
                     if (i % 2 == 0)
-                        m_FlatColourShader->UploadUniformVec4("u_Colour", m_LegumeColour1);
+                        std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->UploadUniformFloat4("u_Colour", m_LegumeColour1);
                     else
-                        m_FlatColourShader->UploadUniformVec4("u_Colour", m_LegumeColour2);
+                        std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->UploadUniformFloat4("u_Colour", m_LegumeColour2);
                 
                     Deya::Renderer::Submit(m_FlatColourShader, m_LegumeVA, transform);
                 }
@@ -244,10 +249,10 @@ public:
 
         if (ImGui::CollapsingHeader("Colours"))
         {
-            ImGui::ColorPicker4("BG Colour", (float*) &m_BackgroundColour);
+            ImGui::ColorPicker4("BG Colour", glm::value_ptr(m_BackgroundColour));
 
-            ImGui::ColorPicker4("Legume Colour 1", (float*) &m_LegumeColour1);
-            ImGui::ColorPicker4("Legume Colour 2", (float*) &m_LegumeColour2);
+            ImGui::ColorPicker4("Legume Colour 1", glm::value_ptr(m_LegumeColour1));
+            ImGui::ColorPicker4("Legume Colour 2", glm::value_ptr(m_LegumeColour2));
         }
 
         if (ImGui::CollapsingHeader("Object Settings"))
