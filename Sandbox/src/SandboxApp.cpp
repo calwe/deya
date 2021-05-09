@@ -6,7 +6,9 @@ class ExampleLayer : public Deya::Layer
 {
 public:
     ExampleLayer()
-        : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
+        : Layer("Example"), 
+            m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), 
+            m_BackgroundColour({0.1f, 0.1f, 0.1f, 1.0f})
     {
         m_VertexArray.reset(Deya::VertexArray::Create());
 	
@@ -178,7 +180,7 @@ public:
 
     void OnUpdate(Deya::Timestep ts) override
     {
-        DY_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+        // DY_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
 
         if (Deya::Input::IsKeyPressed(DY_KEY_A))
             m_CameraPosition.x -= m_CameraMoveSpeed * ts;
@@ -195,7 +197,7 @@ public:
         else if (Deya::Input::IsKeyPressed(DY_KEY_E))
             m_CameraRotation -= m_CameraRotationSpeed * ts;
 
-        Deya::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+        Deya::RenderCommand::SetClearColor(m_BackgroundColour);
 		Deya::RenderCommand::Clear();
 
 		m_Camera.SetRotation(m_CameraRotation);
@@ -211,6 +213,9 @@ public:
     
     virtual void OnImGuiRender() override
     {
+        ImGui::Begin("Settings");
+        ImGui::ColorPicker4("BG Colour", (float*) &m_BackgroundColour);
+        ImGui::End();
     }
 
     void OnEvent(Deya::Event& event) override
@@ -233,6 +238,8 @@ private:
     
     float m_CameraRotation = 0.0f;
     float m_CameraRotationSpeed = 100.0f;
+
+    glm::vec4 m_BackgroundColour;
 };
 
 class Sandbox : public Deya::Application
