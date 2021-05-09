@@ -6,6 +6,8 @@
 #include "Deya/Layer.h"
 #include "Deya/Log.h"
 
+#include "Deya/Core/Timestep.h"
+
 #include "Deya/Input.h"
 #include "Deya/KeyCodes.h"
 #include "Deya/MouseButtonCodes.h"

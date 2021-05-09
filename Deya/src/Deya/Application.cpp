@@ -10,6 +10,8 @@
 #include "Deya/Renderer/Shader.h"
 #include "Deya/Renderer/Renderer.h"
 
+#include "Deya/Core/Timestep.h"
+
 #include "Deya/ImGui/ImGuiLayer.h"
 
 namespace Deya
@@ -63,8 +65,12 @@ namespace Deya
 	{
 		while (m_Running)
 		{
+			float time = (float) glfwGetTime(); // TODO: Platform specific (Platform::GetTime())
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
+
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)

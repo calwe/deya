@@ -176,22 +176,24 @@ public:
 		m_Shader.reset(new Deya::Shader(vertexSrc, fragmentSrc));
     }
 
-    void OnUpdate() override
+    void OnUpdate(Deya::Timestep ts) override
     {
+        DY_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+
         if (Deya::Input::IsKeyPressed(DY_KEY_A))
-            m_CameraPosition.x -= m_CameraMoveSpeed;
+            m_CameraPosition.x -= m_CameraMoveSpeed * ts;
         else if (Deya::Input::IsKeyPressed(DY_KEY_D))
-            m_CameraPosition.x += m_CameraMoveSpeed;
+            m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
         if (Deya::Input::IsKeyPressed(DY_KEY_W))
-            m_CameraPosition.y += m_CameraMoveSpeed;
+            m_CameraPosition.y += m_CameraMoveSpeed * ts;
         else if (Deya::Input::IsKeyPressed(DY_KEY_S))
-            m_CameraPosition.y -= m_CameraMoveSpeed;
+            m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 
         if (Deya::Input::IsKeyPressed(DY_KEY_Q))
-            m_CameraRotation += m_CameraRotationSpeed;
-        if (Deya::Input::IsKeyPressed(DY_KEY_E))
-            m_CameraRotation -= m_CameraRotationSpeed;
+            m_CameraRotation += m_CameraRotationSpeed * ts;
+        else if (Deya::Input::IsKeyPressed(DY_KEY_E))
+            m_CameraRotation -= m_CameraRotationSpeed * ts;
 
         Deya::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
 		Deya::RenderCommand::Clear();
@@ -227,10 +229,10 @@ private:
     Deya::OrthographicCamera m_Camera;
 
     glm::vec3 m_CameraPosition;
-    float m_CameraMoveSpeed = 0.03f;
+    float m_CameraMoveSpeed = 3.0f;
     
     float m_CameraRotation = 0.0f;
-    float m_CameraRotationSpeed = 1.0f;
+    float m_CameraRotationSpeed = 100.0f;
 };
 
 class Sandbox : public Deya::Application

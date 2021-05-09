@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Deya/Core.h"
+#include "Deya/Core/Timestep.h"
 #include "Deya/Events/Event.h"
 
 namespace Deya
@@ -13,7 +14,7 @@ namespace Deya
 
         virtual void OnAttach() {}
         virtual void OnDetach() {}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(Timestep ts) {}
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event) {}
 

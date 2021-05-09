@@ -11,6 +11,8 @@
 #include "Deya/Renderer/Buffer.h"
 #include "Deya/ImGui/ImGuiLayer.h"
 
+#include "Deya/Core/Timestep.h"
+
 #include "Deya/Renderer/OrthographicCamera.h"
 
 namespace Deya 
@@ -32,11 +34,12 @@ namespace Deya
         inline Window& GetWindow() { return *m_Window; }
     private:
         bool OnWindowClose(WindowCloseEvent& e);
-
+    private:
         std::unique_ptr<Window> m_Window;
         ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
+        float m_LastFrameTime = 0.0f;
     private:
         static Application* s_Instance;
     };
