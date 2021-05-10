@@ -114,12 +114,12 @@ public:
 		};
 
 		m_MansVA.reset(Deya::VertexArray::Create());
-		std::shared_ptr<Deya::VertexBuffer> mansVB;
+		Deya::Ref<Deya::VertexBuffer> mansVB;
 		mansVB.reset(Deya::VertexBuffer::Create(mansVerts, sizeof(mansVerts)));
 		mansVB->SetLayout(layout);
 		m_MansVA->AddVertexBuffer(mansVB);
 
-		std::shared_ptr<Deya::IndexBuffer> mansIB;
+		Deya::Ref<Deya::IndexBuffer> mansIB;
 		mansIB.reset(Deya::IndexBuffer::Create(mansIndices, sizeof(mansIndices) / sizeof(uint32_t)));
 		m_MansVA->SetIndexBuffer(mansIB);
 
@@ -268,14 +268,14 @@ public:
     {
     }
 private:
-    std::shared_ptr<Deya::Shader> m_Shader;
-    std::shared_ptr<Deya::Shader> m_FlatColourShader;
+    Deya::Ref<Deya::Shader> m_Shader;
+    Deya::Ref<Deya::Shader> m_FlatColourShader;
 
-    std::shared_ptr<Deya::VertexArray> m_LegumeVA;
-    std::shared_ptr<Deya::VertexArray> m_MansVA;
+    Deya::Ref<Deya::VertexArray> m_LegumeVA;
+    Deya::Ref<Deya::VertexArray> m_MansVA;
 
-    std::shared_ptr<Deya::VertexBuffer> m_VertexBuffer;
-    std::shared_ptr<Deya::IndexBuffer> m_IndexBuffer;
+    Deya::Ref<Deya::VertexBuffer> m_VertexBuffer;
+    Deya::Ref<Deya::IndexBuffer> m_IndexBuffer;
 
     Deya::OrthographicCamera m_Camera;
 
