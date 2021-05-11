@@ -158,99 +158,7 @@ public:
 		camelliaIB.reset(Deya::IndexBuffer::Create(camelliaIndices, sizeof(camelliaIndices) / sizeof(uint32_t)));
 		m_CamelliaVA->SetIndexBuffer(camelliaIB);
 
-		/**
-		 * !Shaders!
-		 */
-
-		std::string vertexSrc = R"glsl(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-
-			void main()
-			{
-				v_Position = a_Position;
-				v_Color = a_Color;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)glsl";
-
-		std::string fragmentSrc = R"glsl(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			in vec4 v_Color;
-
-			void main()
-			{
-				color = v_Color;
-			}
-		)glsl";
-
-        std::string flatColourFragmentSrc = R"glsl(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			
-            uniform vec4 u_Colour;
-
-			void main()
-			{
-				color = u_Colour;
-			}
-		)glsl";
-
-		/** 
-		 * !Texture Shader
-		 */
-
-		std::string textureShaderVertexSrc = R"glsl(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec2 v_TexCoord;
-
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)glsl";
-
-		std::string textureShaderFragmentSrc = R"glsl(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec2 v_TexCoord;
-			
-            uniform sampler2D u_Texture;
-
-			void main()
-			{
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)glsl";
-
-        m_FlatColourShader.reset(Deya::Shader::Create(vertexSrc, flatColourFragmentSrc));
-		m_Shader.reset(Deya::Shader::Create(vertexSrc, fragmentSrc));
-		m_TextureShader.reset(Deya::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+		UpdateShaders();
 
 		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // TODO: Does this work on Windows?
 
@@ -346,14 +254,29 @@ public:
             ImGui::Checkbox("Render Legume?", &m_RenderLegume);
             ImGui::Checkbox("Render Mans?", &m_RenderMans);
             ImGui::Checkbox("Render Camellia?", &m_RenderCamellia);
-        }   
+        }
+
+		if (ImGui::CollapsingHeader("Shaders"))
+		{
+			bool isPressed = ImGui::Button("Update Shaders");
+			if (isPressed)
+				UpdateShaders();
+		}   
 
         ImGui::End();
     }
 
     void OnEvent(Deya::Event& event) override
     {
-    }
+	}
+private:
+	void UpdateShaders()
+	{
+		DY_CORE_INFO("Updating shaders...");
+        m_FlatColourShader.reset(Deya::Shader::Create("Sandbox/assets/shaders/FlatColourShader.glsl"));
+		m_Shader.reset(Deya::Shader::Create("Sandbox/assets/shaders/LayoutColourShader.glsl"));
+		m_TextureShader.reset(Deya::Shader::Create("Sandbox/assets/shaders/TextureShader.glsl"));
+	}
 private:
     Deya::Ref<Deya::Shader> m_Shader;
     Deya::Ref<Deya::Shader> m_FlatColourShader;
