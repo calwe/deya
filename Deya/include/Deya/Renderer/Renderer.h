@@ -9,6 +9,8 @@ namespace Deya
     class Renderer
     {
     public:
+        static void Init();
+
         static void BeginScene(OrthographicCamera& camera); // TODO: Camera and Environment
         static void EndScene();
 

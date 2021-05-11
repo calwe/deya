@@ -14,8 +14,8 @@ public:
         : Layer("Example"), 
             m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), 
             m_BackgroundColour({0.1f, 0.1f, 0.1f, 0.0f}),
-            m_LegumeColour1({0.8f, 0.2f, 0.3f, 0.0f}),
-            m_LegumeColour2({0.3f, 0.2f, 0.8f, 0.0f})
+            m_LegumeColour1({0.8f, 0.2f, 0.3f, 1.0f}),
+            m_LegumeColour2({0.3f, 0.2f, 0.8f, 1.0f})
     {
         m_LegumeVA.reset(Deya::VertexArray::Create());
 	
@@ -28,14 +28,14 @@ public:
 		{
 			// middle of legume
 			// POS						COLOUR
-			-0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // top left
-			-0.125f, -0.2f, 0.0f, 		0.25f, 0.13f, 0.03f, 0.0f, // bottom left
-			 0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // top right
-			 0.125f, -0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 0.0f, // bottom right
+			-0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 1.0f, // top left
+			-0.125f, -0.2f, 0.0f, 		0.25f, 0.13f, 0.03f, 1.0f, // bottom left
+			 0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 1.0f, // top right
+			 0.125f, -0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 1.0f, // bottom right
 
 			// top and bottom verts
-			 0.0f,  0.35f, 0.0f,		0.35f, 0.23f, 0.05f, 0.0f, // top
-			 0.0f, -0.35f, 0.0f,		0.15f, 0.03f, 0.01f, 0.0f  // bottom
+			 0.0f,  0.35f, 0.0f,		0.35f, 0.23f, 0.05f, 1.0f, // top
+			 0.0f, -0.35f, 0.0f,		0.15f, 0.03f, 0.01f, 1.0f  // bottom
 		};
 
 		uint32_t indices[12] = // the order to render our verts
@@ -74,31 +74,31 @@ public:
 		{
 			// POS						COLOUR
 			// mans head
-			 0.0f,  0.8f,  0.0f,        0.92f, 0.82f, 0.76f, 0.0f,      // top vert    			#ebd2c1     0
-			 0.0f,  0.4f,  0.0f,        0.92f, 0.82f, 0.76f, 0.0f,      // bottom vert     		#ebd2c1     1
-			-0.2f,  0.6f,  0.0f,        0.92f, 0.82f, 0.76f, 0.0f,      // left-mid vert     	#ebd2c1     2
-			 0.2f,  0.6f,  0.0f,        0.92f, 0.82f, 0.76f, 0.0f,      // right-mid vert   	#ebd2c1     3
+			 0.0f,  0.8f,  0.0f,        0.92f, 0.82f, 0.76f, 1.0f,      // top vert    			#ebd2c1     0
+			 0.0f,  0.4f,  0.0f,        0.92f, 0.82f, 0.76f, 1.0f,      // bottom vert     		#ebd2c1     1
+			-0.2f,  0.6f,  0.0f,        0.92f, 0.82f, 0.76f, 1.0f,      // left-mid vert     	#ebd2c1     2
+			 0.2f,  0.6f,  0.0f,        0.92f, 0.82f, 0.76f, 1.0f,      // right-mid vert   	#ebd2c1     3
 			// mans body
-			 0.0f,  0.4f,  0.0f,        0.22f, 0.41f, 0.76f, 0.0f,		// top vert				#3868c2		4
-			 0.0f, -0.4f,  0.0f,		0.22f, 0.41f, 0.76f, 0.0f,		// bottom vert			#3868c2		5
-			-0.4f,  0.0f,  0.0f,		0.22f, 0.41f, 0.76f, 0.0f,		// left-mid vert		#3868c2		6
-			 0.4f,  0.0f,  0.0f,		0.22f, 0.41f, 0.76f, 0.0f,		// right-mid vert		#3868c2		7
+			 0.0f,  0.4f,  0.0f,        0.22f, 0.41f, 0.76f, 1.0f,		// top vert				#3868c2		4
+			 0.0f, -0.4f,  0.0f,		0.22f, 0.41f, 0.76f, 1.0f,		// bottom vert			#3868c2		5
+			-0.4f,  0.0f,  0.0f,		0.22f, 0.41f, 0.76f, 1.0f,		// left-mid vert		#3868c2		6
+			 0.4f,  0.0f,  0.0f,		0.22f, 0.41f, 0.76f, 1.0f,		// right-mid vert		#3868c2		7
 			// mans left leg
-			-0.4f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,      // top vert   			#ebd2c1     8
-			 0.0f, -0.4f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,      // mid vert   			#ebd2c1     9
-			-0.4f, -0.8f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,      // bottom vert   		#ebd2c1     10
+			-0.4f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,      // top vert   			#ebd2c1     8
+			 0.0f, -0.4f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,      // mid vert   			#ebd2c1     9
+			-0.4f, -0.8f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,      // bottom vert   		#ebd2c1     10
 			// mans right leg
-			 0.4f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,      // top vert   			#ebd2c1     11
+			 0.4f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,      // top vert   			#ebd2c1     11
 			//* (9)														// mid vert				#ebd2c1
-			 0.4f, -0.8f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,      // bottom vert   		#ebd2c1     12
+			 0.4f, -0.8f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,      // bottom vert   		#ebd2c1     12
 			// mans left arm
-			-0.6f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,		// bottom-right vert   	#ebd2c1     13
+			-0.6f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,		// bottom-right vert   	#ebd2c1     13
 			//* (8)														// bottom-left vert		#ebd2c1
-			-0.6f,  0.2f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,		// top vert   			#ebd2c1     14
+			-0.6f,  0.2f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,		// top vert   			#ebd2c1     14
 			// mans right arm
 			//* (11)													// bottom-right vert	#ebd2c1
-			 0.6f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,		// bottom-left vert   	#ebd2c1     15
-			 0.6f,  0.2f,  0.0f,		0.92f, 0.82f, 0.76f, 0.0f,		// top vert   			#ebd2c1     16
+			 0.6f,  0.0f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,		// bottom-left vert   	#ebd2c1     15
+			 0.6f,  0.2f,  0.0f,		0.92f, 0.82f, 0.76f, 1.0f,		// top vert   			#ebd2c1     16
 		};
 
 		uint32_t mansIndices[24] = // the order to render our verts
@@ -252,7 +252,7 @@ public:
 		m_Shader.reset(Deya::Shader::Create(vertexSrc, fragmentSrc));
 		m_TextureShader.reset(Deya::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
-		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face.png"); // TODO: Does this work on Windows?
+		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // TODO: Does this work on Windows?
 
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -296,8 +296,8 @@ public:
         {
             glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f));
 
-            glm::vec4 redColour(0.8f, 0.2f, 0.3f, 1.0f);    // #cc334c
-            glm::vec4 blueColour(0.3f, 0.2f, 0.8f, 1.0f);   // #4c33cc
+            glm::vec4 redColour(0.8f, 0.2f, 0.3f, 0.0f);    // #cc334c
+            glm::vec4 blueColour(0.3f, 0.2f, 0.8f, 0.0f);   // #4c33cc
             for (int i = 0; i < 40; i++)
             {
                 for (int j = 0; j < 20; j++)
@@ -319,8 +319,8 @@ public:
         }
 		if (m_RenderCamellia)
 		{
-			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.6f, 0.0f)) * scale;
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f));
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.57f, 0.0f)) * scale;
 
 			m_CamelliaTexture->Bind();
 			Deya::Renderer::Submit(m_TextureShader, m_CamelliaVA, transform);
