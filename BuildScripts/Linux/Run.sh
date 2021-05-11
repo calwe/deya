@@ -1,3 +1,4 @@
 #!/bin/bash
 
-../../bin/Debug-linux-x86_64/Sandbox/Sandbox
+cd ../..
+./bin/Debug-linux-x86_64/Sandbox/Sandbox

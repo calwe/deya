@@ -20,6 +20,7 @@
 
 #include "Deya/Renderer/Buffer.h"
 #include "Deya/Renderer/Shader.h"
+#include "Deya/Renderer/Texture.h"
 #include "Deya/Renderer/VertexArray.h"
 
 #include "Deya/Renderer/OrthographicCamera.h"

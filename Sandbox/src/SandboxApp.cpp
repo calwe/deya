@@ -53,6 +53,12 @@ public:
 			{ Deya::ShaderDataType::Float3, "a_Position" },
 			{ Deya::ShaderDataType::Float4, "a_Color" }
 		};
+
+		Deya::BufferLayout layoutTexture =
+		{
+			{ Deya::ShaderDataType::Float3, "a_Position" },
+			{ Deya::ShaderDataType::Float2, "a_TexCoord" },
+		};
 	
 		m_VertexBuffer->SetLayout(layout);
 		m_LegumeVA->AddVertexBuffer(m_VertexBuffer);
@@ -124,6 +130,35 @@ public:
 		m_MansVA->SetIndexBuffer(mansIB);
 
 		/**
+		 * !Camellia
+		 */
+
+		float camelliaVerts[4 * 5] =	// 4 verts * (3 dimensions + 2 tex coords)
+		{
+			// POS					TEX COORDS
+			 0.5f,  0.5f, 0.0f, 	1.0f, 1.0f,		// top right
+			-0.5f,  0.5f, 0.0f, 	0.0f, 1.0f,		// top left
+			 0.5f, -0.5f, 0.0f, 	1.0f, 0.0f,		// bottom right
+			-0.5f, -0.5f, 0.0f,  	0.0f, 0.0f		// bottom left
+		};
+
+		uint32_t camelliaIndices[6]
+		{
+			3, 0, 1,
+			3, 2, 0
+		};
+
+		m_CamelliaVA.reset(Deya::VertexArray::Create());
+		Deya::Ref<Deya::VertexBuffer> camelliaVB;
+		camelliaVB.reset(Deya::VertexBuffer::Create(camelliaVerts, sizeof(camelliaVerts)));
+		camelliaVB->SetLayout(layoutTexture);
+		m_CamelliaVA->AddVertexBuffer(camelliaVB);
+
+		Deya::Ref<Deya::IndexBuffer> camelliaIB;
+		camelliaIB.reset(Deya::IndexBuffer::Create(camelliaIndices, sizeof(camelliaIndices) / sizeof(uint32_t)));
+		m_CamelliaVA->SetIndexBuffer(camelliaIB);
+
+		/**
 		 * !Shaders!
 		 */
 
@@ -176,8 +211,51 @@ public:
 			}
 		)glsl";
 
+		/** 
+		 * !Texture Shader
+		 */
+
+		std::string textureShaderVertexSrc = R"glsl(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+			}
+		)glsl";
+
+		std::string textureShaderFragmentSrc = R"glsl(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+			
+            uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)glsl";
+
         m_FlatColourShader.reset(Deya::Shader::Create(vertexSrc, flatColourFragmentSrc));
 		m_Shader.reset(Deya::Shader::Create(vertexSrc, fragmentSrc));
+		m_TextureShader.reset(Deya::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face.png"); // TODO: Does this work on Windows?
+
+		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
     }
 
     void OnUpdate(Deya::Timestep ts) override
@@ -239,6 +317,14 @@ public:
         {
             Deya::Renderer::Submit(m_Shader, m_MansVA);
         }
+		if (m_RenderCamellia)
+		{
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.6f, 0.0f)) * scale;
+
+			m_CamelliaTexture->Bind();
+			Deya::Renderer::Submit(m_TextureShader, m_CamelliaVA, transform);
+		}
 
 		Deya::Renderer::EndScene();
     }
@@ -259,6 +345,7 @@ public:
         {
             ImGui::Checkbox("Render Legume?", &m_RenderLegume);
             ImGui::Checkbox("Render Mans?", &m_RenderMans);
+            ImGui::Checkbox("Render Camellia?", &m_RenderCamellia);
         }   
 
         ImGui::End();
@@ -270,9 +357,13 @@ public:
 private:
     Deya::Ref<Deya::Shader> m_Shader;
     Deya::Ref<Deya::Shader> m_FlatColourShader;
+    Deya::Ref<Deya::Shader> m_TextureShader;
 
     Deya::Ref<Deya::VertexArray> m_LegumeVA;
     Deya::Ref<Deya::VertexArray> m_MansVA;
+	Deya::Ref<Deya::VertexArray> m_CamelliaVA;
+
+	Deya::Ref<Deya::Texture2D> m_CamelliaTexture;
 
     Deya::Ref<Deya::VertexBuffer> m_VertexBuffer;
     Deya::Ref<Deya::IndexBuffer> m_IndexBuffer;
@@ -291,6 +382,7 @@ private:
 
     bool m_RenderLegume = true;
     bool m_RenderMans = true;
+    bool m_RenderCamellia = true;
 };
 
 class Sandbox : public Deya::Application

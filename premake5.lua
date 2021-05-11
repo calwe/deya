@@ -14,9 +14,12 @@ IncludeDir["GLFW"] = "Deya/vendor/GLFW/include"
 IncludeDir["Glad"] = "Deya/vendor/glad/include"
 IncludeDir["ImGui"] = "Deya/vendor/imgui"
 IncludeDir["glm"] = "Deya/vendor/glm"
-include "Deya/vendor/GLFW"
-include "Deya/vendor/glad"
-include "Deya/vendor/imgui"
+IncludeDir["stb_image"] = "Deya/vendor/stb_image"
+
+group "Dependencies"
+	include "Deya/vendor/GLFW"
+	include "Deya/vendor/glad"
+	include "Deya/vendor/imgui"
 
 project "Deya"
 	location "Deya"
@@ -35,6 +38,8 @@ project "Deya"
 	{
 		"%{prj.name}/include/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
 	}
@@ -51,7 +56,8 @@ project "Deya"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 	links 
 	{ 
