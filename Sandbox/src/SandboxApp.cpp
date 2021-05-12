@@ -198,7 +198,9 @@ public:
 
 		Deya::Renderer::BeginScene(m_Camera);
 
-		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->Bind();
+		auto flatColourShader = m_ShaderLibrary.Get("FlatColourShader");
+
+		std::dynamic_pointer_cast<Deya::OpenGLShader>(flatColourShader)->Bind();
 
         if (m_RenderLegume)
         {
@@ -213,11 +215,11 @@ public:
                     glm::vec3 pos(i * 0.15f - 1.5f, j * 0.15f - 1.5f, 0.0f);
                     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
                     if (i % 2 == 0)
-                        std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->UploadUniformFloat4("u_Colour", m_LegumeColour1);
+                        std::dynamic_pointer_cast<Deya::OpenGLShader>(flatColourShader)->UploadUniformFloat4("u_Colour", m_LegumeColour1);
                     else
-                        std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->UploadUniformFloat4("u_Colour", m_LegumeColour2);
+                        std::dynamic_pointer_cast<Deya::OpenGLShader>(flatColourShader)->UploadUniformFloat4("u_Colour", m_LegumeColour2);
                 
-                    Deya::Renderer::Submit(m_FlatColourShader, m_LegumeVA, transform);
+                    Deya::Renderer::Submit(flatColourShader, m_LegumeVA, transform);
                 }
             }   
         }
@@ -273,13 +275,13 @@ private:
 	void UpdateShaders()
 	{
 		DY_CORE_INFO("Updating shaders...");
-        m_FlatColourShader.reset(Deya::Shader::Create("Sandbox/assets/shaders/FlatColourShader.glsl"));
-		m_Shader.reset(Deya::Shader::Create("Sandbox/assets/shaders/LayoutColourShader.glsl"));
-		m_TextureShader.reset(Deya::Shader::Create("Sandbox/assets/shaders/TextureShader.glsl"));
+        m_ShaderLibrary.Load("Sandbox/assets/shaders/FlatColourShader.glsl");
+		m_Shader = Deya::Shader::Create("Sandbox/assets/shaders/LayoutColourShader.glsl");
+		m_TextureShader = Deya::Shader::Create("Sandbox/assets/shaders/TextureShader.glsl");
 	}
-private:
+	Deya::ShaderLibrary m_ShaderLibrary;
     Deya::Ref<Deya::Shader> m_Shader;
-    Deya::Ref<Deya::Shader> m_FlatColourShader;
+    //Deya::Ref<Deya::Shader> m_FlatColourShader;
     Deya::Ref<Deya::Shader> m_TextureShader;
 
     Deya::Ref<Deya::VertexArray> m_LegumeVA;
