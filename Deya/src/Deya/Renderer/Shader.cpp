@@ -39,7 +39,10 @@ namespace Deya
 
     void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
     {
-        DY_CORE_ASSERT(m_Shaders.find(name) == m_Shaders.end(), "Shader already exists");
+        if (m_Shaders.find(name) == m_Shaders.end())
+        {
+            DY_CORE_WARN("Shader already exists");
+        }
         m_Shaders[name] = shader;
     }
 
