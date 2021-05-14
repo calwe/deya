@@ -12,7 +12,7 @@ class ExampleLayer : public Deya::Layer
 public:
     ExampleLayer()
         : Layer("Example"), 
-            m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), 
+            m_CameraController(1280.0f / 720.0f, true),
             m_BackgroundColour({0.1f, 0.1f, 0.1f, 0.0f}),
             m_LegumeColour1({0.8f, 0.2f, 0.3f, 1.0f}),
             m_LegumeColour2({0.3f, 0.2f, 0.8f, 1.0f})
@@ -160,7 +160,7 @@ public:
 
 		UpdateShaders();
 
-		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // TODO: Does this work on Windows?
+		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // TODO: Fix paths (remove need for 'Sandbox/')
 
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -168,35 +168,18 @@ public:
 
     void OnUpdate(Deya::Timestep ts) override
     {
-        // DY_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+		// Update
+		m_CameraController.OnUpdate(ts);
 
-        //* camera
-        if (Deya::Input::IsKeyPressed(DY_KEY_A))
-            m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-        else if (Deya::Input::IsKeyPressed(DY_KEY_D))
-            m_CameraPosition.x += m_CameraMoveSpeed * ts;
-
-        if (Deya::Input::IsKeyPressed(DY_KEY_W))
-            m_CameraPosition.y += m_CameraMoveSpeed * ts;
-        else if (Deya::Input::IsKeyPressed(DY_KEY_S))
-            m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-
-        if (Deya::Input::IsKeyPressed(DY_KEY_Q))
-            m_CameraRotation += m_CameraRotationSpeed * ts;
-        else if (Deya::Input::IsKeyPressed(DY_KEY_E))
-            m_CameraRotation -= m_CameraRotationSpeed * ts;
-
+		// Render
         Deya::RenderCommand::SetClearColor(m_BackgroundColour);
 		Deya::RenderCommand::Clear();
-
-		m_Camera.SetRotation(m_CameraRotation);
-		m_Camera.SetPosition(m_CameraPosition);
 
         /**
          * ! Render Flow
          */
 
-		Deya::Renderer::BeginScene(m_Camera);
+		Deya::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		auto flatColourShader = m_ShaderLibrary.Get("FlatColourShader");
 
@@ -268,8 +251,9 @@ public:
         ImGui::End();
     }
 
-    void OnEvent(Deya::Event& event) override
+    void OnEvent(Deya::Event& e) override
     {
+		m_CameraController.OnEvent(e);
 	}
 private:
 	void UpdateShaders()
@@ -293,13 +277,7 @@ private:
     Deya::Ref<Deya::VertexBuffer> m_VertexBuffer;
     Deya::Ref<Deya::IndexBuffer> m_IndexBuffer;
 
-    Deya::OrthographicCamera m_Camera;
-
-    glm::vec3 m_CameraPosition;
-    float m_CameraMoveSpeed = 3.0f;
-    
-    float m_CameraRotation = 0.0f;
-    float m_CameraRotationSpeed = 100.0f;
+    Deya::OrthographicCameraController m_CameraController;
 
     glm::vec4 m_BackgroundColour;
     glm::vec4 m_LegumeColour1;

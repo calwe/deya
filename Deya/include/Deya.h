@@ -11,6 +11,7 @@
 #include "Deya/Input.h"
 #include "Deya/KeyCodes.h"
 #include "Deya/MouseButtonCodes.h"
+#include "Deya/OrthographicCameraController.h"
 
 #include "Deya/ImGui/ImGuiLayer.h"
 

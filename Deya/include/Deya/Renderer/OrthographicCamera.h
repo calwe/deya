@@ -15,6 +15,8 @@ namespace Deya
         inline void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); } 
         inline void SetRotation(const float rotation) { m_Rotation = rotation; RecalculateViewMatrix(); }
 
+        void SetProjection(float left, float right, float bottom, float top);
+
         const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
         const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
         const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
