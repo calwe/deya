@@ -2,7 +2,7 @@
 name: 'Issue: Bug report'
 about: Deya isn't working correctly? Report it with this!
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
