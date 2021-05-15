@@ -13,6 +13,8 @@ namespace Deya
 
     void OrthographicCameraController::OnUpdate(Timestep ts)
     {
+        DY_PROFILE_FUNCTION();
+
         if (Input::IsKeyPressed(DY_KEY_A))
             m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
         else if (Deya::Input::IsKeyPressed(DY_KEY_D))
@@ -38,6 +40,8 @@ namespace Deya
 
     void OrthographicCameraController::OnEvent(Event& e)
     {
+        DY_PROFILE_FUNCTION();
+
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<MouseScrolledEvent>(DY_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
         dispatcher.Dispatch<WindowResizeEvent>(DY_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
@@ -45,6 +49,8 @@ namespace Deya
 
     bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
     {
+        DY_PROFILE_FUNCTION();
+
         m_ZoomLevel -= e.GetYOffset() * m_CameraZoomSpeed;
         m_ZoomLevel = std::max(m_ZoomLevel, 0.1f);
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -54,6 +60,8 @@ namespace Deya
 
     bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
     {
+        DY_PROFILE_FUNCTION();
+
         m_AspectRatio = (float) e.GetWidth() / (float) e.GetHeight();
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 

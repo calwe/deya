@@ -25,16 +25,21 @@ namespace Deya
 
     WindowsWindow::WindowsWindow(const WindowProps& props)
     {
+        DY_PROFILE_FUNCTION();
         Init(props);
     }
 
     WindowsWindow::~WindowsWindow() 
     {
+        DY_PROFILE_FUNCTION();
 
+        Shutdown();
     }
 
     void WindowsWindow::Init(const WindowProps& props)
     {
+        DY_PROFILE_FUNCTION();
+
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
@@ -155,17 +160,23 @@ namespace Deya
 
     void WindowsWindow::Shutdown()
     {
+        DY_PROFILE_FUNCTION();
+
         glfwDestroyWindow(m_Window);
     }
 
     void WindowsWindow::OnUpdate()
     {
+        DY_PROFILE_FUNCTION();
+
         glfwPollEvents();
         glfwSwapBuffers(m_Window);
     }
 
     void WindowsWindow::SetVSync(bool enabled)
     {
+        DY_PROFILE_FUNCTION();
+
         if (enabled)
             glfwSwapInterval(1);
         else

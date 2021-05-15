@@ -16,6 +16,7 @@
 #include <unordered_set>
 
 #include "Deya/Core/Log.h"
+#include "Deya/Debug/Instrumentor.h"
 
 /**
  * !WINDOWS SPECIFIC

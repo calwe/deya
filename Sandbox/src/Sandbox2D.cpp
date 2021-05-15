@@ -10,31 +10,43 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+    DY_PROFILE_FUNCTION();
+
+
     m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
 }
 
-void Sandbox2D::OnDetach() {}
+void Sandbox2D::OnDetach() { DY_PROFILE_FUNCTION(); }
     
 void Sandbox2D::OnUpdate(Deya::Timestep ts)
 {
+    DY_PROFILE_FUNCTION();
+
     // update
     m_CameraController.OnUpdate(ts);
 
     // render
-    Deya::RenderCommand::SetClearColor(m_BackgroundColour);
-    Deya::RenderCommand::Clear();
+    {
+        DY_PROFILE_SCOPE("Renderer Clear");
+        Deya::RenderCommand::SetClearColor(m_BackgroundColour);
+        Deya::RenderCommand::Clear();
+    }
 
-    Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
-    //                          POSITION        SIZE            COLOUR
-    Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
-    Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
-    Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansTexture);
+    {
+        DY_PROFILE_SCOPE("Renderer Draw");
+        Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        //                          POSITION        SIZE            COLOUR
+        Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
+        Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
+        Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansTexture);
 
-    Deya::Renderer2D::EndScene();
+        Deya::Renderer2D::EndScene();
+    }
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+    DY_PROFILE_FUNCTION();
     ImGui::Begin("Settings");
 
     if (ImGui::CollapsingHeader("Colours"))

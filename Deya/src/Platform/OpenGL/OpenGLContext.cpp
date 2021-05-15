@@ -14,6 +14,8 @@ namespace Deya
 
     void OpenGLContext::Init()
     {
+        DY_PROFILE_FUNCTION();
+
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         DY_CORE_ASSERT(status, "Failed to initialize glad");
@@ -25,7 +27,9 @@ namespace Deya
     }
 
     void OpenGLContext::SwapBuffers()
-    {
+    {   
+        DY_PROFILE_FUNCTION();
+
         glfwSwapBuffers(m_WindowHandle);
     }
 }
