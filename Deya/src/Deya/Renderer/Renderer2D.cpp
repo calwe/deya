@@ -2,11 +2,11 @@
 
 #include "Deya/Renderer/Renderer2D.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 #include "Deya/Renderer/VertexArray.h"
 #include "Deya/Renderer/Shader.h"
 #include "Deya/Renderer/RenderCommand.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Deya
 {
@@ -63,9 +63,8 @@ namespace Deya
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
-        std::dynamic_pointer_cast<OpenGLShader>(s_Data->FlatColourShader)->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(s_Data->FlatColourShader)->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-        std::dynamic_pointer_cast<OpenGLShader>(s_Data->FlatColourShader)->UploadUniformMat4("u_Transform", glm::mat4(1.0f));
+        s_Data->FlatColourShader->Bind();
+        s_Data->FlatColourShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
@@ -80,8 +79,12 @@ namespace Deya
 
     void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& colour)
     {
-        std::dynamic_pointer_cast<OpenGLShader>(s_Data->FlatColourShader)->Bind();
-        std::dynamic_pointer_cast<Deya::OpenGLShader>(s_Data->FlatColourShader)->UploadUniformFloat4("u_Colour", colour);
+        s_Data->FlatColourShader->Bind();
+        s_Data->FlatColourShader->SetFloat4("u_Colour", colour);
+
+        glm::mat4 transform = // !TRS: transform * rotation * scale 
+            glm::translate(glm::mat4(1.0f), position) /* * rotation */ * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+        s_Data->FlatColourShader->SetMat4("u_Transform", transform);
 
         s_Data->QuadVertexArray->Bind();
         RenderCommand::DrawIndexed(s_Data->QuadVertexArray);

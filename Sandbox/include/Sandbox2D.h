@@ -22,5 +22,6 @@ private:
     Deya::Ref<Deya::Shader> m_FlatColourShader;
 
     glm::vec4 m_BackgroundColour = { 0.1f, 0.1f, 0.1f, 1.0f };
-    glm::vec4 m_SquareColour = { 0.3f, 0.7f, 0.5f, 1.0f };      // #4cb27f
+    glm::vec4 m_SquareColour = { 1.0f, 0.0f, 0.0f, 0.5f };
+    glm::vec4 m_Square2Colour = { 0.0f, 0.0f, 1.0f, 0.5f };
 };

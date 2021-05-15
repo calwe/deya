@@ -26,13 +26,10 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
 
     Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
     //                          POSITION        SIZE            COLOUR
-    Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_SquareColour); // #d18ec2
+    Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
+    Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
 
     Deya::Renderer2D::EndScene();
-
-    // TODO: Shader::SetMat4 and Shader::SetFloat4
-    // std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->Bind(); // FIXME: make api agnostic
-    // std::dynamic_pointer_cast<Deya::OpenGLShader>(m_FlatColourShader)->UploadUniformFloat4("u_Colour", m_SquareColour);
 }
 
 void Sandbox2D::OnImGuiRender()
@@ -44,6 +41,7 @@ void Sandbox2D::OnImGuiRender()
         ImGui::ColorPicker4("BG Colour", glm::value_ptr(m_BackgroundColour));
 
         ImGui::ColorPicker4("Square Colour", glm::value_ptr(m_SquareColour));
+        ImGui::ColorPicker4("Square 2 Colour", glm::value_ptr(m_Square2Colour));
     }
 
     ImGui::End();
