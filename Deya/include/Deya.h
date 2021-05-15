@@ -17,6 +17,7 @@
 
 // !===== RENDERER ============================
 #include "Deya/Renderer/Renderer.h"
+#include "Deya/Renderer/Renderer2D.h"
 #include "Deya/Renderer/RenderCommand.h"
 
 #include "Deya/Renderer/Buffer.h"
