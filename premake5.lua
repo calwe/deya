@@ -175,6 +175,11 @@ project "Sandbox"
             "dl"
         }
 
+		postbuildcommands 
+		{
+			"{COPY} ../%{prj.name}/assets %{cfg.targetdir}"
+		}
+
 	filter "configurations:Debug"
 		defines "DY_DEBUG"
 		runtime "Debug"

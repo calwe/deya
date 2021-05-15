@@ -59,7 +59,7 @@ namespace Deya
         uint32_t whiteTextureData = 0xffffffff; // pure white (same as #ffffffff)
         s_Data->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-        s_Data->TextureShader = Shader::Create("Sandbox/assets/shaders/TextureShader.glsl");
+        s_Data->TextureShader = Shader::Create("assets/shaders/TextureShader.glsl");
         s_Data->TextureShader->Bind();
         s_Data->TextureShader->SetInt("u_Texture", 0);
     }

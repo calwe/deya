@@ -10,7 +10,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-    m_MansTexture = Deya::Texture2D::Create("Sandbox/assets/textures/mans.png");
+    m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
 }
 
 void Sandbox2D::OnDetach() {}
