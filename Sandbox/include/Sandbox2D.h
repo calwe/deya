@@ -21,6 +21,8 @@ private:
     Deya::Ref<Deya::VertexArray> m_SquareVA;
     Deya::Ref<Deya::Shader> m_FlatColourShader;
 
+    Deya::Ref<Deya::Texture2D> m_MansTexture;
+
     glm::vec4 m_BackgroundColour = { 0.1f, 0.1f, 0.1f, 1.0f };
     glm::vec4 m_SquareColour = { 1.0f, 0.0f, 0.0f, 0.5f };
     glm::vec4 m_Square2Colour = { 0.0f, 0.0f, 1.0f, 0.5f };

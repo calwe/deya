@@ -10,7 +10,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-    
+    m_MansTexture = Deya::Texture2D::Create("Sandbox/assets/textures/mans.png");
 }
 
 void Sandbox2D::OnDetach() {}
@@ -28,6 +28,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
     //                          POSITION        SIZE            COLOUR
     Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
     Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
+    Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansTexture);
 
     Deya::Renderer2D::EndScene();
 }

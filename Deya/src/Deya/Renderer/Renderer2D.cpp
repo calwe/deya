@@ -14,6 +14,7 @@ namespace Deya
     {
         Ref<VertexArray> QuadVertexArray;
         Ref<Shader> FlatColourShader;
+        Ref<Shader> TextureShader;
     };
 
     static Renderer2DStorage* s_Data;
@@ -24,13 +25,13 @@ namespace Deya
 
         s_Data->QuadVertexArray = VertexArray::Create(); 
 
-        float squareVertices[4 * 3] =	// 4 verts * (3 dimensions)
+        float squareVertices[4 * 5] =	// 4 verts * (3 dimensions + 2 tex coords)
         {
-            // POS					
-            0.5f,  0.5f, 0.0f, 	// top right
-            -0.5f,  0.5f, 0.0f, 	// top left
-            0.5f, -0.5f, 0.0f, 	// bottom right
-            -0.5f, -0.5f, 0.0f,  	// bottom left
+            // POS                  TEX COORDS					
+             0.5f,  0.5f, 0.0f,     1.0f, 1.0f,	// top right
+            -0.5f,  0.5f, 0.0f,     0.0f, 1.0f,	// top left
+             0.5f, -0.5f, 0.0f,     1.0f, 0.0f,	// bottom right
+            -0.5f, -0.5f, 0.0f,     0.0f, 0.0f 	// bottom left
         };
 
         uint32_t squareIndices[6]
@@ -41,7 +42,8 @@ namespace Deya
 
         BufferLayout layout =
         {
-            { ShaderDataType::Float3, "a_Position"}
+            { ShaderDataType::Float3, "a_Position"},
+            { ShaderDataType::Float2, "a_TexCoords"}
         };
 
         Ref<VertexBuffer> squareVB;
@@ -54,6 +56,9 @@ namespace Deya
         s_Data->QuadVertexArray->SetIndexBuffer(sqaureIB);
 
         s_Data->FlatColourShader = Shader::Create("Sandbox/assets/shaders/FlatColourShader.glsl");
+        s_Data->TextureShader = Shader::Create("Sandbox/assets/shaders/TextureShader.glsl");
+        s_Data->TextureShader->Bind();
+        s_Data->TextureShader->SetInt("u_Texture", 0);
     }
 
     void Renderer2D::Shutdown()
@@ -65,6 +70,9 @@ namespace Deya
     {
         s_Data->FlatColourShader->Bind();
         s_Data->FlatColourShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+        s_Data->TextureShader->Bind();
+        s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
@@ -85,6 +93,25 @@ namespace Deya
         glm::mat4 transform = // !TRS: transform * rotation * scale 
             glm::translate(glm::mat4(1.0f), position) /* * rotation */ * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
         s_Data->FlatColourShader->SetMat4("u_Transform", transform);
+
+        s_Data->QuadVertexArray->Bind();
+        RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+    {
+        DrawQuad({position.x, position.y, 0.0f}, size, texture);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+    {
+        s_Data->TextureShader->Bind();
+
+        glm::mat4 transform = // !TRS: transform * rotation * scale 
+            glm::translate(glm::mat4(1.0f), position) /* * rotation */ * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+        s_Data->TextureShader->SetMat4("u_Transform", transform);
+
+        texture->Bind();
 
         s_Data->QuadVertexArray->Bind();
         RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
