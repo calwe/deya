@@ -133,6 +133,7 @@ project "Sandbox"
 	}
 	includedirs
 	{
+		"%{prj.name}/include",
 		"Deya/vendor/spdlog/include",
 		"Deya/include",
 		"Deya/vendor",

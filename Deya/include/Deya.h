@@ -26,7 +26,3 @@
 
 #include "Deya/Renderer/OrthographicCamera.h"
 // !===========================================
-
-// !==== ENTRY POINT ==========================
-#include "Deya/Core/EntryPoint.h"
-// !===========================================

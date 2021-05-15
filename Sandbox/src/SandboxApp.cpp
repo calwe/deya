@@ -1,4 +1,5 @@
 #include <Deya.h>
+#include <Deya/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -6,6 +7,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Sandbox2D.h"
 
 class ExampleLayer : public Deya::Layer
 {
@@ -17,25 +20,25 @@ public:
             m_LegumeColour1({0.8f, 0.2f, 0.3f, 1.0f}),
             m_LegumeColour2({0.3f, 0.2f, 0.8f, 1.0f})
     {
-        m_LegumeVA.reset(Deya::VertexArray::Create());
+        m_LegumeVA = Deya::VertexArray::Create();
 	
 		/**
 		 * !Legume!
 		 */
 		
 		// legume verts
-		float vertices[6 * 7] = // 6 verts * (3 dimensions + 4 colour channels)
+		float vertices[6 * 3] = // 6 verts * (3 dimensions)
 		{
 			// middle of legume
-			// POS						COLOUR
-			-0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 1.0f, // top left
-			-0.125f, -0.2f, 0.0f, 		0.25f, 0.13f, 0.03f, 1.0f, // bottom left
-			 0.125f,  0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 1.0f, // top right
-			 0.125f, -0.2f, 0.0f,		0.25f, 0.13f, 0.03f, 1.0f, // bottom right
+			// POS						
+			-0.125f,  0.2f, 0.0f		// top left
+			-0.125f, -0.2f, 0.0f, 		// bottom left
+			 0.125f,  0.2f, 0.0f,		// top right
+			 0.125f, -0.2f, 0.0f,		// bottom right
 
 			// top and bottom verts
-			 0.0f,  0.35f, 0.0f,		0.35f, 0.23f, 0.05f, 1.0f, // top
-			 0.0f, -0.35f, 0.0f,		0.15f, 0.03f, 0.01f, 1.0f  // bottom
+			 0.0f,  0.35f, 0.0f,		// top
+			 0.0f, -0.35f, 0.0f			// bottom
 		};
 
 		uint32_t indices[12] = // the order to render our verts
@@ -54,13 +57,18 @@ public:
 			{ Deya::ShaderDataType::Float4, "a_Color" }
 		};
 
+		Deya::BufferLayout layoutPlain =
+		{
+			{ Deya::ShaderDataType::Float3, "a_Position"}
+		};
+
 		Deya::BufferLayout layoutTexture =
 		{
 			{ Deya::ShaderDataType::Float3, "a_Position" },
 			{ Deya::ShaderDataType::Float2, "a_TexCoord" },
 		};
 	
-		m_VertexBuffer->SetLayout(layout);
+		m_VertexBuffer->SetLayout(layoutPlain);
 		m_LegumeVA->AddVertexBuffer(m_VertexBuffer);
 
 		m_IndexBuffer.reset(Deya::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
@@ -119,7 +127,7 @@ public:
 			11, 15, 16
 		};
 
-		m_MansVA.reset(Deya::VertexArray::Create());
+		m_MansVA = Deya::VertexArray::Create();
 		Deya::Ref<Deya::VertexBuffer> mansVB;
 		mansVB.reset(Deya::VertexBuffer::Create(mansVerts, sizeof(mansVerts)));
 		mansVB->SetLayout(layout);
@@ -148,7 +156,7 @@ public:
 			3, 2, 0
 		};
 
-		m_CamelliaVA.reset(Deya::VertexArray::Create());
+		m_CamelliaVA = Deya::VertexArray::Create();
 		Deya::Ref<Deya::VertexBuffer> camelliaVB;
 		camelliaVB.reset(Deya::VertexBuffer::Create(camelliaVerts, sizeof(camelliaVerts)));
 		camelliaVB->SetLayout(layoutTexture);
@@ -160,7 +168,7 @@ public:
 
 		UpdateShaders();
 
-		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // TODO: Fix paths (remove need for 'Sandbox/')
+		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // FIXME: Fix paths (remove need for 'Sandbox/')
 
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -293,13 +301,11 @@ class Sandbox : public Deya::Application
 public:
     Sandbox()
     {
-        PushLayer(new ExampleLayer);
+        // PushLayer(new ExampleLayer);
+		PushLayer(new Sandbox2D());
     }
 
-    ~Sandbox()
-    {
-
-    }
+    ~Sandbox() {}
 };
 
 Deya::Application* Deya::CreateApplication()
