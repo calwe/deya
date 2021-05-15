@@ -97,6 +97,11 @@ project "Deya"
             "dl"
         }
 
+		disablewarnings
+		{
+			"int-to-pointer-cast"
+		}
+
 	filter "configurations:Debug"
 		defines "DY_DEBUG"
 		runtime "Debug"

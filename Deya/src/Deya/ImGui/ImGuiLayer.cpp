@@ -5,7 +5,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
 
-#include "Deya/Application.h"
+#include "Deya/Core/Application.h"
 
 #include <glm/gtc/type_ptr.hpp>
 

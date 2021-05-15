@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Deya/Core.h"
-#include "Deya/Layer.h"
+#include "Deya/Core/Core.h"
+#include "Deya/Core/Layer.h"
 
 #include <vector>
 

@@ -2,7 +2,7 @@
 #ifdef DY_PLATFORM_WINDOWS
 #include "Platform/Windows/WindowsInput.h"
 
-#include "Deya/Application.h"
+#include "Deya/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

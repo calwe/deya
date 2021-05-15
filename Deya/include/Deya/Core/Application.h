@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Deya/Core.h"
+#include "Deya/Core/Core.h"
 
-#include "Deya/LayerStack.h"
+#include "Deya/Core/LayerStack.h"
 #include "Deya/Events/Event.h"
-#include "Deya/Window.h"
+#include "Deya/Core/Window.h"
 #include "Deya/Events/ApplicationEvent.h"
 #include "Deya/Renderer/VertexArray.h"
 #include "Deya/Renderer/Shader.h"

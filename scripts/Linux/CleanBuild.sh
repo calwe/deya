@@ -7,4 +7,4 @@ premake5 gmake
 make clean
 time make
 
-cd BuildScripts/Linux # back to start location
+cd scripts/Linux # back to start location

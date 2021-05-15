@@ -4,9 +4,9 @@
 
 #include "imgui.h"
 
-#include "Deya/Application.h"
-#include "Deya/Window.h"
-#include "Deya/Input.h"
+#include "Deya/Core/Application.h"
+#include "Deya/Core/Window.h"
+#include "Deya/Core/Input.h"
 #include "Deya/Renderer/Shader.h"
 #include "Deya/Renderer/Renderer.h"
 

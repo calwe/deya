@@ -2,7 +2,7 @@
 #ifdef DY_PLATFORM_LINUX
 #include "Platform/Linux/LinuxInput.h"
 
-#include "Deya/Application.h"
+#include "Deya/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

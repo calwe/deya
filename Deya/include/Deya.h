@@ -2,16 +2,16 @@
 
 // FOR DEYA APPS
 
-#include "Deya/Application.h"
-#include "Deya/Layer.h"
-#include "Deya/Log.h"
+#include "Deya/Core/Application.h"
+#include "Deya/Core/Layer.h"
+#include "Deya/Core/Log.h"
 
 #include "Deya/Core/Timestep.h"
 
-#include "Deya/Input.h"
-#include "Deya/KeyCodes.h"
-#include "Deya/MouseButtonCodes.h"
-#include "Deya/OrthographicCameraController.h"
+#include "Deya/Core/Input.h"
+#include "Deya/Core/KeyCodes.h"
+#include "Deya/Core/MouseButtonCodes.h"
+#include "Deya/Renderer/OrthographicCameraController.h"
 
 #include "Deya/ImGui/ImGuiLayer.h"
 
@@ -28,5 +28,5 @@
 // !===========================================
 
 // !==== ENTRY POINT ==========================
-#include "Deya/EntryPoint.h"
+#include "Deya/Core/EntryPoint.h"
 // !===========================================

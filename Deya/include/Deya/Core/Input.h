@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Deya/Core.h"
+#include "Deya/Core/Core.h"
 
 namespace Deya
 {

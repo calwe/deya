@@ -1,5 +1,3 @@
-#pragma once
-
 /**
  * !GLOBAL
  */
@@ -17,7 +15,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Deya/Log.h"
+#include "Deya/Core/Log.h"
 
 /**
  * !WINDOWS SPECIFIC

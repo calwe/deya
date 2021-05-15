@@ -6,6 +6,11 @@ null.d
 
 !vendor/bin
 
+#imgui
+log.txt
+imgui.ini
+imgui_log.txt
+
 # !IDE SPECIFIC
 
 # visual studio code

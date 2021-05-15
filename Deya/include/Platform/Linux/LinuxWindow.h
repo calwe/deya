@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Deya/Window.h"
+#include "Deya/Core/Window.h"
 #include "Deya/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

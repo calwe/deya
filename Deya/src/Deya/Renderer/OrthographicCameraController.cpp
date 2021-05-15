@@ -1,8 +1,8 @@
 #include "dypch.h"
-#include "Deya/OrthographicCameraController.h"
+#include "Deya/Renderer/OrthographicCameraController.h"
 
-#include "Deya/Input.h"
-#include "Deya/KeyCodes.h"
+#include "Deya/Core/Input.h"
+#include "Deya/Core/KeyCodes.h"
 
 namespace Deya
 {
@@ -56,5 +56,7 @@ namespace Deya
     {
         m_AspectRatio = (float) e.GetWidth() / (float) e.GetHeight();
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+
+        return false;
     }
 }

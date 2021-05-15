@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Deya/Input.h"
+#include "Deya/Core/Input.h"
 
 namespace Deya
 {
