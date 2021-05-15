@@ -11,6 +11,15 @@ namespace Deya
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
+    void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+    {
+        DY_CORE_INFO("Resizing viewport to {0}x{1}", width, height);
+        glViewport(x, y, width, height);
+
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT, viewport);
+    }
+
     void OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
     {
         glClearColor(color.r, color.g, color.b, color.a);
