@@ -1,6 +1,6 @@
 ---
 name: 'Issue: Documentation update'
-about: 'Deya's wiki has some errors in it? Or does it just need updating? Report it here!'
+about: Deya's wiki has some errors in it? Or does it just need updating? Report it here!
 title: ''
 labels: 'documentation'
 assignees: ''
