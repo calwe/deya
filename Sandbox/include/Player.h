@@ -2,12 +2,14 @@
 
 #include <Deya.h>
 
+#include "Hotdog.h"
+
 #include <glm/glm.hpp>
 
 class Player
 {
 public:
-    void Init();
+    void Init(std::vector<Hotdog>* hotdog);
     void OnRender();
     void OnUpdate(Deya::Timestep ts);
 
@@ -19,8 +21,12 @@ private:
 
     bool m_KeyDown = false;
     float m_Gravity = 0.05f;
-    float m_FlapForce = 1.5f;
+    float m_FlapForce = 1.0f;
     float m_Velocity = 0.0f;
+
+    bool m_IsDead = false;
+
+    std::vector<Hotdog>* m_Hotdogs;
     
     Deya::Ref<Deya::Texture2D> m_MansTexture;
 };

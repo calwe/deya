@@ -27,7 +27,8 @@ void GameLayer::OnUpdate(Deya::Timestep ts)
 
     if (m_Playing)
     {
-        m_Level.OnUpdate(ts);
+        if (!m_Level.GetPlayer().CheckIfDead())
+            m_Level.OnUpdate(ts);
     }
 
     // Clear our scene with the colour #212121

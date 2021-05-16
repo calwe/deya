@@ -1,7 +1,9 @@
 #include "Player.h"
+#include "GameLayer.h"
 
-void Player::Init()
+void Player::Init(std::vector<Hotdog>* hotdog)
 {
+    m_Hotdogs = hotdog;
     // Load our texture into m_MansTexture
     m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
 }
@@ -21,28 +23,25 @@ void Player::OnRender()
 
 void Player::OnUpdate(Deya::Timestep ts)
 {
-    if (!CheckIfDead())
+    if (Deya::Input::IsKeyPressed(DY_KEY_SPACE))
     {
-        if (Deya::Input::IsKeyPressed(DY_KEY_SPACE))
+        if (!m_KeyDown)
         {
-            if (!m_KeyDown)
-            {
-                m_KeyDown = true;
-                m_Velocity = -m_FlapForce; 
-            }
-            else
-            {
-                m_Velocity += m_Gravity;
-            }
+            m_KeyDown = true;
+            m_Velocity = -m_FlapForce; 
         }
         else
         {
             m_Velocity += m_Gravity;
-            m_KeyDown = false;
         }
-
-        m_PlayerPos = m_PlayerPos - glm::vec3(0.0f, m_Velocity * (float) ts, 0.0f);
     }
+    else
+    {
+        m_Velocity += m_Gravity;
+        m_KeyDown = false;
+    }
+
+    m_PlayerPos = m_PlayerPos - glm::vec3(0.0f, m_Velocity * (float) ts, 0.0f);
 }
 
 bool Player::CheckIfDead()
@@ -50,6 +49,14 @@ bool Player::CheckIfDead()
     if (m_PlayerPos.y < -1.0f || m_PlayerPos.y > 1.0f)
     {
         return true;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        if ((*m_Hotdogs)[i].CheckCollisions(m_PlayerPos))
+        {
+            return true;
+        }
     }
 
     return false;

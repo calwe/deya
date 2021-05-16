@@ -20,8 +20,6 @@ private:
     void CreateCamera(uint32_t width, uint32_t height);
 private:
     Deya::Scope<Deya::OrthographicCamera> m_Camera;
-
-    bool m_Playing = false;
-
+    bool m_Playing = false;;
     Level m_Level;
 };
