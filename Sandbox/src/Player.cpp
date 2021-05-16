@@ -28,7 +28,7 @@ void Player::OnUpdate(Deya::Timestep ts)
             if (!m_KeyDown)
             {
                 m_KeyDown = true;
-                m_Velocity -= m_FlapForce; 
+                m_Velocity = -m_FlapForce; 
             }
             else
             {
