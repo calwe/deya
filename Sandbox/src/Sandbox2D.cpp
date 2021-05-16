@@ -35,10 +35,11 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
     {
         DY_PROFILE_SCOPE("Renderer Draw");
         Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
-        //                          POSITION        SIZE            COLOUR
+        
         Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
         Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
-        Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansTexture);
+
+        Deya::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.1f }, glm::radians(73.0f), { 0.5f, 0.5f }, m_MansTexture, 1.0f, glm::vec4(1.0f, 0.3f, 0.3f, 1.0f));
 
         Deya::Renderer2D::EndScene();
     }
