@@ -49,7 +49,7 @@ public:
 			1, 5, 3   // bottom tri
 		};
 
-		m_VertexBuffer.reset(Deya::VertexBuffer::Create(vertices, sizeof(vertices)));
+		m_VertexBuffer = Deya::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		Deya::BufferLayout layout =
 		{
@@ -71,7 +71,7 @@ public:
 		m_VertexBuffer->SetLayout(layoutPlain);
 		m_LegumeVA->AddVertexBuffer(m_VertexBuffer);
 
-		m_IndexBuffer.reset(Deya::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_IndexBuffer = Deya::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_LegumeVA->SetIndexBuffer(m_IndexBuffer);
 
 		/**
@@ -129,12 +129,12 @@ public:
 
 		m_MansVA = Deya::VertexArray::Create();
 		Deya::Ref<Deya::VertexBuffer> mansVB;
-		mansVB.reset(Deya::VertexBuffer::Create(mansVerts, sizeof(mansVerts)));
+		mansVB = Deya::VertexBuffer::Create(mansVerts, sizeof(mansVerts));
 		mansVB->SetLayout(layout);
 		m_MansVA->AddVertexBuffer(mansVB);
 
 		Deya::Ref<Deya::IndexBuffer> mansIB;
-		mansIB.reset(Deya::IndexBuffer::Create(mansIndices, sizeof(mansIndices) / sizeof(uint32_t)));
+		mansIB = Deya::IndexBuffer::Create(mansIndices, sizeof(mansIndices) / sizeof(uint32_t));
 		m_MansVA->SetIndexBuffer(mansIB);
 
 		/**
@@ -158,17 +158,17 @@ public:
 
 		m_CamelliaVA = Deya::VertexArray::Create();
 		Deya::Ref<Deya::VertexBuffer> camelliaVB;
-		camelliaVB.reset(Deya::VertexBuffer::Create(camelliaVerts, sizeof(camelliaVerts)));
+		camelliaVB = Deya::VertexBuffer::Create(camelliaVerts, sizeof(camelliaVerts));
 		camelliaVB->SetLayout(layoutTexture);
 		m_CamelliaVA->AddVertexBuffer(camelliaVB);
 
 		Deya::Ref<Deya::IndexBuffer> camelliaIB;
-		camelliaIB.reset(Deya::IndexBuffer::Create(camelliaIndices, sizeof(camelliaIndices) / sizeof(uint32_t)));
+		camelliaIB = Deya::IndexBuffer::Create(camelliaIndices, sizeof(camelliaIndices) / sizeof(uint32_t));
 		m_CamelliaVA->SetIndexBuffer(camelliaIB);
 
 		UpdateShaders();
 
-		m_CamelliaTexture = Deya::Texture2D::Create("Sandbox/assets/textures/camellia-face-transparent.png"); // FIXME: Fix paths (remove need for 'Sandbox/')
+		m_CamelliaTexture = Deya::Texture2D::Create("assets/textures/camellia-face-transparent.png");
 
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Deya::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -267,9 +267,9 @@ private:
 	void UpdateShaders()
 	{
 		DY_CORE_INFO("Updating shaders...");
-        m_ShaderLibrary.Load("Sandbox/assets/shaders/FlatColourShader.glsl");
-		m_Shader = Deya::Shader::Create("Sandbox/assets/shaders/LayoutColourShader.glsl");
-		m_TextureShader = Deya::Shader::Create("Sandbox/assets/shaders/TextureShader.glsl");
+        m_ShaderLibrary.Load("assets/shaders/FlatColourShader.glsl");
+		m_Shader = Deya::Shader::Create("assets/shaders/LayoutColourShader.glsl");
+		m_TextureShader = Deya::Shader::Create("assets/shaders/TextureShader.glsl");
 	}
 	Deya::ShaderLibrary m_ShaderLibrary;
     Deya::Ref<Deya::Shader> m_Shader;

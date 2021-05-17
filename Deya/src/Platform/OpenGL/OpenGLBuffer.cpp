@@ -10,6 +10,17 @@ namespace Deya
      * !Vertex Buffer
      */
 
+    OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
+    {
+        DY_PROFILE_FUNCTION();
+
+        glCreateBuffers(1, &m_RendererID);
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        // Empty buffer, with a dynamic hint. This means that we can fill this buffer with data at a later date, multiple times
+        // Do note that this is just a hint, the code would run with this set to static draw, but it would just run slower.
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW); 
+    }
+
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
     {
         DY_PROFILE_FUNCTION();
@@ -38,6 +49,12 @@ namespace Deya
         DY_PROFILE_FUNCTION();
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
     }
 
     /**

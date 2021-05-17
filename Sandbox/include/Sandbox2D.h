@@ -17,10 +17,6 @@ public:
 private:
     Deya::OrthographicCameraController m_CameraController;
 
-    // REMOVE: Temporary
-    Deya::Ref<Deya::VertexArray> m_SquareVA;
-    Deya::Ref<Deya::Shader> m_FlatColourShader;
-
     Deya::Ref<Deya::Texture2D> m_MansTexture;
 
     std::vector<ProfileResult> m_ProfileResults;
