@@ -42,7 +42,5 @@ uniform sampler2D u_Textures[32];
 
 void main()
 {
-	// TODO: tiling factor
 	colour = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Colour;
-	//colour = v_Colour;
 }

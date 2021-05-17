@@ -12,7 +12,6 @@ void Sandbox2D::OnAttach()
 {
     DY_PROFILE_FUNCTION();
 
-
     m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
     m_MansSlimTexture = Deya::Texture2D::Create("assets/textures/mans_slim.png");
 }
@@ -25,6 +24,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
 
     // update
     m_CameraController.OnUpdate(ts);
+    m_Angle += 0.5f;
 
     // render
     {
@@ -40,7 +40,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
         Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
         Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
 
-        Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansTexture);
+        Deya::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.1f }, glm::radians(m_Angle), { 0.5f, 0.5f }, m_MansTexture);
         Deya::Renderer2D::DrawQuad({ 0.6f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansSlimTexture);
 
         Deya::Renderer2D::EndScene();
