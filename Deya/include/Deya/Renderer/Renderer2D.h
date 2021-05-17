@@ -99,5 +99,20 @@ namespace Deya
          * @param tintColour (={1.0f, 1.0f, 1.0f, 1.0f}) An RGBA tint for the texture 
          */
         static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColour = glm::vec4(1.0f));
+
+        // Stats
+        struct Statistics
+        {
+            uint32_t DrawCalls = 0;
+            uint32_t QuadCount = 0;
+
+            uint32_t GetTotalVertexCount() { return QuadCount * 4; }
+            uint32_t GetTotalIndexCount() { return QuadCount * 6; }
+        };
+
+        static Statistics GetStats(); 
+        static void ResetStats();
+    private:
+        static void FlushAndReset();
     };
 }

@@ -27,6 +27,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
     m_Angle += 0.5f;
 
     // render
+    Deya::Renderer2D::ResetStats();
     {
         DY_PROFILE_SCOPE("Renderer Clear");
         Deya::RenderCommand::SetClearColor(m_BackgroundColour);
@@ -44,6 +45,18 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
         Deya::Renderer2D::DrawQuad({ 0.6f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansSlimTexture);
 
         Deya::Renderer2D::EndScene();
+
+        // Stress test
+        Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        for (float y = -10.0f; y < 10.0f; y += 0.5f)
+        {
+            for (float x = -10.0f; x < 10.0f; x += 0.1f)
+            {
+                glm::vec4 colour = { (x + 10.0f) / 20.0f, 0.4f, (y + 10.0f) / 20.0f, 1.0f };
+                Deya::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, colour);
+            }
+        }
+        Deya::Renderer2D::EndScene();
     }
 }
 
@@ -51,6 +64,15 @@ void Sandbox2D::OnImGuiRender()
 {
     DY_PROFILE_FUNCTION();
     ImGui::Begin("Settings");
+
+    if (ImGui::CollapsingHeader("Renderer2D Stats"))
+    {
+        auto stats = Deya::Renderer2D::GetStats();
+        ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+        ImGui::Text("Quads: %d", stats.QuadCount);
+        ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+        ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+    }
 
     if (ImGui::CollapsingHeader("Colours"))
     {
