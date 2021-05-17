@@ -18,6 +18,7 @@ private:
     Deya::OrthographicCameraController m_CameraController;
 
     Deya::Ref<Deya::Texture2D> m_MansTexture;
+    Deya::Ref<Deya::Texture2D> m_MansSlimTexture;
 
     std::vector<ProfileResult> m_ProfileResults;
 

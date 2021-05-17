@@ -198,12 +198,21 @@ namespace Deya
         glUseProgram(0);
     }
 
-    void OpenGLShader::SetInt(const std::string& name, const int value)
+    void OpenGLShader::SetInt(const std::string& name, int value)
     {
         DY_PROFILE_FUNCTION();
 
         UploadUniformInt(name, value);
     }
+
+
+    void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count) 
+    {
+        DY_PROFILE_FUNCTION();
+
+        UploadUniformIntArray(name, values, count);
+    }
+
 
     void OpenGLShader::SetFloat(const std::string& name, float value)
     {
@@ -239,6 +248,14 @@ namespace Deya
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform1i(location, value); // (1) (i)nt
     }
+
+
+    void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count) 
+    {
+        GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform1iv(location, count, values); // (1) (i)nt vector
+    }
+
 
     void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
     {

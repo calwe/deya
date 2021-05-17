@@ -14,6 +14,7 @@ void Sandbox2D::OnAttach()
 
 
     m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
+    m_MansSlimTexture = Deya::Texture2D::Create("assets/textures/mans_slim.png");
 }
 
 void Sandbox2D::OnDetach() { DY_PROFILE_FUNCTION(); }
@@ -39,7 +40,8 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
         Deya::Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
         Deya::Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
 
-        //Deya::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.1f }, glm::radians(73.0f), { 0.5f, 0.5f }, m_MansTexture, 1.0f, glm::vec4(1.0f, 0.3f, 0.3f, 1.0f));
+        Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansTexture);
+        Deya::Renderer2D::DrawQuad({ 0.6f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansSlimTexture);
 
         Deya::Renderer2D::EndScene();
     }
