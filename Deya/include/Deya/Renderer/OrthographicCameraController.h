@@ -8,6 +8,17 @@
 
 namespace Deya
 {
+    struct OrthographicCameraBounds
+    {
+        float Left;
+        float Right;
+        float Bottom;
+        float Top;
+
+        float GetWidth() { return Right - Left; }
+        float GetHeight() { return Top - Bottom; }
+    };
+
     class OrthographicCameraController
     {
     public:
@@ -18,12 +29,15 @@ namespace Deya
 
         inline OrthographicCamera& GetCamera() { return m_Camera; }
         inline const OrthographicCamera& GetCamera() const { return m_Camera; }
+
+        const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
     private:
         bool OnMouseScrolled(MouseScrolledEvent& e);
         bool OnWindowResized(WindowResizeEvent& e);
     private:
         float m_AspectRatio;
         float m_ZoomLevel = 1.0f;
+        OrthographicCameraBounds m_Bounds;
         OrthographicCamera m_Camera;
 
         bool m_Rotation;

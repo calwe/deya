@@ -2,6 +2,7 @@
 
 #include <Deya.h>
 
+#include "ParticleSystem.h"
 class Sandbox2D : public Deya::Layer
 {
 public:
@@ -25,6 +26,9 @@ private:
     glm::vec4 m_BackgroundColour = { 0.1f, 0.1f, 0.1f, 1.0f };
     glm::vec4 m_SquareColour = { 1.0f, 0.0f, 0.0f, 0.5f };
     glm::vec4 m_Square2Colour = { 0.0f, 0.0f, 1.0f, 0.5f };
+
+    ParticleSystem m_ParticleSystem;
+    ParticleProps m_Particle;
 
     float m_Angle = 0.0f;
 };
