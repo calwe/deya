@@ -20,6 +20,8 @@ private:
 
     Deya::Ref<Deya::Texture2D> m_MansTexture;
     Deya::Ref<Deya::Texture2D> m_MansSlimTexture;
+    Deya::Ref<Deya::Texture2D> m_SpriteSheet;
+    Deya::Ref<Deya::SubTexture2D> m_SpriteCoin;
 
     std::vector<ProfileResult> m_ProfileResults;
 

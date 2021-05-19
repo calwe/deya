@@ -12,12 +12,15 @@ void Sandbox2D::OnAttach()
 
     m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
     m_MansSlimTexture = Deya::Texture2D::Create("assets/textures/mans_slim.png");
+    m_SpriteSheet = Deya::Texture2D::Create("assets/textures/tilemap.png");
+
+    m_SpriteCoin = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0.0f, 1.0f }, { 16.0f, 16.0f }, { 1.0f, 2.0f });
 
     // Particle System Settings
     m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
     m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
-	m_Particle.LifeTime = 10.0f;
+	m_Particle.LifeTime = 3.0f;
 	m_Particle.Velocity = { 0.0f, 0.0f };
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
@@ -41,6 +44,10 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
         Deya::RenderCommand::Clear();
     }
 
+#define TEST_DRAW 0
+#define PARTICLE_SYSTEM 1
+
+#if TEST_DRAW
     {
         DY_PROFILE_SCOPE("Renderer Draw");
         Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -53,7 +60,9 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
 
         Deya::Renderer2D::EndScene();
     }
+#endif
 
+#if PARTICLE_SYSTEM
     if (Deya::Input::IsMouseButtonPressed(DY_MOUSE_BUTTON_LEFT))
 	{
 		auto [x, y] = Deya::Input::GetMousePosition();
@@ -71,6 +80,16 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
 
 	m_ParticleSystem.OnUpdate(ts);
 	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+#endif
+
+    {
+        DY_PROFILE_SCOPE("Render Game");
+        Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+        Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 2.0f }, m_SpriteCoin); // 0 1
+
+        Deya::Renderer2D::EndScene();
+    }
 }
 
 void Sandbox2D::OnImGuiRender()
