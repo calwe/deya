@@ -3,6 +3,7 @@
 #include <Deya.h>
 
 #include "ParticleSystem.h"
+
 class Sandbox2D : public Deya::Layer
 {
 public:
@@ -21,7 +22,7 @@ private:
     Deya::Ref<Deya::Texture2D> m_MansTexture;
     Deya::Ref<Deya::Texture2D> m_MansSlimTexture;
     Deya::Ref<Deya::Texture2D> m_SpriteSheet;
-    Deya::Ref<Deya::SubTexture2D> m_SpriteCoin;
+    Deya::Ref<Deya::SubTexture2D> m_SpriteError;
 
     std::vector<ProfileResult> m_ProfileResults;
 
@@ -33,4 +34,7 @@ private:
     ParticleProps m_Particle;
 
     float m_Angle = 0.0f;
+
+    uint32_t m_MapWidth, m_MapHeight;
+    std::unordered_map<char, Deya::Ref<Deya::SubTexture2D>> s_TextureMap;
 };

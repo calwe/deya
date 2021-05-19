@@ -3,6 +3,41 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+// W = Water
+// GRASS LAYOUT:
+// T Y U
+// G H J
+// B N M 
+// INNER:
+// E R
+// D F
+static const uint32_t s_MapWidth = 24;
+static const char* s_MapTile = 
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWTYYYYYYYUWWWWWWWW"
+"WWWWWTYFHHHHHHHDYUWWWWWW"
+"WWWWTFHHHHHHHHHHHDUWWWWW"
+"WWWWGHHHHHHHHHHHHHJWWWWW"
+"WWWWGHHHHHHHHHHHHHJWWWWW"
+"WWWWGHHHHHHHHHHHHHJWWWWW"
+"WWWWGHHHHHHHHHHHHHJWWWWW"
+"WWWWGHHHHHHHHHHHHHJWWWWW"
+"WWWWBRHHHHHHHHHHHEMWWWWW"
+"WWWWWBNRHHHHHHHENMWWWWWW"
+"WWWWWWWBNNNNNNNMWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WWWWWWWWWWWWWWWWWWWWWWWW";
+
 Sandbox2D::Sandbox2D()
     : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f) {}
 
@@ -12,9 +47,31 @@ void Sandbox2D::OnAttach()
 
     m_MansTexture = Deya::Texture2D::Create("assets/textures/mans.png");
     m_MansSlimTexture = Deya::Texture2D::Create("assets/textures/mans_slim.png");
-    m_SpriteSheet = Deya::Texture2D::Create("assets/textures/tilemap.png");
+    m_SpriteSheet = Deya::Texture2D::Create("assets/textures/good-tilemap.png");
 
-    m_SpriteCoin = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0.0f, 1.0f }, { 16.0f, 16.0f }, { 1.0f, 2.0f });
+    m_MapWidth = s_MapWidth;
+    m_MapHeight = strlen(s_MapTile) / m_MapWidth;
+
+    m_SpriteError = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 10, 3 }, {128, 128}); // 1 symbol thing
+
+    s_TextureMap['W'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 15, 0 }, {128, 128}); // WATER
+
+    s_TextureMap['T'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 5, 11 }, {128, 128}); // GRASS TL
+    s_TextureMap['Y'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 11 }, {128, 128}); // GRASS TC
+    s_TextureMap['U'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 11 }, {128, 128}); // GRASS TR
+
+    s_TextureMap['G'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 5, 10 }, {128, 128}); // GRASS CL
+    s_TextureMap['H'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 10 }, {128, 128}); // GRASS CC
+    s_TextureMap['J'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 10 }, {128, 128}); // GRASS CR
+
+    s_TextureMap['B'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 5, 9 }, {128, 128}); // GRASS BL
+    s_TextureMap['N'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 9 }, {128, 128}); // GRASS BC
+    s_TextureMap['M'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 9 }, {128, 128}); // GRASS BR
+
+    s_TextureMap['E'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 8, 11 }, {128, 128}); // GRASS ITR
+    s_TextureMap['R'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 9, 11 }, {128, 128}); // GRASS TTL
+    s_TextureMap['D'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 8, 10 }, {128, 128}); // GRASS TBR
+    s_TextureMap['F'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 9, 10 }, {128, 128}); // GRASS TBL
 
     // Particle System Settings
     m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
@@ -24,6 +81,8 @@ void Sandbox2D::OnAttach()
 	m_Particle.Velocity = { 0.0f, 0.0f };
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
+
+    m_CameraController.SetZoomLevel(10.0f);
 }
 
 void Sandbox2D::OnDetach() { DY_PROFILE_FUNCTION(); }
@@ -45,7 +104,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
     }
 
 #define TEST_DRAW 0
-#define PARTICLE_SYSTEM 1
+#define PARTICLE_SYSTEM 0
 
 #if TEST_DRAW
     {
@@ -86,7 +145,29 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
         DY_PROFILE_SCOPE("Render Game");
         Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        Deya::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 2.0f }, m_SpriteCoin); // 0 1
+        for (uint32_t y = 0; y < m_MapHeight; y++)
+        {
+            for (uint32_t x = 0; x < m_MapWidth; x++)
+            {
+                Deya::Ref<Deya::SubTexture2D> texture = s_TextureMap['W'];
+                Deya::Renderer2D::DrawQuad({ x - (m_MapWidth / 2.0f), m_MapHeight - y - (m_MapHeight / 2.0f), 0.0f }, { 1.0f, 1.0f }, texture);
+            }
+        }
+
+        for (uint32_t y = 0; y < m_MapHeight; y++)
+        {
+            for (uint32_t x = 0; x < m_MapWidth; x++)
+            {
+                char tileType = s_MapTile[x + y * m_MapWidth];
+                Deya::Ref<Deya::SubTexture2D> texture;
+                if (s_TextureMap.find(tileType) != s_TextureMap.end())
+                    texture = s_TextureMap[tileType];
+                else
+                    texture = m_SpriteError;
+
+                Deya::Renderer2D::DrawQuad({ x - (m_MapWidth / 2.0f), m_MapHeight - y - (m_MapHeight / 2.0f), 0.5f }, { 1.0f, 1.0f }, texture);
+            }
+        }
 
         Deya::Renderer2D::EndScene();
     }
