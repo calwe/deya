@@ -43,4 +43,6 @@ uniform sampler2D u_Textures[32];
 void main()
 {
 	colour = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Colour;
+	// TODO: Branching for TextureSlot
+	// case (0-31): texColour /*(make from v_Colour)*/ *= texture(u_Textures[0], v_TexCoord * v_TilingFactor); break; 
 }

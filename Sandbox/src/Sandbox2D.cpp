@@ -3,6 +3,11 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#define TEST_DRAW 1
+#define PARTICLE_SYSTEM 0
+#define MINI_GAME 0
+
+#if MINI_GAME
 // W = Water
 // GRASS LAYOUT:
 // T Y U
@@ -37,6 +42,7 @@ static const char* s_MapTile =
 "WWWWWWWWWWWWWWWWWWWWWWWW"
 "WWWWWWWWWWWWWWWWWWWWWWWW"
 "WWWWWWWWWWWWWWWWWWWWWWWW";
+#endif
 
 Sandbox2D::Sandbox2D()
     : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f) {}
@@ -49,6 +55,7 @@ void Sandbox2D::OnAttach()
     m_MansSlimTexture = Deya::Texture2D::Create("assets/textures/mans_slim.png");
     m_SpriteSheet = Deya::Texture2D::Create("assets/textures/good-tilemap.png");
 
+#if MINI_GAME
     m_MapWidth = s_MapWidth;
     m_MapHeight = strlen(s_MapTile) / m_MapWidth;
 
@@ -72,6 +79,7 @@ void Sandbox2D::OnAttach()
     s_TextureMap['R'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 9, 11 }, {128, 128}); // GRASS TTL
     s_TextureMap['D'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 8, 10 }, {128, 128}); // GRASS TBR
     s_TextureMap['F'] = Deya::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 9, 10 }, {128, 128}); // GRASS TBL
+#endif
 
     // Particle System Settings
     m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
@@ -103,8 +111,6 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
         Deya::RenderCommand::Clear();
     }
 
-#define TEST_DRAW 0
-#define PARTICLE_SYSTEM 0
 
 #if TEST_DRAW
     {
@@ -141,6 +147,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
 	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 #endif
 
+#if MINI_GAME
     {
         DY_PROFILE_SCOPE("Render Game");
         Deya::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -171,6 +178,7 @@ void Sandbox2D::OnUpdate(Deya::Timestep ts)
 
         Deya::Renderer2D::EndScene();
     }
+#endif
 }
 
 void Sandbox2D::OnImGuiRender()
