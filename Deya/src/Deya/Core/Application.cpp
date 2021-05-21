@@ -107,6 +107,11 @@ namespace Deya
 		}
 	}
 
+	void Application::Close()
+	{
+		m_Running = false;
+	}
+
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		DY_CORE_INFO("Closing...");
