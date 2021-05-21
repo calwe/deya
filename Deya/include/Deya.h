@@ -22,6 +22,7 @@
 
 #include "Deya/Renderer/Buffer.h"
 #include "Deya/Renderer/Shader.h"
+#include "Deya/Renderer/Framebuffer.h"
 #include "Deya/Renderer/Texture.h"
 #include "Deya/Renderer/SubTexture2D.h"
 #include "Deya/Renderer/VertexArray.h"

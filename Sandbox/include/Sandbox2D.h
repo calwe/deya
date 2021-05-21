@@ -19,6 +19,8 @@ public:
 private:
     Deya::OrthographicCameraController m_CameraController;
 
+    Deya::Ref<Deya::Framebuffer> m_Framebuffer;
+
     Deya::Ref<Deya::Texture2D> m_MansTexture;
     Deya::Ref<Deya::Texture2D> m_MansSlimTexture;
     Deya::Ref<Deya::Texture2D> m_SpriteSheet;

@@ -6,6 +6,8 @@ null.d
 
 !vendor/bin
 
+CreateClass.sh
+
 #imgui
 log.txt
 imgui.ini
