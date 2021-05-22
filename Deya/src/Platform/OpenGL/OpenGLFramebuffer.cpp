@@ -6,7 +6,8 @@
 
 namespace Deya
 {
-
+    static const uint32_t s_MaxFramebufferSize = 8192;
+    
     OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec) 
         : m_Spec(spec)
     {
@@ -65,6 +66,12 @@ namespace Deya
 
     void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height) 
     {
+        if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
+        {
+            DY_CORE_WARN("Attempted to resize framebuffer to {0}x{1}", width, height);
+            return;
+        }
+
         m_Spec.Width = width;
         m_Spec.Height = height;
         Invalidate();

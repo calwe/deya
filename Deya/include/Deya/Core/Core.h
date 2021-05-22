@@ -14,11 +14,22 @@
 
 #ifdef DY_DEBUG
     #define DY_ENABLE_ASSERTS
+    #if defined(DY_PLATFORM_WINDOWS)
+        #define DY_DEBUGBREAK() __debugbreak()
+    #elif defined(DY_PLATFORM_LINUX)
+        #include <signal.h>
+        #define DY_DEBUGBREAK() raise(SIGTRAP)
+    #else
+        #error "Platform doesn't currently support debugbreak"
+    #endif
+#else
+    #define DY_DEBUGBREAK()
 #endif
 
+// TODO: assert without message
 #ifdef DY_ENABLE_ASSERTS
-    #define DY_ASSERT(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
-    #define DY_CORE_ASSERT(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
+    #define DY_ASSERT(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); DY_DEBUGBREAK(); } }
+    #define DY_CORE_ASSERT(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); DY_DEBUGBREAK(); } }
 #else
     #define DY_ASSERT(x, ...)
     #define DY_CORE_ASSERT(x, ...)

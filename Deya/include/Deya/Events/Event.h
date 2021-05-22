@@ -41,6 +41,8 @@ namespace Deya
     class DEYA_API Event
     {
     public:
+        virtual ~Event() = default;
+
         bool Handled = false;
 
         virtual EventType GetEventType() const = 0;

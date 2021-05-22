@@ -28,7 +28,8 @@ namespace Deya
         DY_PROFILE_FUNCTION();
 
         // update
-        m_CameraController.OnUpdate(ts);
+        if (m_ViewportFocused)
+            m_CameraController.OnUpdate(ts);
         m_Angle += 0.5f;
 
         // render
@@ -153,8 +154,13 @@ namespace Deya
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
         ImGui::Begin("Viewport");
+
+        m_ViewportFocused = ImGui::IsWindowFocused();
+        m_ViewportHovered = ImGui::IsWindowHovered();
+        Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        if (m_ViewportSize != *((glm::vec2*) &viewportPanelSize))
+        if (m_ViewportSize != *((glm::vec2*) &viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
         {
             m_Framebuffer->Resize((uint32_t) viewportPanelSize.x, (uint32_t) viewportPanelSize.y);
             m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
