@@ -20,7 +20,7 @@ namespace Deya
     class DEYA_API Application
     {
     public:
-        Application();
+        Application(const std::string& name = "Deya App");
         virtual ~Application();
 
         void Run();

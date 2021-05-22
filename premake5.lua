@@ -1,6 +1,6 @@
 workspace "Deya"
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "LiquidEditor"
 	configurations
 	{
 		"Debug",
@@ -20,6 +20,7 @@ group "Dependencies"
 	include "Deya/vendor/GLFW"
 	include "Deya/vendor/glad"
 	include "Deya/vendor/imgui"
+group ""
 
 project "Deya"
 	location "Deya"
@@ -139,6 +140,87 @@ project "Sandbox"
 		"Deya/vendor",
 		"%{IncludeDir.glm}"
 	}
+	links
+	{
+		"Deya",
+        "GLFW",
+		"Glad",
+		"ImGui"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"DY_PLATFORM_WINDOWS"
+		}
+
+        links
+        {
+		    "opengl32.lib"  
+        }
+    
+    filter "system:linux"
+        systemversion "latest"
+
+        defines
+        {
+            "DY_PLATFORM_LINUX"
+        }
+
+        links
+        {
+            "GL",
+            "pthread",
+            "dl"
+        }
+
+		postbuildcommands 
+		{
+			"{COPY} ../%{prj.name}/assets %{cfg.targetdir}"
+		}
+
+	filter "configurations:Debug"
+		defines "DY_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "DY_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "DY_DIST"
+		runtime "Release"
+		optimize "on"
+
+project "LiquidEditor"
+	location "LiquidEditor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/include/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+	
+	includedirs
+	{
+		"%{prj.name}/include",
+		"Deya/vendor/spdlog/include",
+		"Deya/include",
+		"Deya/vendor",
+		"%{IncludeDir.glm}"
+	}
+
 	links
 	{
 		"Deya",
