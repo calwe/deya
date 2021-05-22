@@ -23,18 +23,13 @@ namespace Deya
 
         Ref<Texture2D> m_MansTexture;
         Ref<Texture2D> m_MansSlimTexture;
-        Ref<Texture2D> m_SpriteSheet;
-        Ref<SubTexture2D> m_SpriteError;
-
-        std::vector<ProfileResult> m_ProfileResults;
 
         glm::vec4 m_BackgroundColour = { 0.1f, 0.1f, 0.1f, 1.0f };
         glm::vec4 m_SquareColour = { 1.0f, 0.0f, 0.0f, 0.5f };
         glm::vec4 m_Square2Colour = { 0.0f, 0.0f, 1.0f, 0.5f };
 
-        float m_Angle = 0.0f;
+        glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 
-        uint32_t m_MapWidth, m_MapHeight;
-        std::unordered_map<char, Ref<SubTexture2D>> s_TextureMap;
+        float m_Angle = 0.0f;
     };
 }

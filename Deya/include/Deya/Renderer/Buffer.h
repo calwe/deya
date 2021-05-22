@@ -26,6 +26,8 @@ namespace Deya
 			case ShaderDataType::Mat3:      return 4 * 3 * 3;
 			case ShaderDataType::Mat4:      return 4 * 4 * 4;
 			case ShaderDataType::Bool:      return 1;
+
+			case ShaderDataType::None:      return 0;
 		}
 
 		DY_CORE_ASSERT(false, "Unknown ShaderDataType");
@@ -60,6 +62,8 @@ namespace Deya
 				case ShaderDataType::Mat3:		return 3 * 3;
 				case ShaderDataType::Mat4:		return 4 * 4;
 				case ShaderDataType::Bool:		return 1;
+
+				case ShaderDataType::None:      return 0;
 			}
 
 			DY_CORE_ASSERT(false, "Unknown ShaderDataType");

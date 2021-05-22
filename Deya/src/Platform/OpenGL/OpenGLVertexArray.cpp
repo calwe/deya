@@ -20,6 +20,8 @@ namespace Deya
             case Deya::ShaderDataType::Mat3:		return GL_FLOAT;
             case Deya::ShaderDataType::Mat4:		return GL_FLOAT;
             case Deya::ShaderDataType::Bool:		return GL_BOOL;
+
+            case Deya::ShaderDataType::None:		return 0;
         }
 
 		DY_CORE_ASSERT(false, "Unknown ShaderDataType");
