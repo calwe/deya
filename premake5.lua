@@ -15,6 +15,7 @@ IncludeDir["Glad"] = "Deya/vendor/glad/include"
 IncludeDir["ImGui"] = "Deya/vendor/imgui"
 IncludeDir["glm"] = "Deya/vendor/glm"
 IncludeDir["stb_image"] = "Deya/vendor/stb_image"
+IncludeDir["entt"] = "Deya/vendor/entt/include"
 
 group "Dependencies"
 	include "Deya/vendor/GLFW"
@@ -58,7 +59,8 @@ project "Deya"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 	links 
 	{ 
@@ -138,7 +140,8 @@ project "Sandbox"
 		"Deya/vendor/spdlog/include",
 		"Deya/include",
 		"Deya/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 	links
 	{
@@ -218,7 +221,8 @@ project "LiquidEditor"
 		"Deya/vendor/spdlog/include",
 		"Deya/include",
 		"Deya/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
