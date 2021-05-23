@@ -17,6 +17,7 @@
 
 #include "Deya/Scene/Scene.h"
 #include "Deya/Scene/Entity.h"
+#include "Deya/Scene/ScriptableEntity.h"
 #include "Deya/Scene/Components.h"
 
 // !===== RENDERER ============================

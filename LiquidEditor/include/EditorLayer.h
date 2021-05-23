@@ -24,7 +24,7 @@ namespace Deya
         Ref<Scene> m_ActiveScene;
         Entity m_SqaureEntity;
         Entity m_CameraEntity;
-        Entity m_CameraClipSpaceEntity;
+        Entity m_SecondCamera;
 
         bool m_PrimaryCamera = false;
 

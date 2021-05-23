@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Deya/Scene/SceneCamera.h"
+#include "Deya/Scene/ScriptableEntity.h"
 
 namespace Deya
 {
@@ -47,5 +48,20 @@ namespace Deya
 
         CameraComponent() = default;
         CameraComponent(const CameraComponent&) = default;
+    };
+
+    struct NativeScriptComponent
+    {
+        ScriptableEntity* Instance = nullptr;
+
+        ScriptableEntity*(*InstanciateScript)();
+        void (*DestroyScript)(NativeScriptComponent*);
+
+        template<typename T>
+        void Bind()
+        {
+            InstanciateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+            DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
+        }
     };
 }
