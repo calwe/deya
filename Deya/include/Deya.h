@@ -16,6 +16,7 @@
 #include "Deya/ImGui/ImGuiLayer.h"
 
 #include "Deya/Scene/Scene.h"
+#include "Deya/Scene/Entity.h"
 #include "Deya/Scene/Components.h"
 
 // !===== RENDERER ============================

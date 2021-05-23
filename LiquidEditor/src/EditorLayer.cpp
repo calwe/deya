@@ -22,9 +22,8 @@ namespace Deya
 
         m_ActiveScene = CreateRef<Scene>();
 
-        auto square = m_ActiveScene->CreateEntity();
-        m_ActiveScene->Reg().emplace<TransformComponent>(square);
-        m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{ 0.3, 0.8f, 0.2f, 1.0f });
+        auto square = m_ActiveScene->CreateEntity("Sqaure");
+        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3, 0.8f, 0.2f, 1.0f });
 
         m_SqaureEntity = square;
     }
@@ -140,8 +139,9 @@ namespace Deya
         {
             ImGui::ColorPicker4("BG Colour", glm::value_ptr(m_BackgroundColour));
 
-            auto& squareColour = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SqaureEntity).Colour;
-            ImGui::ColorPicker4("Square Colour", glm::value_ptr(squareColour));
+            auto& squareColour = m_SqaureEntity.GetComponent<SpriteRendererComponent>().Colour;
+            auto& tag = m_SqaureEntity.GetComponent<TagComponent>().Tag;
+            ImGui::ColorPicker4(tag.c_str(), glm::value_ptr(squareColour));
         }
 
         ImGui::End();

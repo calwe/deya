@@ -5,13 +5,15 @@
 #include "Deya/Core/Timestep.h"
 namespace Deya
 {
+    class Entity;
+
     class Scene
     {
     public:
         Scene();
         ~Scene();
 
-        entt::entity CreateEntity();
+        Entity CreateEntity(const std::string& name = std::string());
 
         // tmp
         entt::registry& Reg() { return m_Registry; }
@@ -19,5 +21,7 @@ namespace Deya
         void OnUpdate(Timestep ts);
     private:
         entt::registry m_Registry;
+
+        friend class Entity;
     };
 }

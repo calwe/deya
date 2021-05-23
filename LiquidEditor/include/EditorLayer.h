@@ -22,7 +22,7 @@ namespace Deya
         Ref<Framebuffer> m_Framebuffer;
 
         Ref<Scene> m_ActiveScene;
-        entt::entity m_SqaureEntity;
+        Entity m_SqaureEntity;
 
         Ref<Texture2D> m_MansTexture;
         Ref<Texture2D> m_MansSlimTexture;
