@@ -1,12 +1,16 @@
 [submodule "Deya/vendor/spdlog"]
 	path = Deya/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+	ignore = dirty
 [submodule "Deya/vendor/GLFW"]
 	path = Deya/vendor/GLFW
 	url = https://github.com/FFuuZZuu/glfw
+	ignore = dirty
 [submodule "Deya/vendor/imgui"]
 	path = Deya/vendor/imgui
 	url = https://github.com/FFuuZZuu/imgui.git
+	ignore = dirty
 [submodule "Deya/vendor/glm"]
 	path = Deya/vendor/glm
 	url = https://github.com/g-truc/glm
+	ignore = dirty
