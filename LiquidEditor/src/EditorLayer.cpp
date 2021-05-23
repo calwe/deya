@@ -19,6 +19,14 @@ namespace Deya
         fbSpec.Width = 1280;
         fbSpec.Height = 720;
         m_Framebuffer = Framebuffer::Create(fbSpec);
+
+        m_ActiveScene = CreateRef<Scene>();
+
+        auto square = m_ActiveScene->CreateEntity();
+        m_ActiveScene->Reg().emplace<TransformComponent>(square);
+        m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{ 0.3, 0.8f, 0.2f, 1.0f });
+
+        m_SqaureEntity = square;
     }
 
     void EditorLayer::OnDetach() { DY_PROFILE_FUNCTION(); }
@@ -33,28 +41,18 @@ namespace Deya
         m_Angle += 0.5f;
 
         // render
-        Renderer2D::ResetStats();
-        {
-            DY_PROFILE_SCOPE("Renderer Clear");
-            m_Framebuffer->Bind();
-            RenderCommand::SetClearColor(m_BackgroundColour);
-            RenderCommand::Clear();
-        }
+        m_Framebuffer->Bind();
+        RenderCommand::SetClearColor(m_BackgroundColour);
+        RenderCommand::Clear();
 
-        {
-            DY_PROFILE_SCOPE("Renderer Draw");
-            Renderer2D::BeginScene(m_CameraController.GetCamera());
-            
-            Renderer2D::DrawQuad({ 0.25f, 0.25f }, { 1.0f, 1.0f }, m_SquareColour);
-            Renderer2D::DrawQuad({ -0.25f, -0.25f }, { 1.0f, 1.0f }, m_Square2Colour);
+        Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-            Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, 0.1f }, glm::radians(m_Angle), { 0.5f, 0.5f }, m_MansTexture);
-            Renderer2D::DrawQuad({ 0.6f, 0.0f, 0.1f }, { 0.5f, 0.5f }, m_MansSlimTexture);
+        // Update scene
+        m_ActiveScene->OnUpdate(ts);
 
-            Renderer2D::EndScene();
+        Renderer2D::EndScene();
 
-            m_Framebuffer->Unbind();
-        }
+        m_Framebuffer->Unbind();
     }
 
     void EditorLayer::OnImGuiRender()
@@ -142,8 +140,8 @@ namespace Deya
         {
             ImGui::ColorPicker4("BG Colour", glm::value_ptr(m_BackgroundColour));
 
-            ImGui::ColorPicker4("Square Colour", glm::value_ptr(m_SquareColour));
-            ImGui::ColorPicker4("Square 2 Colour", glm::value_ptr(m_Square2Colour));
+            auto& squareColour = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SqaureEntity).Colour;
+            ImGui::ColorPicker4("Square Colour", glm::value_ptr(squareColour));
         }
 
         ImGui::End();

@@ -21,12 +21,13 @@ namespace Deya
 
         Ref<Framebuffer> m_Framebuffer;
 
+        Ref<Scene> m_ActiveScene;
+        entt::entity m_SqaureEntity;
+
         Ref<Texture2D> m_MansTexture;
         Ref<Texture2D> m_MansSlimTexture;
 
         glm::vec4 m_BackgroundColour = { 0.1f, 0.1f, 0.1f, 1.0f };
-        glm::vec4 m_SquareColour = { 1.0f, 0.0f, 0.0f, 1.0f };
-        glm::vec4 m_Square2Colour = { 0.0f, 0.0f, 1.0f, 1.0f };
 
         bool m_ViewportFocused = false;
         bool m_ViewportHovered = false;

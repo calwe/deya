@@ -17,7 +17,7 @@ namespace Deya
         static void Flush();
 
         // Primitives
-
+        
         // !=====Non-Rotated Quads===============================
 
         /**
@@ -81,6 +81,29 @@ namespace Deya
          * @param tintColour (={1.0f, 1.0f, 1.0f, 1.0f}) An RGBA tint for the texture 
          */
         static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor = 1.0f, const glm::vec4& tintColour = glm::vec4(1.0f));
+
+        // !=====================================================
+
+        // !=====Quads from Transform Matrix=====================
+
+        /**
+         * Draws a rectangle (quad) with a certain colour with a given transform matrix
+         * 
+         * @param transform A mat4 transform matrix
+         * @param colour The RGBA colour for the quad
+         */
+        static void DrawQuad(const glm::mat4& transform, const glm::vec4& colour);
+
+        /**
+         * Draws a rectangle (quad) with a certain texture with a given transform matrix
+         * 
+         * @param transform A mat4 transform matrix
+         * @param colour The RGBA colour for the quad
+         * @param texture The texture of the quad (Texture2D)
+         * @param tilingFactor (=1.0f) How much the texture should tile on both the X and Y axis.
+         * @param tintColour (={1.0f, 1.0f, 1.0f, 1.0f}) An RGBA tint for the texture 
+         */
+        static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColour = glm::vec4(1.0f));
 
         // !=====================================================
 
