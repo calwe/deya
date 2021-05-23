@@ -23,6 +23,10 @@ namespace Deya
 
         Ref<Scene> m_ActiveScene;
         Entity m_SqaureEntity;
+        Entity m_CameraEntity;
+        Entity m_CameraClipSpaceEntity;
+
+        bool m_PrimaryCamera = false;
 
         Ref<Texture2D> m_MansTexture;
         Ref<Texture2D> m_MansSlimTexture;

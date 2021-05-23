@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include "Deya/Scene/SceneCamera.h"
+
 namespace Deya
 {
     struct TagComponent
@@ -35,5 +37,15 @@ namespace Deya
         SpriteRendererComponent(const SpriteRendererComponent&) = default;
         SpriteRendererComponent(const glm::vec4& colour)
             : Colour(colour) {}
+    };
+
+    struct CameraComponent
+    {
+        SceneCamera Camera;
+        bool Primary = true; // TODO: move to scene?
+        bool FixedAspectRatio = false;
+
+        CameraComponent() = default;
+        CameraComponent(const CameraComponent&) = default;
     };
 }
