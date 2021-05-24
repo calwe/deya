@@ -22,17 +22,19 @@ namespace Deya
 
         m_ActiveScene = CreateRef<Scene>();
 
-        auto square = m_ActiveScene->CreateEntity("Sqaure Entity");
-        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3, 0.8f, 0.2f, 1.0f });
+        auto redSquare = m_ActiveScene->CreateEntity("Red Quad");
+        redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto square = m_ActiveScene->CreateEntity("Green Quad");
+        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3f, 0.8f, 0.2f, 1.0f });
+
+        auto blueSquare = m_ActiveScene->CreateEntity("Blue Quad");
+        blueSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3f, 0.2f, 0.8f, 1.0f });
 
         m_SqaureEntity = square;
 
         m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
         m_CameraEntity.AddComponent<CameraComponent>();
-
-        m_SecondCamera = m_ActiveScene->CreateEntity("Second Camera Entity");
-        auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
-        cc.Primary = false;
 
         class CameraController : public ScriptableEntity
         {
@@ -64,7 +66,8 @@ namespace Deya
             }
         };
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-        m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void EditorLayer::OnDetach() { DY_PROFILE_FUNCTION(); }
@@ -87,7 +90,6 @@ namespace Deya
         // update
         if (m_ViewportFocused)
             m_CameraController.OnUpdate(ts);
-        m_Angle += 0.5f;
 
         // render
         m_Framebuffer->Bind();
@@ -167,9 +169,15 @@ namespace Deya
         }
 
         /**
+         * ! Panels 
+         */
+        m_SceneHierarchyPanel.OnImGuiRender();
+
+        /**
          * ! Settings
          */
 
+        /**
         ImGui::Begin("Settings");
 
         if (ImGui::CollapsingHeader("Renderer2D Stats"))
@@ -210,6 +218,7 @@ namespace Deya
         }
 
         ImGui::End();
+        */
 
         /**
          * ! Viewport

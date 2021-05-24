@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Deya.h>
-
+#include "Panels/SceneHierarchyPanel.h"
 namespace Deya
 {
     class EditorLayer : public Layer
@@ -37,6 +37,7 @@ namespace Deya
         bool m_ViewportHovered = false;
         glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 
-        float m_Angle = 0.0f;
+        // Panels
+        SceneHierarchyPanel m_SceneHierarchyPanel;
     };
 }
