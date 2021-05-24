@@ -31,8 +31,12 @@ namespace Deya
     OpenGLVertexArray::OpenGLVertexArray()
     {
         DY_PROFILE_FUNCTION();
-
+#ifdef DY_PLATFORM_OPENGL_4_5
         glCreateVertexArrays(1, &m_RendererID);
+#else
+        glGenVertexArrays(1, &m_RendererID);
+        glBindVertexArray(m_RendererID);
+#endif
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()

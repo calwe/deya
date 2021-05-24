@@ -14,7 +14,7 @@ namespace Deya
     {
         DY_PROFILE_FUNCTION();
 
-        glCreateBuffers(1, &m_RendererID);
+        glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         // Empty buffer, with a dynamic hint. This means that we can fill this buffer with data at a later date, multiple times
         // Do note that this is just a hint, the code would run with this set to static draw, but it would just run slower.
@@ -25,7 +25,7 @@ namespace Deya
     {
         DY_PROFILE_FUNCTION();
 
-        glCreateBuffers(1, &m_RendererID);
+        glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW); // Fill the buffer with data (given vertices)
     }
@@ -66,7 +66,7 @@ namespace Deya
     {
         DY_PROFILE_FUNCTION();
 
-        glCreateBuffers(1, &m_RendererID);
+        glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW); // Fill the buffer with data (given vertices)
     }

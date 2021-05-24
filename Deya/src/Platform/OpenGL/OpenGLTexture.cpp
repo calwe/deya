@@ -14,7 +14,7 @@ namespace Deya
 
         m_InternalFormat = GL_RGBA8;
         m_DataFormat = GL_RGBA;
-
+#ifdef DY_PLATFORM_OPENGL_4_5
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
         glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
@@ -23,6 +23,17 @@ namespace Deya
 
         glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+#else
+        glGenTextures(1, &m_RendererID);
+        glBindTexture(GL_TEXTURE_2D, m_RendererID);
+        glTexStorage2D(GL_TEXTURE_2D, 1, m_InternalFormat, m_Width, m_Height);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+#endif
     }
 
     OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
@@ -61,16 +72,26 @@ namespace Deya
 
         DY_CORE_ASSERT(internalFormat & dataFormat, "Format not supported");
 
+#ifdef DY_PLATFORM_OPENGL_4_5
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-        glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
+        glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
         glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+#else
+        glGenTextures(1, &m_RendererID);
+        glBindTexture(GL_TEXTURE_2D, m_RendererID);
+        glTexStorage2D(GL_TEXTURE_2D, 1, m_InternalFormat, m_Width, m_Height);
 
-        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data); 
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+#endif
 
         stbi_image_free(data);
     }
@@ -88,13 +109,21 @@ namespace Deya
 
         uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
         DY_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture")
+#ifdef DY_PLATFORM_OPENGL_4_5
         glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+#else
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+#endif
     }
 
     void OpenGLTexture2D::Bind(uint32_t slot) const
     {
         DY_PROFILE_FUNCTION();
-
+#ifdef DY_PLATFORM_OPENGL_4_5
         glBindTextureUnit(slot, m_RendererID);
+#else
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, m_RendererID);
+#endif
     }
 }
