@@ -25,6 +25,30 @@ namespace Deya
         auto redSquare = m_ActiveScene->CreateEntity("Red Quad");
         redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
 
+        auto redSquare1 = m_ActiveScene->CreateEntity("Red Quad2");
+        redSquare1.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare2 = m_ActiveScene->CreateEntity("Red Quad3");
+        redSquare2.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare3 = m_ActiveScene->CreateEntity("Red Quad4");
+        redSquare3.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare4 = m_ActiveScene->CreateEntity("Red Quad5");
+        redSquare4.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare5 = m_ActiveScene->CreateEntity("Red Quad6");
+        redSquare5.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare6 = m_ActiveScene->CreateEntity("Red Quad7");
+        redSquare6.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare7 = m_ActiveScene->CreateEntity("Red Quad8");
+        redSquare7.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
+        auto redSquare8 = m_ActiveScene->CreateEntity("Red Quad9");
+        redSquare8.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+
         auto square = m_ActiveScene->CreateEntity("Green Quad");
         square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3f, 0.8f, 0.2f, 1.0f });
 

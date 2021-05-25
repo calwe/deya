@@ -158,7 +158,18 @@ namespace Deya
 
         if (entity.HasComponent<SpriteRendererComponent>())
         {
-            if (ImGui::TreeNodeEx((void*) typeid(SpriteRendererComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite Renderer")) { ImGui::TreePop(); }
+            if (ImGui::TreeNodeEx((void*) typeid(SpriteRendererComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite Renderer")) 
+            {
+                // REMOVE: Temporary!
+                auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
+                auto& colour = spriteRendererComponent.Colour;
+
+                glm::vec3 rgbColour = { colour.r, colour.g, colour.b };
+                ImGui::ColorEdit3("Colour", glm::value_ptr(rgbColour));
+                colour = { rgbColour.r, rgbColour.g, rgbColour.b, 1.0f };
+
+                ImGui::TreePop(); 
+            }
         }
 
         if (entity.HasComponent<NativeScriptComponent>())
