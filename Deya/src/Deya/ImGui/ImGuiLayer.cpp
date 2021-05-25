@@ -34,6 +34,9 @@ namespace Deya
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
+        io.Fonts->AddFontFromFileTTF("assets/fonts/nunito/Nunito-Bold.ttf", 18.0f);
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/nunito/Nunito-Regular.ttf", 18.0f);
+
         // Set Dear ImGui style
         ImGui::StyleColorsDark();
         // ImGui::StyleColorsClassic();
@@ -45,6 +48,8 @@ namespace Deya
             style.WindowRounding = 0.0f;
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
+
+        SetDarkThemeColours();
 
         Application& app = Application::Get();
         GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
@@ -101,5 +106,40 @@ namespace Deya
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_current_context);
         }
+    }
+
+    void ImGuiLayer::SetDarkThemeColours()
+    {
+        auto& colours = ImGui::GetStyle().Colors;
+        colours[ImGuiCol_WindowBg] = ImVec4{ 0.14f, 0.13f, 0.15f, 1.0f };
+
+        // headers
+        colours[ImGuiCol_Header] = ImVec4{ 0.17f, 0.11f, 0.18f, 1.0f };            // mid
+        colours[ImGuiCol_HeaderHovered] = ImVec4{ 0.21f, 0.15f, 0.22f, 1.0f };     // light
+        colours[ImGuiCol_HeaderActive] = ImVec4{ 0.13f, 0.08f, 0.13f, 1.0f };      // dark
+
+        // buttons
+        colours[ImGuiCol_Button] = ImVec4{ 0.24f, 0.15f, 0.29f, 1.0f };            // mid
+        colours[ImGuiCol_ButtonHovered] = ImVec4{ 0.21f, 0.15f, 0.22f, 1.0f };     // light
+        colours[ImGuiCol_ButtonActive] = ImVec4{ 0.13f, 0.08f, 0.13f, 1.0f };      // dark
+
+        // frame bg
+        colours[ImGuiCol_FrameBg] = ImVec4{ 0.13f, 0.08f, 0.13f, 1.0f };            // mid
+        colours[ImGuiCol_FrameBgHovered] = ImVec4{ 0.21f, 0.15f, 0.22f, 1.0f };     // light
+        colours[ImGuiCol_FrameBgActive] = ImVec4{ 0.13f, 0.08f, 0.13f, 1.0f };      // dark
+
+        // tabs
+        colours[ImGuiCol_Tab] = ImVec4{ 0.13f, 0.08f, 0.13f, 1.0f };            // dark
+        colours[ImGuiCol_TabHovered] = ImVec4{ 0.21f, 0.15f, 0.22f, 1.0f };     // light
+        colours[ImGuiCol_TabActive] = ImVec4{ 0.17f, 0.11f, 0.18f, 1.0f };      // mid
+        colours[ImGuiCol_TabUnfocused] = ImVec4{ 0.13f, 0.08f, 0.13f, 1.0f };      // dark
+        colours[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.15f, 0.1f, 0.15f, 1.0f };      // mid-dark
+
+        // title
+        colours[ImGuiCol_TitleBg] = ImVec4{ 0.10f, 0.05f, 0.10f, 1.0f };            // dark
+        colours[ImGuiCol_TitleBgActive] = ImVec4{ 0.10f, 0.05f, 0.10f, 1.0f };     // dark
+        colours[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.93f, 0.75f, 0.93f, 1.0f };      // super light
+
+        colours[ImGuiCol_MenuBarBg] = ImVec4{ 0.08f, 0.03f, 0.08f, 1.0f };
     }
 }

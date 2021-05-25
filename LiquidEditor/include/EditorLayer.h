@@ -31,7 +31,7 @@ namespace Deya
         Ref<Texture2D> m_MansTexture;
         Ref<Texture2D> m_MansSlimTexture;
 
-        glm::vec4 m_BackgroundColour = { 0.1f, 0.1f, 0.1f, 1.0f };
+        glm::vec4 m_BackgroundColour = { 0.09f, 0.08f, 0.1f, 1.0f };
 
         bool m_ViewportFocused = false;
         bool m_ViewportHovered = false;
