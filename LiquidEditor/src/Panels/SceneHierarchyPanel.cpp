@@ -163,10 +163,8 @@ namespace Deya
                 // REMOVE: Temporary!
                 auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
                 auto& colour = spriteRendererComponent.Colour;
-
-                glm::vec3 rgbColour = { colour.r, colour.g, colour.b };
-                ImGui::ColorEdit3("Colour", glm::value_ptr(rgbColour));
-                colour = { rgbColour.r, rgbColour.g, rgbColour.b, 1.0f };
+                
+                ImGui::ColorEdit4("Colour", glm::value_ptr(colour));
 
                 ImGui::TreePop(); 
             }

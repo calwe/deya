@@ -114,6 +114,7 @@ namespace Deya
         // update
         if (m_ViewportFocused)
             m_CameraController.OnUpdate(ts);
+        Renderer2D::ResetStats();
 
         // render
         m_Framebuffer->Bind();
@@ -196,6 +197,19 @@ namespace Deya
          * ! Panels 
          */
         m_SceneHierarchyPanel.OnImGuiRender();
+
+        /**
+         * ! Stats
+         */
+        ImGui::Begin("Stats");
+
+        auto stats = Renderer2D::GetStats();
+        ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+        ImGui::Text("Quads: %d", stats.QuadCount);
+        ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+        ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+        ImGui::End();
 
         /**
          * ! Settings
