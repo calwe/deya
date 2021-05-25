@@ -22,71 +22,41 @@ namespace Deya
 
         m_ActiveScene = CreateRef<Scene>();
 
-        auto redSquare = m_ActiveScene->CreateEntity("Red Quad");
-        redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare1 = m_ActiveScene->CreateEntity("Red Quad2");
-        redSquare1.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare2 = m_ActiveScene->CreateEntity("Red Quad3");
-        redSquare2.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare3 = m_ActiveScene->CreateEntity("Red Quad4");
-        redSquare3.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare4 = m_ActiveScene->CreateEntity("Red Quad5");
-        redSquare4.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare5 = m_ActiveScene->CreateEntity("Red Quad6");
-        redSquare5.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare6 = m_ActiveScene->CreateEntity("Red Quad7");
-        redSquare6.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare7 = m_ActiveScene->CreateEntity("Red Quad8");
-        redSquare7.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto redSquare8 = m_ActiveScene->CreateEntity("Red Quad9");
-        redSquare8.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-
-        auto square = m_ActiveScene->CreateEntity("Green Quad");
-        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3f, 0.8f, 0.2f, 1.0f });
-
-        auto blueSquare = m_ActiveScene->CreateEntity("Blue Quad");
-        blueSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.3f, 0.2f, 0.8f, 1.0f });
+        auto square = m_ActiveScene->CreateEntity("Default Quad");
+        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
 
         m_SqaureEntity = square;
 
-        m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+        m_CameraEntity = m_ActiveScene->CreateEntity("Main Camera");
         m_CameraEntity.AddComponent<CameraComponent>();
 
         class CameraController : public ScriptableEntity
         {
         public:
-            void OnCreate()
+            virtual void OnCreate() override
             {
-                auto& transform = GetComponent<TransformComponent>().Transform;
-                transform[3][0] = rand() % 10 - 5.0f;
+                auto& translation = GetComponent<TransformComponent>().Translation;
+                translation.x = rand() % 10 - 5.0f;
             }
 
-            void OnDestroy()
+            virtual void OnDestroy() override
             {
 
             }
 
-            void OnUpdate(Timestep ts) 
+            virtual void OnUpdate(Timestep ts)  override
             {
-                auto& transform = GetComponent<TransformComponent>().Transform;
+                auto& translation = GetComponent<TransformComponent>().Translation;
                 float speed = 5.0f;
 
                 if (Input::IsKeyPressed(DY_KEY_A))
-                    transform[3][0] -= speed * ts;
+                    translation.x -= speed * ts;
                 if (Input::IsKeyPressed(DY_KEY_D))
-                    transform[3][0] += speed * ts;
+                    translation.x += speed * ts;
                 if (Input::IsKeyPressed(DY_KEY_W))
-                    transform[3][1] += speed * ts;
+                    translation.y += speed * ts;
                 if (Input::IsKeyPressed(DY_KEY_S))
-                    transform[3][1] -= speed * ts;
+                    translation.y -= speed * ts;
             }
         };
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();

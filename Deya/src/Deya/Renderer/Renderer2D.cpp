@@ -58,7 +58,8 @@ namespace Deya
                 {ShaderDataType::Float4, "a_Colour"},
                 {ShaderDataType::Float2, "a_TexCoords"},
                 {ShaderDataType::Float, "a_TexIndex"},
-                {ShaderDataType::Float, "a_TilingFactor"}};
+                {ShaderDataType::Float, "a_TilingFactor"}
+            };
 
         s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
         s_Data.QuadVertexBuffer->SetLayout(layout);
@@ -109,6 +110,8 @@ namespace Deya
     void Renderer2D::Shutdown()
     {
         DY_PROFILE_FUNCTION();
+
+        delete[] s_Data.QuadVertexBufferBase;
     }
 
     void Renderer2D::BeginScene(const OrthographicCamera &camera)
@@ -151,6 +154,9 @@ namespace Deya
 
     void Renderer2D::Flush()
     {
+        if (s_Data.QuadIndexCount == 0)
+			return;
+
         // bind textures
         for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
         {
