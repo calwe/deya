@@ -14,3 +14,7 @@
 	path = Deya/vendor/glm
 	url = https://github.com/g-truc/glm
 	ignore = dirty
+[submodule "Deya/vendor/yaml-cpp"]
+	path = Deya/vendor/yaml-cpp
+	url = https://github.com/FFuuZZuu/yaml-cpp.git
+	ignore = dirty

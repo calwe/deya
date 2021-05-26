@@ -3,6 +3,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Deya/Scene/SceneSerializer.h"
+
 namespace Deya
 {
     EditorLayer::EditorLayer()
@@ -21,7 +23,7 @@ namespace Deya
         m_Framebuffer = Framebuffer::Create(fbSpec);
 
         m_ActiveScene = CreateRef<Scene>();
-
+/*
         auto square = m_ActiveScene->CreateEntity("Default Quad");
         square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.3f, 1.0f });
 
@@ -60,7 +62,7 @@ namespace Deya
             }
         };
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-
+*/
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
@@ -159,6 +161,18 @@ namespace Deya
         {
             if (ImGui::BeginMenu("Options"))
             {
+                if (ImGui::MenuItem("Serialize"))
+                {
+                    SceneSerializer serializer(m_ActiveScene);
+                    serializer.Serialize("assets/scenes/Example.DeyaScene");
+                }
+
+                if (ImGui::MenuItem("Deserialize"))
+                {
+                    SceneSerializer serializer(m_ActiveScene);
+                    serializer.Deserialize("assets/scenes/Example.DeyaScene");
+                }
+
                 if (ImGui::MenuItem("Exit"))    Application::Get().Close();
                 ImGui::EndMenu();
             }

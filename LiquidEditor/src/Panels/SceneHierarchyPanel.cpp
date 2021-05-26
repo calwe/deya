@@ -297,6 +297,9 @@ namespace Deya
                         break;
                     }
                 }
+
+                ImGui::Checkbox("Active Camera", &component.Primary);
+                ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
         });
 
         DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)

@@ -16,11 +16,13 @@ IncludeDir["ImGui"] = "Deya/vendor/imgui"
 IncludeDir["glm"] = "Deya/vendor/glm"
 IncludeDir["stb_image"] = "Deya/vendor/stb_image"
 IncludeDir["entt"] = "Deya/vendor/entt/include"
+IncludeDir["yaml_cpp"] = "Deya/vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "Deya/vendor/GLFW"
 	include "Deya/vendor/glad"
 	include "Deya/vendor/imgui"
+	include "Deya/vendor/yaml-cpp"
 group ""
 
 project "Deya"
@@ -60,13 +62,15 @@ project "Deya"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 	links 
 	{ 
 		"GLFW",
 		"Glad",
-		"ImGui"
+		"ImGui",
+		"yaml-cpp"
 	}
 
 	filter "system:windows"
@@ -141,7 +145,8 @@ project "Sandbox"
 		"Deya/include",
 		"Deya/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 	links
 	{
@@ -222,7 +227,8 @@ project "LiquidEditor"
 		"Deya/include",
 		"Deya/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links
@@ -230,7 +236,8 @@ project "LiquidEditor"
 		"Deya",
         "GLFW",
 		"Glad",
-		"ImGui"
+		"ImGui",
+		"yaml-cpp"
 	}
 
 	filter "system:windows"
