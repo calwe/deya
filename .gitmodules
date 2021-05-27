@@ -18,3 +18,7 @@
 	path = Deya/vendor/yaml-cpp
 	url = https://github.com/FFuuZZuu/yaml-cpp.git
 	ignore = dirty
+[submodule "Deya/vendor/nfd"]
+	path = Deya/vendor/nfd
+	url = https://github.com/mlabbe/nativefiledialog.git
+	ignore = dirty

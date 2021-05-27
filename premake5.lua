@@ -17,6 +17,7 @@ IncludeDir["glm"] = "Deya/vendor/glm"
 IncludeDir["stb_image"] = "Deya/vendor/stb_image"
 IncludeDir["entt"] = "Deya/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Deya/vendor/yaml-cpp/include"
+IncludeDir["nfd"] = "Deya/vendor/nfd/src/include"
 
 group "Dependencies"
 	include "Deya/vendor/GLFW"
@@ -37,6 +38,11 @@ project "Deya"
 
 	pchheader "dypch.h"
 	pchsource "Deya/src/dypch.cpp"
+
+	libdirs 
+	{ 
+		"%{prj.name}/vendor/nfd/build/lib/Release/x64"
+	}
 
 	files
 	{
@@ -63,7 +69,8 @@ project "Deya"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.nfd}"
 	}
 	links 
 	{ 
@@ -85,11 +92,14 @@ project "Deya"
 
         links
         {
-		    "opengl32.lib"  
+		    "opengl32.lib",
+			"comctl32.lib" 
         }
 
     filter "system:linux"
-        systemversion "latest"
+        systemversion "latest"	
+
+		buildoptions {"`pkg-config --cflags gtk+-3.0`"}
 
         defines
         {
@@ -101,7 +111,8 @@ project "Deya"
         {
             "GL",
             "pthread",
-            "dl"
+            "dl",
+			":libnfd.a"
         }
 
 		disablewarnings
@@ -166,7 +177,7 @@ project "Sandbox"
 
         links
         {
-		    "opengl32.lib"  
+		    "opengl32.lib"
         }
     
     filter "system:linux"
@@ -214,6 +225,11 @@ project "LiquidEditor"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	libdirs 
+	{ 
+		"Deya/vendor/nfd/build/lib/Release/x64"
+	}
+
 	files
 	{
 		"%{prj.name}/include/**.h",
@@ -228,7 +244,8 @@ project "LiquidEditor"
 		"Deya/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.nfd}"
 	}
 
 	links
@@ -250,11 +267,14 @@ project "LiquidEditor"
 
         links
         {
-		    "opengl32.lib"  
+		    "opengl32.lib",
+			"comctl32.lib"
         }
     
     filter "system:linux"
-        systemversion "latest"
+        systemversion "latest"	
+
+		buildoptions {"`pkg-config --cflags gtk+-3.0`"}
 
         defines
         {
@@ -265,8 +285,11 @@ project "LiquidEditor"
         {
             "GL",
             "pthread",
-            "dl"
+            "dl",
+			":libnfd.a"
         }
+
+		linkoptions {"-lnfd `pkg-config --libs gtk+-3.0`"}
 
 		postbuildcommands 
 		{
