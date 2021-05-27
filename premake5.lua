@@ -83,6 +83,11 @@ project "Deya"
 	filter "system:windows"
 		systemversion "latest"
 
+		prebuildcommands
+		{
+			"msbuild Deya/vendor/nfd/build/vs2010/NativeFileDialog.sln"
+		}
+
 		defines
 		{
 			"DY_PLATFORM_WINDOWS",
