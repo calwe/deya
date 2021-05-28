@@ -10,7 +10,7 @@ namespace Deya
     std::string FileDialogs::OpenFile(const char* filter)
     {
         nfdchar_t *outPath = NULL;
-        nfdresult_t result = NFD_OpenDialog( NULL, NULL, &outPath );
+        nfdresult_t result = NFD_OpenDialog( filter, NULL, &outPath );
             
         if ( result == NFD_OKAY ) 
         {
@@ -32,7 +32,7 @@ namespace Deya
     std::string FileDialogs::SaveFile(const char* filter)
     {
         nfdchar_t *outPath = NULL;
-        nfdresult_t result = NFD_SaveDialog( NULL, NULL, &outPath );
+        nfdresult_t result = NFD_SaveDialog( filter, NULL, &outPath );
             
         if ( result == NFD_OKAY ) 
         {

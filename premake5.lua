@@ -104,6 +104,13 @@ project "Deya"
             "GLFW_INCLUDE_NONE"
         }
 
+		links
+        {
+            "GL",
+            "pthread",
+            "dl"
+        }
+
 		disablewarnings
 		{
 			"int-to-pointer-cast"
@@ -270,11 +277,10 @@ project "LiquidEditor"
         {
             "GL",
             "pthread",
-            "dl",
-			":libnfd.a"
+            "dl"
         }
 
-		linkoptions {"-lnfd `pkg-config --libs gtk+-3.0`"}
+		linkoptions {"`pkg-config --libs gtk+-3.0`"}
 
 	filter "configurations:Debug"
 		defines "DY_DEBUG"
