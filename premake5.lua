@@ -24,6 +24,7 @@ group "Dependencies"
 	include "Deya/vendor/glad"
 	include "Deya/vendor/imgui"
 	include "Deya/vendor/yaml-cpp"
+	include "Deya/vendor/nfd"
 group ""
 
 project "Deya"
@@ -38,11 +39,6 @@ project "Deya"
 
 	pchheader "dypch.h"
 	pchsource "Deya/src/dypch.cpp"
-
-	libdirs 
-	{ 
-		"%{prj.name}/vendor/nfd/build/lib/Release/x64"
-	}
 
 	files
 	{
@@ -77,16 +73,12 @@ project "Deya"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"yaml-cpp"
+		"yaml-cpp",
+		"nfd"
 	}
 
 	filter "system:windows"
 		systemversion "latest"
-
-		prebuildcommands
-		{
-			"msbuild Deya/vendor/nfd/build/vs2010/NativeFileDialog.sln"
-		}
 
 		defines
 		{
@@ -110,14 +102,6 @@ project "Deya"
         {
             "DY_PLATFORM_LINUX",
             "GLFW_INCLUDE_NONE"
-        }
-
-        links
-        {
-            "GL",
-            "pthread",
-            "dl",
-			":libnfd.a"
         }
 
 		disablewarnings
@@ -230,11 +214,6 @@ project "LiquidEditor"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	libdirs 
-	{ 
-		"Deya/vendor/nfd/build/lib/Release/x64"
-	}
-
 	files
 	{
 		"%{prj.name}/include/**.h",
@@ -259,7 +238,8 @@ project "LiquidEditor"
         "GLFW",
 		"Glad",
 		"ImGui",
-		"yaml-cpp"
+		"yaml-cpp",
+		"nfd"
 	}
 
 	filter "system:windows"
@@ -295,11 +275,6 @@ project "LiquidEditor"
         }
 
 		linkoptions {"-lnfd `pkg-config --libs gtk+-3.0`"}
-
-		postbuildcommands 
-		{
-			"{COPY} ../%{prj.name}/assets %{cfg.targetdir}"
-		}
 
 	filter "configurations:Debug"
 		defines "DY_DEBUG"
