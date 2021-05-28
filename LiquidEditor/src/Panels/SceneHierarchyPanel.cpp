@@ -7,6 +7,8 @@
 
 #include "Deya/Scene/Components.h"
 
+#include "ImGuizmo.h"
+
 namespace Deya
 {
     SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)

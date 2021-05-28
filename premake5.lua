@@ -18,6 +18,7 @@ IncludeDir["stb_image"] = "Deya/vendor/stb_image"
 IncludeDir["entt"] = "Deya/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Deya/vendor/yaml-cpp/include"
 IncludeDir["nfd"] = "Deya/vendor/nfd/src/include"
+IncludeDir["ImGuizmo"] = "Deya/vendor/ImGuizmo"
 
 group "Dependencies"
 	include "Deya/vendor/GLFW"
@@ -48,6 +49,8 @@ project "Deya"
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
@@ -66,7 +69,8 @@ project "Deya"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.nfd}"
+		"%{IncludeDir.nfd}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 	links 
 	{ 
@@ -76,6 +80,9 @@ project "Deya"
 		"yaml-cpp",
 		"nfd"
 	}
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -236,7 +243,8 @@ project "LiquidEditor"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.nfd}"
+		"%{IncludeDir.nfd}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links

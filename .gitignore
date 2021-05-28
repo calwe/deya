@@ -10,8 +10,6 @@ CreateClass.sh
 
 #imgui
 log.txt
-imgui.ini
-imgui_log.txt
 
 # !IDE SPECIFIC
 

@@ -22,3 +22,6 @@
 	path = Deya/vendor/nfd
 	url = https://github.com/FFuuZZuu/nativefiledialog.git
 	ignore = dirty
+[submodule "Deya/vendor/ImGuizmo"]
+	path = Deya/vendor/ImGuizmo
+	url = https://github.com/FFuuZZuu/ImGuizmo.git
