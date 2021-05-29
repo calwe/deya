@@ -3,6 +3,8 @@
 #include "entt.hpp"
 
 #include "Deya/Core/Timestep.h"
+#include "Deya/Renderer/EditorCamera.h"
+
 namespace Deya
 {
     class Entity;
@@ -19,7 +21,8 @@ namespace Deya
         // tmp
         entt::registry& Reg() { return m_Registry; }
 
-        void OnUpdate(Timestep ts);
+        void OnUpdateEditor(Timestep ts, EditorCamera& camera);
+        void OnUpdateRuntime(Timestep ts);
         void OnViewportResize(uint32_t width, uint32_t height);
 
         Entity GetPrimaryCameraEntity();

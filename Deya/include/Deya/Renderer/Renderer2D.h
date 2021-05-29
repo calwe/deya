@@ -5,6 +5,8 @@
 #include "Deya/Renderer/SubTexture2D.h"
 
 #include "Deya/Renderer/Camera.h"
+#include "Deya/Renderer/EditorCamera.h"
+
 namespace Deya
 {
     class Renderer2D
@@ -14,6 +16,7 @@ namespace Deya
         static void Shutdown();
 
         static void BeginScene(const Camera& camera, const glm::mat4& transform);
+        static void BeginScene(const EditorCamera& camera); // DELETE
         static void BeginScene(const OrthographicCamera& camera); // DELETE
         static void EndScene();
         static void Flush();

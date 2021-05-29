@@ -31,13 +31,28 @@ namespace Deya
         m_Registry.destroy(entity);
     }
 
-    void Scene::OnUpdate(Timestep ts)
+    void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+    {
+        Renderer2D::BeginScene(camera);
+
+        auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+        for (auto entity : group)
+        {
+            auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+            Renderer2D::DrawQuad(transform.GetTransform(), sprite.Colour);
+        }
+        
+        Renderer2D::EndScene();
+    }
+
+    void Scene::OnUpdateRuntime(Timestep ts)
     {
         // Update scripts
         {
             m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
             {
-                // TODO: play button (for liquid)?
+                // TODO: play button (for liquid)
                 if (!nsc.Instance)
                 {
                     nsc.Instance = nsc.InstanciateScript();
@@ -66,22 +81,7 @@ namespace Deya
                 }
             }
         }
-
-        if (mainCamera)
-        {
-            Renderer2D::BeginScene(*mainCamera, cameraTransform);
-
-            auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-            for (auto entity : group)
-            {
-                auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-
-                Renderer2D::DrawQuad(transform.GetTransform(), sprite.Colour);
-            }
-            
-            Renderer2D::EndScene();
-        }
-    }
+   }
 
     void Scene::OnViewportResize(uint32_t width, uint32_t height) 
     {

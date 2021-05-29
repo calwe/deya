@@ -8,6 +8,10 @@ null.d
 
 CreateClass.sh
 
+DeyaProfile-Startup.json
+DeyaProfile-Runtime.json
+DeyaProfile-Shutdown.json
+
 #imgui
 log.txt
 

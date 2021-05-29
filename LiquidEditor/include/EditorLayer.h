@@ -2,6 +2,8 @@
 
 #include <Deya.h>
 #include "Panels/SceneHierarchyPanel.h"
+#include "Deya/Renderer/EditorCamera.h"
+
 namespace Deya
 {
     class EditorLayer : public Layer
@@ -33,6 +35,8 @@ namespace Deya
         Entity m_SecondCamera;
 
         bool m_PrimaryCamera = false;
+        
+        EditorCamera m_EditorCamera;
 
         Ref<Texture2D> m_MansTexture;
         Ref<Texture2D> m_MansSlimTexture;
