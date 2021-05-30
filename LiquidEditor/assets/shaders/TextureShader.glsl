@@ -31,6 +31,7 @@ void main()
 #version 330 core
 
 layout(location = 0) out vec4 colour;
+// layout(location = 1) out vec4 colour2;
 
 in vec4 v_Colour;
 in vec2 v_TexCoord;
@@ -44,5 +45,9 @@ void main()
 {
 	colour = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Colour;
 	// TODO: Branching for TextureSlot
-	// case (0-31): texColour /*(make from v_Colour)*/ *= texture(u_Textures[0], v_TexCoord * v_TilingFactor); break; 
+    // vec4 texColour = v_Colour
+    // switch(int(v_TexIndex))
+	// case (0-31): texColour *= texture(u_Textures[0], v_TexCoord * v_TilingFactor); break; 
+
+   // colour2 = vec4(0.9, 0.1, 0.1, 1.0);
 }

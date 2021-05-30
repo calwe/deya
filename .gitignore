@@ -17,6 +17,11 @@ log.txt
 
 # !IDE SPECIFIC
 
+# vim
+.ccls
+compile_commands.json
+compile_commands
+
 # visual studio code
 .vscode/
 

@@ -17,13 +17,21 @@ namespace Deya
 
         virtual void Resize(uint32_t width, uint32_t height) override;
 
-        virtual uint32_t GetColourAttachmentRendererID() const override { return m_ColourAttachment; };
+        virtual uint64_t GetColourAttachmentRendererID(uint32_t index = 0) const override 
+        {
+            DY_CORE_ASSERT(index < m_ColourAttachments.size(), "Index larger than total colour attachments");
+            return m_ColourAttachments[index]; 
+        };
 
         virtual const FramebufferSpecification& GetSpecification() const override { return m_Spec; };
     private:
         uint32_t m_RendererID = 0;
-        uint32_t m_ColourAttachment = 0;
-        uint32_t m_DepthAttachment = 0;
         FramebufferSpecification m_Spec;
+
+        std::vector<FramebufferTextureSpecification> m_ColourAttachmentSpecs;
+        FramebufferTextureSpecification m_DepthAttachmentSpecs = FramebufferTextureFormat::None;
+
+        std::vector<uint32_t> m_ColourAttachments;
+        uint32_t m_DepthAttachment = 0;
     };
 }

@@ -257,6 +257,12 @@ project "LiquidEditor"
 		"nfd"
 	}
 
+	postbuildcommands 
+	{
+		"{COPY} ../%{prj.name}/assets %{cfg.targetdir}"
+	}
+
+
 	filter "system:windows"
 		systemversion "latest"
 

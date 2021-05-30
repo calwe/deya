@@ -16,8 +16,8 @@ namespace Deya
         if (type == "fragment" || type == "pixel")
             return GL_FRAGMENT_SHADER;
 
-        DY_CORE_ASSERT(false, "Unknown shader type")
-        return 0;
+        DY_CORE_ASSERT(false, "Unknown shader type");
+	return 0;
     }
 
     OpenGLShader::OpenGLShader(const std::string& filepath)
