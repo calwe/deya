@@ -9,7 +9,7 @@ namespace Deya
     OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
         : m_WindowHandle(windowHandle) 
     {
-        DY_CORE_ASSERT(windowHandle, "Window handle is null")
+        DY_CORE_ASSERT_STRING(windowHandle, "Window handle is null")
     }
 
     void OpenGLContext::Init()
@@ -18,7 +18,7 @@ namespace Deya
 
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-        DY_CORE_ASSERT(status, "Failed to initialize glad");
+        DY_CORE_ASSERT_STRING(status, "Failed to initialize glad");
 
         DY_CORE_INFO("OpenGL Info:");
         DY_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));

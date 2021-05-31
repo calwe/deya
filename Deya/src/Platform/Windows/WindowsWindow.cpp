@@ -50,7 +50,7 @@ namespace Deya
         {
             // TODO: glfwTerminate on shutdown
             int success = glfwInit();
-            DY_CORE_ASSERT(success, "Could not initialize GLFW!");
+            DY_CORE_ASSERT_STRING(success, "Could not initialize GLFW!");
 
             glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -61,7 +61,7 @@ namespace Deya
         glfwMakeContextCurrent(m_Window);
         
         int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-        DY_CORE_ASSERT(status, "Failed to initialize glad");
+        DY_CORE_ASSERT_STRING(status, "Failed to initialize glad");
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);

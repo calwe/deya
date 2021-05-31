@@ -22,7 +22,7 @@ namespace Deya
         m_MansSlimTexture = Texture2D::Create("assets/textures/mans_slim.png");
 
         FramebufferSpecification fbSpec;
-        fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+        fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
         fbSpec.Width = 1280;
         fbSpec.Height = 720;
         m_Framebuffer = Framebuffer::Create(fbSpec);
@@ -103,8 +103,25 @@ namespace Deya
         RenderCommand::SetClearColor(m_BackgroundColour);
         RenderCommand::Clear();
 
+        m_Framebuffer->ClearAttachment(1, -1);
+
         // Update scene
         m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+
+        auto[mx, my] = ImGui::GetMousePos();
+        mx -= m_ViewportBounds[0].x;
+        my -= m_ViewportBounds[0].y;
+        glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+        my = viewportSize.y - my;
+        int mouseX = (int) mx;
+        int mouseY = (int) my;
+        
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
+        {
+            int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+
+            DY_CORE_WARN("PixelData: {0}", pixelData);
+        }
 
         m_Framebuffer->Unbind();
     }
@@ -205,70 +222,24 @@ namespace Deya
 
         ImGui::End();
 
-        /**
-         * ! Settings
-         */
-
-        /**
-        ImGui::Begin("Settings");
-
-        if (ImGui::CollapsingHeader("Renderer2D Stats"))
-        {
-            auto stats = Renderer2D::GetStats();
-            ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-            ImGui::Text("Quads: %d", stats.QuadCount);
-            ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-            ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-        }
-
-        if (ImGui::CollapsingHeader("Colours"))
-        {
-            ImGui::ColorPicker4("BG Colour", glm::value_ptr(m_BackgroundColour));
-
-            auto& squareColour = m_SqaureEntity.GetComponent<SpriteRendererComponent>().Colour;
-            auto& tag = m_SqaureEntity.GetComponent<TagComponent>().Tag;
-            ImGui::ColorPicker4(tag.c_str(), glm::value_ptr(squareColour));
-        }
-
-        if (ImGui::CollapsingHeader("Cameras"))
-        {
-            ImGui::DragFloat3("Camera Transform", 
-                glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
-
-            if (ImGui::Checkbox("Camera B", &m_PrimaryCamera))
-            {
-                m_CameraEntity.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-                m_SecondCamera.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
-            }
-
-            {
-                auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-                float orthoSize = camera.GetOrthographicSize();
-                if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize));
-                    camera.SetOrthographicSize(orthoSize);
-            }
-        }
-
-        ImGui::End();
-        */
-
-        /**
-         * ! Viewport
-         */
-
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
         ImGui::Begin("Viewport");
+		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto viewportOffset = ImGui::GetWindowPos();
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
-        m_ViewportFocused = ImGui::IsWindowFocused();
-        m_ViewportHovered = ImGui::IsWindowHovered();
-        Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
-        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-        uint64_t textureID = m_Framebuffer->GetColourAttachmentRendererID();
-        ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
+		uint64_t textureID = m_Framebuffer->GetColourAttachmentRendererID();
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+        
         // Gizmos
         Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
         if (selectedEntity && m_GizmoType != -1)
@@ -313,7 +284,7 @@ namespace Deya
             if (ImGuizmo::IsUsing())
             {
                 glm::vec3 translation, rotation, scale;
-                DY_CORE_ASSERT(Math::DecomposeTransform(transform, translation, rotation, scale), "DecomposeTransform failed!");
+                DY_CORE_ASSERT_STRING(Math::DecomposeTransform(transform, translation, rotation, scale), "DecomposeTransform failed!");
 
                 glm::vec3 deltaRotation = rotation - tc.Rotation;
                 tc.Translation = translation;

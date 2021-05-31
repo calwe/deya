@@ -18,6 +18,9 @@ namespace Deya
         glm::vec2 TexCoord;
         float TexIndex;
         float TilingFactor;
+
+        // Editor-only
+        int EntityID;
     };
 
     struct Renderer2DData
@@ -54,11 +57,12 @@ namespace Deya
 
         BufferLayout layout =
             {
-                {ShaderDataType::Float3, "a_Position"},
-                {ShaderDataType::Float4, "a_Colour"},
-                {ShaderDataType::Float2, "a_TexCoords"},
-                {ShaderDataType::Float, "a_TexIndex"},
-                {ShaderDataType::Float, "a_TilingFactor"}
+                { ShaderDataType::Float3, "a_Position" },
+                { ShaderDataType::Float4, "a_Colour" },
+                { ShaderDataType::Float2, "a_TexCoords" },
+                { ShaderDataType::Float, "a_TexIndex" },
+                { ShaderDataType::Float, "a_TilingFactor" },
+                { ShaderDataType::Int, "a_EntityID" },
             };
 
         s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
@@ -192,7 +196,7 @@ namespace Deya
 
     // !=====Quads from Transform Matrix=====================
 
-    void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& colour) 
+    void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& colour, int entityID) 
     {
         DY_PROFILE_FUNCTION();
 
@@ -212,6 +216,7 @@ namespace Deya
             s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
             s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
             s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+            s_Data.QuadVertexBufferPtr->EntityID = entityID;
             s_Data.QuadVertexBufferPtr++;
         }
 
@@ -221,7 +226,7 @@ namespace Deya
     }
 
 
-    void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColour) 
+    void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColour, int entityID) 
     {
         DY_PROFILE_FUNCTION();
 
@@ -257,6 +262,7 @@ namespace Deya
             s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
             s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
             s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+            s_Data.QuadVertexBufferPtr->EntityID = entityID;
             s_Data.QuadVertexBufferPtr++;
         }
 
@@ -327,6 +333,13 @@ namespace Deya
         DrawQuad(transform, texture, tilingFactor, tintColour);
     }
     // !=====================================================
+
+    void Renderer2D::DrawSprite(const glm::mat4 &transform, SpriteRendererComponent &src, int entityID)
+    {
+        DY_PROFILE_FUNCTION();
+
+        DrawQuad(transform, src.Colour, entityID);
+    }
 
     void Renderer2D::ResetStats()
     {

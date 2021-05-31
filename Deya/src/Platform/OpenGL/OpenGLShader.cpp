@@ -16,7 +16,7 @@ namespace Deya
         if (type == "fragment" || type == "pixel")
             return GL_FRAGMENT_SHADER;
 
-        DY_CORE_ASSERT(false, "Unknown shader type");
+        DY_CORE_ASSERT_STRING(false, "Unknown shader type");
 	return 0;
     }
 
@@ -88,10 +88,10 @@ namespace Deya
         while (pos != std::string::npos)
         {
             size_t eol = source.find_first_of("\r\n", pos);
-            DY_CORE_ASSERT(eol != std::string::npos, "Syntax error");
+            DY_CORE_ASSERT_STRING(eol != std::string::npos, "Syntax error");
             size_t begin = pos + typeTokenLength + 1;
             std::string type = source.substr(begin, eol - begin);
-            DY_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
+            DY_CORE_ASSERT_STRING(ShaderTypeFromString(type), "Invalid shader type specified");
 
             size_t nextLinePos = source.find_first_not_of("\r\n", eol);
             pos = source.find(typeToken, nextLinePos);
@@ -108,7 +108,7 @@ namespace Deya
         DY_PROFILE_FUNCTION();
 
         GLuint program = glCreateProgram();
-        DY_CORE_ASSERT(shaderSources.size() <= 2, "Too many shaders given (2 maximum)");
+        DY_CORE_ASSERT_STRING(shaderSources.size() <= 2, "Too many shaders given (2 maximum)");
         std::array<GLenum, 2> glShaderIDs;
         int glShaderIDIndex = 0;
         for (auto& kv : shaderSources)
@@ -141,7 +141,7 @@ namespace Deya
                 glDeleteShader(shader);
 
                 DY_CORE_ERROR("{0}", infoLog.data());
-                DY_CORE_ASSERT(false, "Shader compilation failed");
+                DY_CORE_ASSERT_STRING(false, "Shader compilation failed");
 
                 return;
             }
@@ -172,7 +172,7 @@ namespace Deya
                 glDeleteShader(id);
 
             DY_CORE_ERROR("{0}", infoLog.data());
-            DY_CORE_ASSERT(false, "Shader link failed");
+            DY_CORE_ASSERT_STRING(false, "Shader link failed");
 
             return;
         }

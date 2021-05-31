@@ -12,13 +12,13 @@ namespace Deya
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
-                DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
+                DY_CORE_ASSERT_STRING(false, "RendererAPI::None is not supported");
                 return nullptr;
             case RendererAPI::API::OpenGL:
                 return std::make_shared<OpenGLShader>(filepath);
         }
 
-        DY_CORE_ASSERT(false, "Unknown RendererAPI");
+        DY_CORE_ASSERT_STRING(false, "Unknown RendererAPI");
         return nullptr;
     }
 
@@ -27,13 +27,13 @@ namespace Deya
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
-                DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
+                DY_CORE_ASSERT_STRING(false, "RendererAPI::None is not supported");
                 return nullptr;
             case RendererAPI::API::OpenGL:
                 return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
         }
 
-        DY_CORE_ASSERT(false, "Unknown RendererAPI");
+        DY_CORE_ASSERT_STRING(false, "Unknown RendererAPI");
         return nullptr;
     }
 
@@ -68,7 +68,7 @@ namespace Deya
 
     Ref<Shader> ShaderLibrary::Get(const std::string& name)
     {
-        DY_CORE_ASSERT(m_Shaders.find(name) != m_Shaders.end(), "Shader not found");
+        DY_CORE_ASSERT_STRING(m_Shaders.find(name) != m_Shaders.end(), "Shader not found");
         return m_Shaders[name];
     }
 }

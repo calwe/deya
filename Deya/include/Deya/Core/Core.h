@@ -28,8 +28,11 @@
 
 // TODO: assert without message
 #ifdef DY_ENABLE_ASSERTS
-    #define DY_ASSERT(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); DY_DEBUGBREAK(); } }
-    #define DY_CORE_ASSERT(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); DY_DEBUGBREAK(); } }
+    #define DY_ASSERT_STRING(x, ...) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", __VA_ARGS__); DY_DEBUGBREAK(); } }
+    #define DY_CORE_ASSERT_STRING(x, ...) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); DY_DEBUGBREAK(); } }
+
+    #define DY_ASSERT(x) { if(!(x)) { DY_ERROR("Assertion Failed: {0}", #x); DY_DEBUGBREAK(); } }
+    #define DY_CORE_ASSERT(x) { if(!(x)) { DY_CORE_ERROR("Assertion Failed: {0}", #x); DY_DEBUGBREAK(); } }
 #else
     #define DY_ASSERT(x, ...)
     #define DY_CORE_ASSERT(x, ...)

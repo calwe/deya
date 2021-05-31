@@ -24,7 +24,7 @@ namespace Deya
             case Deya::ShaderDataType::None:		return 0;
         }
 
-		DY_CORE_ASSERT(false, "Unknown ShaderDataType");
+		DY_CORE_ASSERT_STRING(false, "Unknown ShaderDataType");
 		return 0;
     }
 
@@ -63,7 +63,7 @@ namespace Deya
 
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
-        DY_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout");
+        DY_CORE_ASSERT_STRING(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout");
 
         glBindVertexArray(m_RendererID);
         vertexBuffer->Bind();
@@ -72,15 +72,58 @@ namespace Deya
 		const auto& layout = vertexBuffer->GetLayout();
         for (const auto& element : layout)
         {
-            glEnableVertexAttribArray(index);
-            glVertexAttribPointer( 								//*Tell OpenGL what our data means
-				index,											// Index of attribute
-				element.GetComponentCount(),					// How many components there are in the attribute (vec2 = 2, vec3 = 3, ...)
-				ShaderDataTypeToOpenGLBaseType(element.Type), 	// The type of attribute this is (float, int, ...)
-				element.Normalized ? GL_TRUE : GL_FALSE, 		// Is the data normalized?
-				layout.GetStride(),								// The stride between the attributes
-				(const void*) element.Offset); 					// Offset between the start of the data, and the attribute			
-            index++;
+            switch (element.Type)
+            {
+                case Deya::ShaderDataType::Float: 
+                case Deya::ShaderDataType::Float2:
+                case Deya::ShaderDataType::Float3:
+                case Deya::ShaderDataType::Float4:
+                {
+                    glEnableVertexAttribArray(index);
+                    glVertexAttribPointer(
+                            index,
+                            element.GetComponentCount(),
+                            ShaderDataTypeToOpenGLBaseType(element.Type),
+                            element.Normalized ? GL_TRUE : GL_FALSE,
+                            layout.GetStride(),
+                            (const void*) element.Offset
+                            );                
+                    break;
+                }
+                case Deya::ShaderDataType::Int:
+                case Deya::ShaderDataType::Int2:
+                case Deya::ShaderDataType::Int3:
+                case Deya::ShaderDataType::Int4:
+                case Deya::ShaderDataType::Bool:
+                {
+                    glEnableVertexAttribArray(index);
+                    glVertexAttribIPointer(
+                            index,
+                            element.GetComponentCount(),
+                            ShaderDataTypeToOpenGLBaseType(element.Type),
+                            layout.GetStride(),
+                            (const void*) element.Offset
+                            );
+                    break;
+                }
+                // TODO: ShaderDataType::Mat3/4 cases
+                case Deya::ShaderDataType::Mat3:
+                case Deya::ShaderDataType::Mat4:
+                {
+                    glEnableVertexAttribArray(index);
+                    glVertexAttribPointer(
+                            index,
+                            element.GetComponentCount(),
+                            ShaderDataTypeToOpenGLBaseType(element.Type),
+                            element.Normalized ? GL_TRUE : GL_FALSE,
+                            layout.GetStride(),
+                            (const void*) element.Offset
+                            );
+                    break;
+                }
+                case Deya::ShaderDataType::None: break;
+            }
+           index++;
         }
 
         m_VertexBuffers.push_back(vertexBuffer);

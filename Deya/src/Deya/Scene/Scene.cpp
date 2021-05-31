@@ -40,7 +40,7 @@ namespace Deya
         {
             auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-            Renderer2D::DrawQuad(transform.GetTransform(), sprite.Colour);
+            Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int) entity);
         }
         
         Renderer2D::EndScene();

@@ -7,6 +7,8 @@
 #include "Deya/Renderer/Camera.h"
 #include "Deya/Renderer/EditorCamera.h"
 
+#include "Deya/Scene/Components.h"
+
 namespace Deya
 {
     class Renderer2D
@@ -22,7 +24,7 @@ namespace Deya
         static void Flush();
 
         // Primitives
-        
+
         // !=====Non-Rotated Quads===============================
 
         /**
@@ -75,7 +77,7 @@ namespace Deya
          * @param transform A mat4 transform matrix
          * @param colour The RGBA colour for the quad
          */
-        static void DrawQuad(const glm::mat4& transform, const glm::vec4& colour);
+        static void DrawQuad(const glm::mat4& transform, const glm::vec4& colour, int entityID = -1);
 
         /**
          * Draws a rectangle (quad) with a certain texture with a given transform matrix
@@ -86,7 +88,7 @@ namespace Deya
          * @param tilingFactor (=1.0f) How much the texture should tile on both the X and Y axis.
          * @param tintColour (={1.0f, 1.0f, 1.0f, 1.0f}) An RGBA tint for the texture 
          */
-        static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColour = glm::vec4(1.0f));
+        static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColour = glm::vec4(1.0f), int entityID = -1);
 
         // !=====================================================
 
@@ -137,6 +139,8 @@ namespace Deya
         static void DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4& tintColour = glm::vec4(1.0f));
 
         // !=====================================================
+
+        static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID);
 
         // Stats
         struct Statistics

@@ -30,7 +30,7 @@ namespace Deya
 			case ShaderDataType::None:      return 0;
 		}
 
-		DY_CORE_ASSERT(false, "Unknown ShaderDataType");
+		DY_CORE_ASSERT_STRING(false, "Unknown ShaderDataType");
 		return 0;
 	}
 
@@ -66,7 +66,7 @@ namespace Deya
 				case ShaderDataType::None:      return 0;
 			}
 
-			DY_CORE_ASSERT(false, "Unknown ShaderDataType");
+			DY_CORE_ASSERT_STRING(false, "Unknown ShaderDataType");
 			return 0;
 		}
 	};

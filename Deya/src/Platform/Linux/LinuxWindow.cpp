@@ -52,7 +52,7 @@ namespace Deya
             DY_PROFILE_SCOPE("glfwInit");
             // TODO: glfwTerminate on shutdown
             int success = glfwInit();
-            DY_CORE_ASSERT(success, "Could not initialize GLFW!");
+            DY_CORE_ASSERT_STRING(success, "Could not initialize GLFW!");
 
             glfwSetErrorCallback(GLFWErrorCallback);
 

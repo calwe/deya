@@ -175,7 +175,7 @@ namespace Deya
 
     void SceneSerializer::SerializeRuntime(const std::string& filepath) 
     {
-        DY_CORE_ASSERT(false, "Not Implemented"); // implement
+        DY_CORE_ASSERT_STRING(false, "Not Implemented"); // implement
     }
 
     bool SceneSerializer::Deserialize(const std::string& filepath) 
@@ -251,7 +251,7 @@ namespace Deya
     bool SceneSerializer::DeserializeRuntime(const std::string& filepath) 
     {
         // TODO: implement runtime serialization
-        DY_CORE_ASSERT(false, "Not Implemented");
+        DY_CORE_ASSERT_STRING(false, "Not Implemented");
         return false;
     }
 }

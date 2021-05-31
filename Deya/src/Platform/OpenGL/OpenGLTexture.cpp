@@ -70,7 +70,7 @@ namespace Deya
         m_InternalFormat = internalFormat;
         m_DataFormat = dataFormat;
 
-        DY_CORE_ASSERT(internalFormat & dataFormat, "Format not supported");
+        DY_CORE_ASSERT_STRING(internalFormat & dataFormat, "Format not supported");
 
 #ifdef DY_PLATFORM_OPENGL_4_5
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -108,7 +108,7 @@ namespace Deya
         DY_PROFILE_FUNCTION();
 
         uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
-        DY_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture")
+        DY_CORE_ASSERT_STRING(size == m_Width * m_Height * bpp, "Data must be entire texture")
 #ifdef DY_PLATFORM_OPENGL_4_5
         glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 #else

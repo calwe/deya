@@ -10,13 +10,13 @@ namespace Deya
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
-                DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
+                DY_CORE_ASSERT_STRING(false, "RendererAPI::None is not supported");
                 return nullptr;
             case RendererAPI::API::OpenGL:
                 return std::make_shared<OpenGLVertexArray>();
         }
 
-        DY_CORE_ASSERT(false, "Unknown RendererAPI");
+        DY_CORE_ASSERT_STRING(false, "Unknown RendererAPI");
         return nullptr;
     }
 }

@@ -30,16 +30,16 @@ namespace Deya
             }
         }
 
-        static void AttachColourTexture(uint32_t id, int samples, GLenum format, uint32_t width, uint32_t height, int index)
+        static void AttachColourTexture(uint32_t id, int samples, GLenum internalFormat, GLenum format, uint32_t width, uint32_t height, int index)
         {
             bool multisampled = samples > 1;
             if (multisampled)
             {
-                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, width, height, GL_FALSE);
+                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, internalFormat, width, height, GL_FALSE);
             }
             else
             {
-                glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+                glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, nullptr);
 
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -83,6 +83,15 @@ namespace Deya
             return false;
         }
 
+        static GLenum DeyaFBTextureFormatToGL(FramebufferTextureFormat format)
+        {
+            switch (format)
+            {
+                case FramebufferTextureFormat::RGBA8:       return GL_RGBA8;
+                case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
+                default:                                    DY_CORE_ASSERT(false); return 0;
+            }
+        }
     }
     
     OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec) 
@@ -135,7 +144,10 @@ namespace Deya
                 switch (m_ColourAttachmentSpecs[i].TextureFormat)
                 {
                     case FramebufferTextureFormat::RGBA8:
-                        Utils::AttachColourTexture(m_ColourAttachments[i], m_Spec.Samples, GL_RGBA8, m_Spec.Width, m_Spec.Height, i);
+                        Utils::AttachColourTexture(m_ColourAttachments[i], m_Spec.Samples, GL_RGBA8, GL_RGBA, m_Spec.Width, m_Spec.Height, i);
+                        break;
+                    case FramebufferTextureFormat::RED_INTEGER:
+                        Utils::AttachColourTexture(m_ColourAttachments[i], m_Spec.Samples, GL_R32I, GL_RED_INTEGER, m_Spec.Width, m_Spec.Height, i);
                         break;
                     default:
                         break;
@@ -159,7 +171,7 @@ namespace Deya
 
         if (m_ColourAttachments.size())
         {
-            DY_CORE_ASSERT(m_ColourAttachments.size() <= 4, "More than 4 colour attachments not supported");
+            DY_CORE_ASSERT_STRING(m_ColourAttachments.size() <= 4, "More than 4 colour attachments not supported");
             GLenum buffers[4] { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
             glDrawBuffers(m_ColourAttachments.size(), buffers);
         }
@@ -169,7 +181,7 @@ namespace Deya
             glDrawBuffer(GL_NONE);
         }
 
-        DY_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete");
+        DY_CORE_ASSERT_STRING(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete");
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
@@ -197,5 +209,23 @@ namespace Deya
         m_Spec.Width = width;
         m_Spec.Height = height;
         Invalidate();
+    }
+
+    int OpenGLFramebuffer::ReadPixel(uint32_t attachmentIndex, int x, int y)
+    {
+        DY_CORE_ASSERT(attachmentIndex < m_ColourAttachments.size());
+
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
+        int pixelData;
+        glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
+        return pixelData;
+    }
+
+    void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+    {
+        DY_CORE_ASSERT(attachmentIndex < m_ColourAttachments.size());        
+ 
+        auto& spec = m_ColourAttachmentSpecs[attachmentIndex];
+        glClearTexImage(m_ColourAttachments[attachmentIndex], 0, Utils::DeyaFBTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
     }
 }

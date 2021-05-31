@@ -11,13 +11,13 @@ namespace Deya
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
-                DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
+                DY_CORE_ASSERT_STRING(false, "RendererAPI::None is not supported");
                 return nullptr;
             case RendererAPI::API::OpenGL:
                 return CreateRef<OpenGLTexture2D>(width, height);
         }
 
-        DY_CORE_ASSERT(false, "Unknown RendererAPI");
+        DY_CORE_ASSERT_STRING(false, "Unknown RendererAPI");
         return nullptr;
     }
 
@@ -26,13 +26,13 @@ namespace Deya
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
-                DY_CORE_ASSERT(false, "RendererAPI::None is not supported");
+                DY_CORE_ASSERT_STRING(false, "RendererAPI::None is not supported");
                 return nullptr;
             case RendererAPI::API::OpenGL:
                 return CreateRef<OpenGLTexture2D>(path);
         }
 
-        DY_CORE_ASSERT(false, "Unknown RendererAPI");
+        DY_CORE_ASSERT_STRING(false, "Unknown RendererAPI");
         return nullptr;
     }
 }

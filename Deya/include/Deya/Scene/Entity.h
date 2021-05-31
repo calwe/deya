@@ -16,7 +16,7 @@ namespace Deya
         template<typename T, typename... Args>
         T& AddComponent(Args&&... args)
         {
-            DY_CORE_ASSERT(!HasComponent<T>(), "Entity already has component");
+            DY_CORE_ASSERT_STRING(!HasComponent<T>(), "Entity already has component");
 
             T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
 
@@ -27,7 +27,7 @@ namespace Deya
         template<typename T>
         T& GetComponent()
         {
-            DY_CORE_ASSERT(HasComponent<T>(), "Entity doesn't has component");
+            DY_CORE_ASSERT_STRING(HasComponent<T>(), "Entity doesn't has component");
 
             return m_Scene->m_Registry.get<T>(m_EntityHandle);
         }
@@ -41,7 +41,7 @@ namespace Deya
         template<typename T>
         void RemoveComponent()
         {
-            DY_CORE_ASSERT(HasComponent<T>(), "Entity doesn't has component");
+            DY_CORE_ASSERT_STRING(HasComponent<T>(), "Entity doesn't has component");
 
             m_Scene->m_Registry.remove<T>(m_EntityHandle);
         }
