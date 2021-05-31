@@ -20,6 +20,7 @@ namespace Deya
         virtual void OnEvent(Event& event) override;
     private:
         bool OnKeyPressed(KeyPressedEvent& e);
+        bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
         void NewScene();
         void OpenScene();
@@ -33,6 +34,8 @@ namespace Deya
         Entity m_SqaureEntity;
         Entity m_CameraEntity;
         Entity m_SecondCamera;
+
+        Entity m_HoveredEntity;
 
         bool m_PrimaryCamera = false;
         

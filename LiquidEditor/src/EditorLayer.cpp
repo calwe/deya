@@ -119,8 +119,7 @@ namespace Deya
         if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
         {
             int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-
-            DY_CORE_WARN("PixelData: {0}", pixelData);
+            m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity) pixelData, m_ActiveScene.get());    
         }
 
         m_Framebuffer->Unbind();
@@ -236,7 +235,7 @@ namespace Deya
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-
+        
 		uint64_t textureID = m_Framebuffer->GetColourAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
         
@@ -247,10 +246,8 @@ namespace Deya
             ImGuizmo::SetOrthographic(false);
             ImGuizmo::SetDrawlist();
 
-            float windowWidth = (float) ImGui::GetWindowWidth();
-            float windowHeight = (float) ImGui::GetWindowHeight();
-            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-
+            ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+            
             // Camera
 
             // Runtime camera from entity
@@ -307,6 +304,7 @@ namespace Deya
 
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<KeyPressedEvent>(DY_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(DY_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
     }
 
     bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -365,6 +363,14 @@ namespace Deya
         }
 
         return true;
+    }
+
+    bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+    {
+        if (e.GetMouseButton() == DY_MOUSE_BUTTON_LEFT && m_ViewportHovered && !ImGuizmo::IsOver())
+            m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+
+        return false;
     }
 
     void EditorLayer::NewScene()
