@@ -102,7 +102,6 @@ namespace Deya
         m_Framebuffer->Bind();
         RenderCommand::SetClearColor(m_BackgroundColour);
         RenderCommand::Clear();
-
         m_Framebuffer->ClearAttachment(1, -1);
 
         // Update scene

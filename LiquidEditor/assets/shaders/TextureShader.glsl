@@ -47,7 +47,7 @@ uniform sampler2D u_Textures[32];
 
 void main()
 {
-	colour = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Colour;
+	colour = texture(u_Textures[int(v_TexIndex)], v_TexCoord) * v_Colour;
 	// TODO: Branching for TextureSlot
     // vec4 texColour = v_Colour
     // switch(int(v_TexIndex))

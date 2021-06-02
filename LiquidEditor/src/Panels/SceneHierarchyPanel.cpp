@@ -6,6 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Deya/Scene/Components.h"
+#include "Deya/Utils/PlatformUtils.h"
+#include "Deya/Renderer/Texture.h"
 
 #include "ImGuizmo.h"
 
@@ -149,6 +151,14 @@ namespace Deya
         ImGui::Columns(1);
 
         ImGui::PopID();
+    }
+
+    static void DrawLabel(const char* label)
+    {
+            ImGui::Columns(2);
+            ImGui::SetColumnWidth(0, 100);
+            ImGui::Text(label);
+            ImGui::NextColumn();
     }
 
     template<typename T, typename UIFunction>
@@ -312,7 +322,24 @@ namespace Deya
 
         DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
         {
-            ImGui::ColorEdit4("Colour", glm::value_ptr(component.Colour)); 
+            DrawLabel("Colour");
+            ImGui::ColorEdit4("colour", glm::value_ptr(component.Colour), ImGuiColorEditFlags_NoLabel); 
+            ImGui::Columns(1);
+
+            DrawLabel("Image");
+            if (ImGui::Button("Open"))
+            {
+                std::string filepath = FileDialogs::OpenFile("png");
+                Ref<Texture2D> texture = Texture2D::Create(filepath);
+                component.Type = SpriteRendererTypes::Image;
+                component.Texture = texture;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("x"))
+            {
+                component.Type = SpriteRendererTypes::Colour;
+            }
+            ImGui::Columns(1);
         });
     }
 }

@@ -8,7 +8,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-// TODO: Clean this class up! (so much repeated code...)
 namespace Deya
 {
     struct QuadVertex
@@ -251,14 +250,13 @@ namespace Deya
             s_Data.TextureSlotIndex++;
         }
 
-        constexpr glm::vec4 colour = {1.0f, 1.0f, 1.0f, 1.0f};
         constexpr size_t quadVertexCount = 4;
         constexpr glm::vec2 textureCoords[] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 
         for (size_t i = 0; i < quadVertexCount; i++)
         {
             s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-            s_Data.QuadVertexBufferPtr->Colour = colour;
+            s_Data.QuadVertexBufferPtr->Colour = tintColour;
             s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
             s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
             s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
@@ -337,8 +335,16 @@ namespace Deya
     void Renderer2D::DrawSprite(const glm::mat4 &transform, SpriteRendererComponent &src, int entityID)
     {
         DY_PROFILE_FUNCTION();
-
-        DrawQuad(transform, src.Colour, entityID);
+        
+        switch (src.Type)
+        {
+            case SpriteRendererTypes::Colour:
+                DrawQuad(transform, src.Colour, entityID);
+                break;
+            case SpriteRendererTypes::Image:
+                DrawQuad(transform, src.Texture, 1.0f, src.Colour, entityID);
+                break;
+        }
     }
 
     void Renderer2D::ResetStats()
